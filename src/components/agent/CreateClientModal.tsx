@@ -60,18 +60,19 @@ export function CreateClientModal({
       const roles: UserRole[] =
         role === "dual" ? ["buyer", "seller", "dual"] : [role];
 
-      // Create Firestore user doc
-      const userData: Parameters<typeof createUser>[0] = {
+      // Create Firestore user doc (pending until client sets password and logs in)
+      const userData: Record<string, unknown> = {
         id: cred.user.uid,
         brokerageId,
         email,
         displayName,
         roles,
+        status: "pending",
       };
       if (phone) {
-        (userData as Record<string, unknown>).phone = phone;
+        userData.phone = phone;
       }
-      await createUser(userData);
+      await createUser(userData as Parameters<typeof createUser>[0]);
 
       // Create transactions
       if (role === "dual" || role === "buyer") {

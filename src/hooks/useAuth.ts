@@ -8,7 +8,7 @@ import {
   type User as FirebaseUser,
 } from "firebase/auth";
 import { auth } from "@/lib/firebase";
-import { getUser } from "@/lib/firestore";
+import { getUser, updateUser } from "@/lib/firestore";
 import type { User } from "@/types";
 
 interface AuthState {
@@ -39,6 +39,11 @@ export function useAuth() {
   async function login(email: string, password: string) {
     const cred = await signInWithEmailAndPassword(auth, email, password);
     const userData = await getUser(cred.user.uid);
+    // Mark pending clients as active on first login
+    if (userData && userData.status === "pending") {
+      await updateUser(cred.user.uid, { status: "active" });
+      userData.status = "active";
+    }
     setState({ firebaseUser: cred.user, user: userData, loading: false });
     return userData;
   }

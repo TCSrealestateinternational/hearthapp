@@ -20,11 +20,14 @@ export default function AgentDashboardPage() {
   const [search, setSearch] = useState("");
   const [showCreate, setShowCreate] = useState(false);
 
+  // Use agent's own brokerageId - more reliable than brokerage slug lookup
+  const brokerageId = user?.brokerageId || brokerage?.id;
+
   const loadData = useCallback(() => {
-    if (!brokerage?.id) return;
-    getAllClients(brokerage.id).then(setClients);
-    getAllTransactions(brokerage.id).then(setTransactions);
-  }, [brokerage?.id]);
+    if (!brokerageId) return;
+    getAllClients(brokerageId).then(setClients);
+    getAllTransactions(brokerageId).then(setTransactions);
+  }, [brokerageId]);
 
   useEffect(() => {
     loadData();
@@ -136,6 +139,13 @@ export default function AgentDashboardPage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
+                  <Badge
+                    variant={
+                      client.status === "active" ? "success" : "warning"
+                    }
+                  >
+                    {client.status === "active" ? "Active" : "Pending"}
+                  </Badge>
                   {client.roles
                     .filter((r) => r !== "agent")
                     .map((role) => (
@@ -162,7 +172,7 @@ export default function AgentDashboardPage() {
       <CreateClientModal
         open={showCreate}
         onClose={() => setShowCreate(false)}
-        brokerageId={brokerage?.id || ""}
+        brokerageId={brokerageId || ""}
         onCreated={loadData}
       />
     </div>
