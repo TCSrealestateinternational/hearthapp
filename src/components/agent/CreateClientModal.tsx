@@ -61,14 +61,17 @@ export function CreateClientModal({
         role === "dual" ? ["buyer", "seller", "dual"] : [role];
 
       // Create Firestore user doc
-      await createUser({
+      const userData: Parameters<typeof createUser>[0] = {
         id: cred.user.uid,
         brokerageId,
         email,
         displayName,
-        phone: phone || undefined,
         roles,
-      } as Parameters<typeof createUser>[0]);
+      };
+      if (phone) {
+        (userData as Record<string, unknown>).phone = phone;
+      }
+      await createUser(userData);
 
       // Create transactions
       if (role === "dual" || role === "buyer") {

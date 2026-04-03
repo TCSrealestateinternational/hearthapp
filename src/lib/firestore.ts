@@ -9,7 +9,6 @@ import {
   deleteDoc,
   query,
   where,
-  orderBy,
   onSnapshot,
   serverTimestamp,
   type DocumentData,
@@ -129,12 +128,16 @@ export async function getTransactions(
   brokerageId: string,
   clientId: string
 ): Promise<Transaction[]> {
-  return queryDocuments<Transaction>(
+  const results = await queryDocuments<Transaction>(
     "transactions",
     where("brokerageId", "==", brokerageId),
-    where("clientId", "==", clientId),
-    orderBy("createdAt", "desc")
+    where("clientId", "==", clientId)
   );
+  return results.sort((a, b) => {
+    const da = a.createdAt instanceof Date ? a.createdAt.getTime() : 0;
+    const db2 = b.createdAt instanceof Date ? b.createdAt.getTime() : 0;
+    return db2 - da;
+  });
 }
 
 export async function getTransaction(
@@ -161,11 +164,15 @@ export async function updateTransaction(
 export async function getProperties(
   transactionId: string
 ): Promise<Property[]> {
-  return queryDocuments<Property>(
+  const results = await queryDocuments<Property>(
     "properties",
-    where("transactionId", "==", transactionId),
-    orderBy("createdAt", "desc")
+    where("transactionId", "==", transactionId)
   );
+  return results.sort((a, b) => {
+    const da = a.createdAt instanceof Date ? a.createdAt.getTime() : 0;
+    const db2 = b.createdAt instanceof Date ? b.createdAt.getTime() : 0;
+    return db2 - da;
+  });
 }
 
 export async function createProperty(
@@ -190,11 +197,15 @@ export async function deleteProperty(id: string): Promise<void> {
 export async function getFinanceScenarios(
   transactionId: string
 ): Promise<FinanceScenario[]> {
-  return queryDocuments<FinanceScenario>(
+  const results = await queryDocuments<FinanceScenario>(
     "financeScenarios",
-    where("transactionId", "==", transactionId),
-    orderBy("createdAt", "desc")
+    where("transactionId", "==", transactionId)
   );
+  return results.sort((a, b) => {
+    const da = a.createdAt instanceof Date ? a.createdAt.getTime() : 0;
+    const db2 = b.createdAt instanceof Date ? b.createdAt.getTime() : 0;
+    return db2 - da;
+  });
 }
 
 export async function createFinanceScenario(
@@ -210,11 +221,15 @@ export async function deleteFinanceScenario(id: string): Promise<void> {
 // ── Offers ─────────────────────────────────────────────────────
 
 export async function getOffers(transactionId: string): Promise<Offer[]> {
-  return queryDocuments<Offer>(
+  const results = await queryDocuments<Offer>(
     "offers",
-    where("transactionId", "==", transactionId),
-    orderBy("receivedAt", "desc")
+    where("transactionId", "==", transactionId)
   );
+  return results.sort((a, b) => {
+    const da = a.receivedAt instanceof Date ? a.receivedAt.getTime() : 0;
+    const db2 = b.receivedAt instanceof Date ? b.receivedAt.getTime() : 0;
+    return db2 - da;
+  });
 }
 
 export async function createOffer(
@@ -287,11 +302,15 @@ export async function saveChecklist(
 export async function getEmotionalLogs(
   transactionId: string
 ): Promise<EmotionalLog[]> {
-  return queryDocuments<EmotionalLog>(
+  const results = await queryDocuments<EmotionalLog>(
     "emotionalLogs",
-    where("transactionId", "==", transactionId),
-    orderBy("createdAt", "desc")
+    where("transactionId", "==", transactionId)
   );
+  return results.sort((a, b) => {
+    const da = a.createdAt instanceof Date ? a.createdAt.getTime() : 0;
+    const db2 = b.createdAt instanceof Date ? b.createdAt.getTime() : 0;
+    return db2 - da;
+  });
 }
 
 export async function createEmotionalLog(
@@ -314,13 +333,16 @@ export function subscribeToMessages(
       "transactionId",
       "in",
       [clientId] // We use clientId as a thread key
-    ),
-    orderBy("createdAt", "asc")
+    )
   );
   return onSnapshot(q, (snap) => {
-    const msgs = snap.docs.map(
-      (d) => ({ id: d.id, ...timestampToDate(d.data()) }) as Message
-    );
+    const msgs = snap.docs
+      .map((d) => ({ id: d.id, ...timestampToDate(d.data()) }) as Message)
+      .sort((a, b) => {
+        const da = a.createdAt instanceof Date ? a.createdAt.getTime() : 0;
+        const db2 = b.createdAt instanceof Date ? b.createdAt.getTime() : 0;
+        return da - db2; // ascending for messages
+      });
     callback(msgs);
   });
 }
@@ -329,12 +351,16 @@ export async function getMessages(
   brokerageId: string,
   clientId: string
 ): Promise<Message[]> {
-  return queryDocuments<Message>(
+  const results = await queryDocuments<Message>(
     "messages",
     where("brokerageId", "==", brokerageId),
-    where("senderId", "in", [clientId]),
-    orderBy("createdAt", "asc")
+    where("senderId", "in", [clientId])
   );
+  return results.sort((a, b) => {
+    const da = a.createdAt instanceof Date ? a.createdAt.getTime() : 0;
+    const db2 = b.createdAt instanceof Date ? b.createdAt.getTime() : 0;
+    return da - db2; // ascending for messages
+  });
 }
 
 export async function sendMessage(
@@ -359,8 +385,12 @@ export async function getDocuments(
   if (transactionId) {
     constraints.push(where("transactionId", "==", transactionId));
   }
-  constraints.push(orderBy("createdAt", "desc"));
-  return queryDocuments<DocType>("documents", ...constraints);
+  const results = await queryDocuments<DocType>("documents", ...constraints);
+  return results.sort((a, b) => {
+    const da = a.createdAt instanceof Date ? a.createdAt.getTime() : 0;
+    const db2 = b.createdAt instanceof Date ? b.createdAt.getTime() : 0;
+    return db2 - da;
+  });
 }
 
 export async function createDocumentRecord(
@@ -372,11 +402,13 @@ export async function createDocumentRecord(
 // ── Agent: All clients ─────────────────────────────────────────
 
 export async function getAllClients(brokerageId: string): Promise<User[]> {
-  return queryDocuments<User>(
+  const users = await queryDocuments<User>(
     "users",
-    where("brokerageId", "==", brokerageId),
-    orderBy("displayName", "asc")
+    where("brokerageId", "==", brokerageId)
   );
+  return users
+    .filter((u) => !u.roles.includes("agent"))
+    .sort((a, b) => a.displayName.localeCompare(b.displayName));
 }
 
 export async function getAllTransactions(
@@ -384,7 +416,6 @@ export async function getAllTransactions(
 ): Promise<Transaction[]> {
   return queryDocuments<Transaction>(
     "transactions",
-    where("brokerageId", "==", brokerageId),
-    orderBy("createdAt", "desc")
+    where("brokerageId", "==", brokerageId)
   );
 }
