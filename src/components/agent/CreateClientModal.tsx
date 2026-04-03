@@ -1,6 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  signOut,
+} from "firebase/auth";
+import { secondaryAuth } from "@/lib/firebase-secondary";
+import { createUser, createTransaction } from "@/lib/firestore";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import type { UserRole } from "@/types";
@@ -10,6 +17,16 @@ interface CreateClientModalProps {
   onClose: () => void;
   brokerageId: string;
   onCreated: () => void;
+}
+
+function generateTempPassword(): string {
+  const chars =
+    "ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$";
+  let pw = "";
+  for (let i = 0; i < 12; i++) {
+    pw += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return pw;
 }
 
 export function CreateClientModal({
@@ -35,37 +52,66 @@ export function CreateClientModal({
     setError("");
     setLoading(true);
 
+    const tempPassword = password || generateTempPassword();
+
+    if (tempPassword.length < 6) {
+      setError("Password must be at least 6 characters.");
+      setLoading(false);
+      return;
+    }
+
     try {
+      // Use secondary auth instance so the agent stays signed in
+      const cred = await createUserWithEmailAndPassword(
+        secondaryAuth,
+        email,
+        tempPassword
+      );
+
+      await updateProfile(cred.user, { displayName });
+
       const roles: UserRole[] =
         role === "dual" ? ["buyer", "seller", "dual"] : [role];
 
-      const res = await fetch("/api/clients", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          displayName,
-          phone,
-          roles,
+      // Create Firestore user doc
+      await createUser({
+        id: cred.user.uid,
+        brokerageId,
+        email,
+        displayName,
+        phone: phone || undefined,
+        roles,
+      } as Parameters<typeof createUser>[0]);
+
+      // Create transactions
+      if (role === "dual" || role === "buyer") {
+        await createTransaction({
           brokerageId,
-          password: password || undefined,
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || "Failed to create client");
-        return;
+          clientId: cred.user.uid,
+          type: "buying",
+          status: "active",
+          label: `${displayName} - Buying`,
+        });
+      }
+      if (role === "dual" || role === "seller") {
+        await createTransaction({
+          brokerageId,
+          clientId: cred.user.uid,
+          type: "selling",
+          status: "active",
+          label: `${displayName} - Selling`,
+        });
       }
 
-      setResult({
-        email: data.email,
-        tempPassword: password || data.tempPassword,
-      });
+      // Sign out of secondary auth instance
+      await signOut(secondaryAuth);
+
+      setResult({ email, tempPassword });
       onCreated();
-    } catch {
-      setError("Something went wrong. Please try again.");
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error ? err.message : "Failed to create client";
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -179,7 +225,7 @@ export function CreateClientModal({
 
           <div>
             <label className="block text-sm font-medium text-text-primary mb-1">
-              Temporary Password (optional)
+              Temporary Password
             </label>
             <input
               type="text"
@@ -189,7 +235,7 @@ export function CreateClientModal({
               className="w-full px-3 py-2 rounded-lg border border-border bg-surface text-text-primary"
             />
             <p className="text-xs text-text-secondary mt-1">
-              Must be at least 6 characters. Leave blank to auto-generate.
+              Min 6 characters. Leave blank to auto-generate.
             </p>
           </div>
 

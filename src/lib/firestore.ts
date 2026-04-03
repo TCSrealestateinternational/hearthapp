@@ -4,6 +4,7 @@ import {
   getDoc,
   getDocs,
   addDoc,
+  setDoc,
   updateDoc,
   deleteDoc,
   query,
@@ -104,12 +105,15 @@ export async function getUser(id: string): Promise<User | null> {
 }
 
 export async function createUser(
-  data: Omit<User, "id" | "createdAt" | "lastLoginAt">
+  data: Omit<User, "createdAt" | "lastLoginAt"> & { id: string }
 ): Promise<string> {
-  return createDocument("users", {
-    ...data,
+  const { id, ...rest } = data;
+  await setDoc(doc(db, "users", id), {
+    ...rest,
+    createdAt: serverTimestamp(),
     lastLoginAt: serverTimestamp(),
   });
+  return id;
 }
 
 export async function updateUser(
