@@ -27,8 +27,15 @@ export default function LoginPage() {
       } else {
         router.push("/dashboard");
       }
-    } catch {
-      setError("Invalid email or password. Please try again.");
+    } catch (err: unknown) {
+      const code = (err as { code?: string })?.code || "";
+      if (code === "auth/user-not-found" || code === "auth/wrong-password" || code === "auth/invalid-credential") {
+        setError("Invalid email or password. Please try again.");
+      } else if (code === "auth/invalid-api-key") {
+        setError("App configuration error. Please contact support.");
+      } else {
+        setError((err as Error)?.message || "Login failed. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
