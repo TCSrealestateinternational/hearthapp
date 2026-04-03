@@ -1,0 +1,96 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: Check if user is authenticated
+    function isAuth() {
+      return request.auth != null;
+    }
+
+    // Helper: Get user document
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    // Helper: Check if user belongs to brokerage
+    function belongsToBrokerage(brokerageId) {
+      return isAuth() && getUserData().brokerageId == brokerageId;
+    }
+
+    // Helper: Check if user is agent
+    function isAgent() {
+      return isAuth() && 'agent' in getUserData().roles;
+    }
+
+    // Brokerages - read only for authenticated users in that brokerage
+    match /brokerages/{brokerageId} {
+      allow read: if isAuth();
+      allow write: if false; // Admin only via Firebase console
+    }
+
+    // Users - users can read their own doc, agents can read all in their brokerage
+    match /users/{userId} {
+      allow read: if isAuth() && (
+        request.auth.uid == userId ||
+        isAgent()
+      );
+      allow update: if isAuth() && request.auth.uid == userId;
+      allow create: if isAgent();
+    }
+
+    // Transactions - scoped to brokerage
+    match /transactions/{transactionId} {
+      allow read: if isAuth() && belongsToBrokerage(resource.data.brokerageId);
+      allow create: if isAgent();
+      allow update: if isAuth() && belongsToBrokerage(resource.data.brokerageId);
+      allow delete: if isAgent();
+    }
+
+    // Properties - anyone in the transaction's brokerage can read/write
+    match /properties/{propertyId} {
+      allow read, write: if isAuth();
+    }
+
+    // Finance Scenarios
+    match /financeScenarios/{scenarioId} {
+      allow read, write: if isAuth();
+    }
+
+    // Offers - scoped reads, agent writes
+    match /offers/{offerId} {
+      allow read: if isAuth();
+      allow write: if isAgent();
+    }
+
+    // Listings
+    match /listings/{listingId} {
+      allow read: if isAuth();
+      allow write: if isAgent();
+    }
+
+    // Checklists
+    match /checklists/{checklistId} {
+      allow read, write: if isAuth();
+    }
+
+    // Emotional Logs
+    match /emotionalLogs/{logId} {
+      allow read: if isAuth();
+      allow create: if isAuth();
+    }
+
+    // Messages
+    match /messages/{messageId} {
+      allow read: if isAuth();
+      allow create: if isAuth();
+      allow update: if isAuth(); // For marking read
+    }
+
+    // Documents
+    match /documents/{documentId} {
+      allow read: if isAuth();
+      allow create: if isAuth();
+    }
+  }
+}

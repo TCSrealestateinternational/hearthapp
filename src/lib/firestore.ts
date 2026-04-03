@@ -1,0 +1,386 @@
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  query,
+  where,
+  orderBy,
+  onSnapshot,
+  serverTimestamp,
+  type DocumentData,
+  type QueryConstraint,
+  type Unsubscribe,
+} from "firebase/firestore";
+import { db } from "./firebase";
+import type {
+  Brokerage,
+  User,
+  Transaction,
+  Property,
+  FinanceScenario,
+  Offer,
+  Listing,
+  ChecklistState,
+  EmotionalLog,
+  Message,
+  Document as DocType,
+} from "@/types";
+
+// ── Generic helpers ────────────────────────────────────────────
+
+function timestampToDate(data: DocumentData): DocumentData {
+  const result = { ...data };
+  for (const [key, value] of Object.entries(result)) {
+    if (value && typeof value === "object" && "toDate" in value) {
+      result[key] = value.toDate();
+    }
+  }
+  return result;
+}
+
+async function getDocument<T>(path: string, id: string): Promise<T | null> {
+  const snap = await getDoc(doc(db, path, id));
+  if (!snap.exists()) return null;
+  return { id: snap.id, ...timestampToDate(snap.data()) } as T;
+}
+
+async function queryDocuments<T>(
+  path: string,
+  ...constraints: QueryConstraint[]
+): Promise<T[]> {
+  const q = query(collection(db, path), ...constraints);
+  const snap = await getDocs(q);
+  return snap.docs.map(
+    (d) => ({ id: d.id, ...timestampToDate(d.data()) }) as T
+  );
+}
+
+async function createDocument(
+  path: string,
+  data: Record<string, unknown>
+): Promise<string> {
+  const ref = await addDoc(collection(db, path), {
+    ...data,
+    createdAt: serverTimestamp(),
+  });
+  return ref.id;
+}
+
+async function updateDocument(
+  path: string,
+  id: string,
+  data: Record<string, unknown>
+): Promise<void> {
+  await updateDoc(doc(db, path, id), {
+    ...data,
+    updatedAt: serverTimestamp(),
+  });
+}
+
+async function removeDocument(path: string, id: string): Promise<void> {
+  await deleteDoc(doc(db, path, id));
+}
+
+// ── Brokerage ──────────────────────────────────────────────────
+
+export async function getBrokerageBySlug(
+  slug: string
+): Promise<Brokerage | null> {
+  const results = await queryDocuments<Brokerage>(
+    "brokerages",
+    where("slug", "==", slug)
+  );
+  return results[0] ?? null;
+}
+
+// ── Users ──────────────────────────────────────────────────────
+
+export async function getUser(id: string): Promise<User | null> {
+  return getDocument<User>("users", id);
+}
+
+export async function createUser(
+  data: Omit<User, "id" | "createdAt" | "lastLoginAt">
+): Promise<string> {
+  return createDocument("users", {
+    ...data,
+    lastLoginAt: serverTimestamp(),
+  });
+}
+
+export async function updateUser(
+  id: string,
+  data: Partial<User>
+): Promise<void> {
+  return updateDocument("users", id, data as Record<string, unknown>);
+}
+
+// ── Transactions ───────────────────────────────────────────────
+
+export async function getTransactions(
+  brokerageId: string,
+  clientId: string
+): Promise<Transaction[]> {
+  return queryDocuments<Transaction>(
+    "transactions",
+    where("brokerageId", "==", brokerageId),
+    where("clientId", "==", clientId),
+    orderBy("createdAt", "desc")
+  );
+}
+
+export async function getTransaction(
+  id: string
+): Promise<Transaction | null> {
+  return getDocument<Transaction>("transactions", id);
+}
+
+export async function createTransaction(
+  data: Omit<Transaction, "id" | "createdAt" | "updatedAt">
+): Promise<string> {
+  return createDocument("transactions", data as Record<string, unknown>);
+}
+
+export async function updateTransaction(
+  id: string,
+  data: Partial<Transaction>
+): Promise<void> {
+  return updateDocument("transactions", id, data as Record<string, unknown>);
+}
+
+// ── Properties ─────────────────────────────────────────────────
+
+export async function getProperties(
+  transactionId: string
+): Promise<Property[]> {
+  return queryDocuments<Property>(
+    "properties",
+    where("transactionId", "==", transactionId),
+    orderBy("createdAt", "desc")
+  );
+}
+
+export async function createProperty(
+  data: Omit<Property, "id" | "createdAt" | "updatedAt">
+): Promise<string> {
+  return createDocument("properties", data as Record<string, unknown>);
+}
+
+export async function updateProperty(
+  id: string,
+  data: Partial<Property>
+): Promise<void> {
+  return updateDocument("properties", id, data as Record<string, unknown>);
+}
+
+export async function deleteProperty(id: string): Promise<void> {
+  return removeDocument("properties", id);
+}
+
+// ── Finance Scenarios ──────────────────────────────────────────
+
+export async function getFinanceScenarios(
+  transactionId: string
+): Promise<FinanceScenario[]> {
+  return queryDocuments<FinanceScenario>(
+    "financeScenarios",
+    where("transactionId", "==", transactionId),
+    orderBy("createdAt", "desc")
+  );
+}
+
+export async function createFinanceScenario(
+  data: Omit<FinanceScenario, "id" | "createdAt">
+): Promise<string> {
+  return createDocument("financeScenarios", data as Record<string, unknown>);
+}
+
+export async function deleteFinanceScenario(id: string): Promise<void> {
+  return removeDocument("financeScenarios", id);
+}
+
+// ── Offers ─────────────────────────────────────────────────────
+
+export async function getOffers(transactionId: string): Promise<Offer[]> {
+  return queryDocuments<Offer>(
+    "offers",
+    where("transactionId", "==", transactionId),
+    orderBy("receivedAt", "desc")
+  );
+}
+
+export async function createOffer(
+  data: Omit<Offer, "id">
+): Promise<string> {
+  return createDocument("offers", data as Record<string, unknown>);
+}
+
+export async function updateOffer(
+  id: string,
+  data: Partial<Offer>
+): Promise<void> {
+  return updateDocument("offers", id, data as Record<string, unknown>);
+}
+
+// ── Listings ───────────────────────────────────────────────────
+
+export async function getListing(
+  transactionId: string
+): Promise<Listing | null> {
+  const results = await queryDocuments<Listing>(
+    "listings",
+    where("transactionId", "==", transactionId)
+  );
+  return results[0] ?? null;
+}
+
+export async function createListing(
+  data: Omit<Listing, "id" | "createdAt" | "updatedAt">
+): Promise<string> {
+  return createDocument("listings", data as Record<string, unknown>);
+}
+
+export async function updateListing(
+  id: string,
+  data: Partial<Listing>
+): Promise<void> {
+  return updateDocument("listings", id, data as Record<string, unknown>);
+}
+
+// ── Checklists ─────────────────────────────────────────────────
+
+export async function getChecklist(
+  transactionId: string
+): Promise<ChecklistState | null> {
+  return getDocument<ChecklistState>("checklists", transactionId);
+}
+
+export async function saveChecklist(
+  transactionId: string,
+  data: Partial<ChecklistState>
+): Promise<void> {
+  const existing = await getChecklist(transactionId);
+  if (existing) {
+    return updateDocument(
+      "checklists",
+      transactionId,
+      data as Record<string, unknown>
+    );
+  }
+  await addDoc(collection(db, "checklists"), {
+    transactionId,
+    ...data,
+    updatedAt: serverTimestamp(),
+  });
+}
+
+// ── Emotional Logs ─────────────────────────────────────────────
+
+export async function getEmotionalLogs(
+  transactionId: string
+): Promise<EmotionalLog[]> {
+  return queryDocuments<EmotionalLog>(
+    "emotionalLogs",
+    where("transactionId", "==", transactionId),
+    orderBy("createdAt", "desc")
+  );
+}
+
+export async function createEmotionalLog(
+  data: Omit<EmotionalLog, "id" | "createdAt">
+): Promise<string> {
+  return createDocument("emotionalLogs", data as Record<string, unknown>);
+}
+
+// ── Messages ───────────────────────────────────────────────────
+
+export function subscribeToMessages(
+  brokerageId: string,
+  clientId: string,
+  callback: (messages: Message[]) => void
+): Unsubscribe {
+  const q = query(
+    collection(db, "messages"),
+    where("brokerageId", "==", brokerageId),
+    where(
+      "transactionId",
+      "in",
+      [clientId] // We use clientId as a thread key
+    ),
+    orderBy("createdAt", "asc")
+  );
+  return onSnapshot(q, (snap) => {
+    const msgs = snap.docs.map(
+      (d) => ({ id: d.id, ...timestampToDate(d.data()) }) as Message
+    );
+    callback(msgs);
+  });
+}
+
+export async function getMessages(
+  brokerageId: string,
+  clientId: string
+): Promise<Message[]> {
+  return queryDocuments<Message>(
+    "messages",
+    where("brokerageId", "==", brokerageId),
+    where("senderId", "in", [clientId]),
+    orderBy("createdAt", "asc")
+  );
+}
+
+export async function sendMessage(
+  data: Omit<Message, "id" | "createdAt">
+): Promise<string> {
+  return createDocument("messages", data as Record<string, unknown>);
+}
+
+export async function markMessageRead(id: string): Promise<void> {
+  return updateDocument("messages", id, { readAt: serverTimestamp() });
+}
+
+// ── Documents ──────────────────────────────────────────────────
+
+export async function getDocuments(
+  brokerageId: string,
+  transactionId?: string
+): Promise<DocType[]> {
+  const constraints: QueryConstraint[] = [
+    where("brokerageId", "==", brokerageId),
+  ];
+  if (transactionId) {
+    constraints.push(where("transactionId", "==", transactionId));
+  }
+  constraints.push(orderBy("createdAt", "desc"));
+  return queryDocuments<DocType>("documents", ...constraints);
+}
+
+export async function createDocumentRecord(
+  data: Omit<DocType, "id" | "createdAt">
+): Promise<string> {
+  return createDocument("documents", data as Record<string, unknown>);
+}
+
+// ── Agent: All clients ─────────────────────────────────────────
+
+export async function getAllClients(brokerageId: string): Promise<User[]> {
+  return queryDocuments<User>(
+    "users",
+    where("brokerageId", "==", brokerageId),
+    orderBy("displayName", "asc")
+  );
+}
+
+export async function getAllTransactions(
+  brokerageId: string
+): Promise<Transaction[]> {
+  return queryDocuments<Transaction>(
+    "transactions",
+    where("brokerageId", "==", brokerageId),
+    orderBy("createdAt", "desc")
+  );
+}

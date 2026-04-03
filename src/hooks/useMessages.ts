@@ -1,0 +1,92 @@
+"use client";
+
+import { useEffect, useState, useCallback } from "react";
+import {
+  collection,
+  query,
+  where,
+  orderBy,
+  onSnapshot,
+} from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { sendMessage as sendMsg, markMessageRead } from "@/lib/firestore";
+import type { Message } from "@/types";
+
+/**
+ * Messages are queried by a threadId field that equals the clientId.
+ * Both agent and client messages in a thread share the same threadId.
+ */
+export function useMessages(
+  brokerageId: string,
+  clientId: string,
+  currentUserId: string
+) {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!brokerageId || !clientId) {
+      setLoading(false);
+      return;
+    }
+
+    const q = query(
+      collection(db, "messages"),
+      where("brokerageId", "==", brokerageId),
+      where("threadId", "==", clientId),
+      orderBy("createdAt", "asc")
+    );
+
+    const unsubscribe = onSnapshot(
+      q,
+      (snap) => {
+        const msgs: Message[] = snap.docs.map((d) => {
+          const data = d.data();
+          return {
+            id: d.id,
+            ...data,
+            createdAt:
+              data.createdAt && "toDate" in data.createdAt
+                ? data.createdAt.toDate()
+                : new Date(),
+            readAt:
+              data.readAt && "toDate" in data.readAt
+                ? data.readAt.toDate()
+                : undefined,
+          } as Message;
+        });
+        setMessages(msgs);
+        setLoading(false);
+      },
+      () => setLoading(false)
+    );
+
+    return unsubscribe;
+  }, [brokerageId, clientId]);
+
+  const send = useCallback(
+    async (text: string, fileUrl?: string, fileName?: string) => {
+      if (!brokerageId || !currentUserId) return;
+      await sendMsg({
+        brokerageId,
+        senderId: currentUserId,
+        senderName: "",
+        senderRole: "client",
+        text,
+        fileUrl,
+        fileName,
+      });
+    },
+    [brokerageId, currentUserId]
+  );
+
+  const markRead = useCallback(async (messageId: string) => {
+    await markMessageRead(messageId);
+  }, []);
+
+  const unreadCount = messages.filter(
+    (m) => m.senderId !== currentUserId && !m.readAt
+  ).length;
+
+  return { messages, loading, send, markRead, unreadCount };
+}
