@@ -3,7 +3,8 @@
 import type { Property } from "@/types";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
-import { Star, MapPin } from "lucide-react";
+import { AddressLink } from "@/components/shared/AddressLink";
+import { Star } from "lucide-react";
 
 interface PropertyCardProps {
   property: Property;
@@ -42,13 +43,14 @@ export function PropertyCard({ property, onClick }: PropertyCardProps) {
           <p className="font-semibold text-text-primary text-lg">
             ${property.price.toLocaleString()}
           </p>
-          <div className="flex items-center gap-1 text-sm text-text-secondary mt-0.5">
-            <MapPin size={14} />
-            <span className="truncate">{property.address}</span>
+          <div className="text-sm text-text-secondary mt-0.5">
+            <AddressLink
+              address={property.address}
+              city={property.city}
+              state={property.state}
+              zip={property.zip}
+            />
           </div>
-          <p className="text-sm text-text-secondary">
-            {property.city}, {property.state} {property.zip}
-          </p>
         </div>
         <Badge variant={statusVariant[property.status] || "default"}>
           {property.status.replace("-", " ")}

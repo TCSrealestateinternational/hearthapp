@@ -51,7 +51,7 @@ export function OfferNetCalculator({ offers, listPrice }: OfferNetCalcProps) {
         <CardHeader>
           <CardTitle>Seller Costs</CardTitle>
         </CardHeader>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-text-primary mb-1">
               Commission (%)

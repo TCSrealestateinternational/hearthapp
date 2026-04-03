@@ -1,6 +1,7 @@
 "use client";
 
 import type { Property } from "@/types";
+import { AddressLink } from "@/components/shared/AddressLink";
 import { Star } from "lucide-react";
 
 interface PropertyCompareProps {
@@ -87,7 +88,7 @@ export function PropertyCompare({ properties }: PropertyCompareProps) {
     ];
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
       <table className="w-full text-sm">
         <thead>
           <tr>
@@ -99,7 +100,14 @@ export function PropertyCompare({ properties }: PropertyCompareProps) {
                 key={p.id}
                 className="text-left py-2 px-3 text-text-primary font-semibold min-w-[180px]"
               >
-                <div className="truncate">{p.address}</div>
+                <AddressLink
+                  address={p.address}
+                  city={p.city}
+                  state={p.state}
+                  zip={p.zip}
+                  compact
+                  className="text-text-primary font-semibold"
+                />
               </th>
             ))}
           </tr>

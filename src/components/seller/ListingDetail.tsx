@@ -3,7 +3,8 @@
 import type { Listing } from "@/types";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Calendar, MapPin } from "lucide-react";
+import { AddressLink } from "@/components/shared/AddressLink";
+import { Calendar } from "lucide-react";
 
 interface ListingDetailProps {
   listing: Listing;
@@ -53,12 +54,13 @@ export function ListingDetail({ listing }: ListingDetailProps) {
                 {listing.status.replace("-", " ")}
               </Badge>
             </div>
-            <div className="flex items-center gap-1 text-sm text-text-secondary">
-              <MapPin size={14} />
-              <span>
-                {listing.address}, {listing.city}, {listing.state}{" "}
-                {listing.zip}
-              </span>
+            <div className="text-sm text-text-secondary">
+              <AddressLink
+                address={listing.address}
+                city={listing.city}
+                state={listing.state}
+                zip={listing.zip}
+              />
             </div>
           </div>
         </CardHeader>

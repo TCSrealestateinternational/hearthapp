@@ -167,7 +167,7 @@ export function FinanceCalculator({
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <InputField
               label={`Down Payment (${downPaymentPct}%)`}
               type="number"
@@ -190,7 +190,7 @@ export function FinanceCalculator({
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-text-primary mb-1">
                 Loan Type
@@ -240,7 +240,7 @@ export function FinanceCalculator({
 
           {expanded && (
             <div className="space-y-4 pt-2 border-t border-border">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <InputField
                   label="Property Tax Rate"
                   type="number"
@@ -257,7 +257,7 @@ export function FinanceCalculator({
                   prefix="$"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <InputField
                   label="HOA (monthly)"
                   type="number"
@@ -274,7 +274,7 @@ export function FinanceCalculator({
                   suffix="%"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <InputField
                   label="Seller Concessions"
                   type="number"
