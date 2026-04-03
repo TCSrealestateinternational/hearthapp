@@ -98,8 +98,12 @@ export function CreateClientModal({
       await signOut(secondaryAuth);
 
       // Send password reset email (acts as the invite)
-      // Using the primary auth instance since it just needs the email
-      await sendPasswordResetEmail(auth, email);
+      // continueUrl sends them to the login page after setting their password
+      const appUrl = typeof window !== "undefined" ? window.location.origin : "";
+      await sendPasswordResetEmail(auth, email, {
+        url: `${appUrl}/login`,
+        handleCodeInApp: false,
+      });
 
       setSentTo(email);
       setSuccess(true);
