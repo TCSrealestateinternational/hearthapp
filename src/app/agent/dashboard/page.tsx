@@ -1,14 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useBrokerage } from "@/hooks/useBrokerage";
 import { getAllClients, getAllTransactions } from "@/lib/firestore";
 import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
+import { CreateClientModal } from "@/components/agent/CreateClientModal";
 import Link from "next/link";
 import type { User, Transaction } from "@/types";
-import { Search, Users, ArrowRight } from "lucide-react";
+import { Search, Users, ArrowRight, Plus } from "lucide-react";
 
 export default function AgentDashboardPage() {
   const { user } = useAuth();
@@ -16,12 +18,17 @@ export default function AgentDashboardPage() {
   const [clients, setClients] = useState<User[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [search, setSearch] = useState("");
+  const [showCreate, setShowCreate] = useState(false);
 
-  useEffect(() => {
+  const loadData = useCallback(() => {
     if (!brokerage?.id) return;
     getAllClients(brokerage.id).then(setClients);
     getAllTransactions(brokerage.id).then(setTransactions);
   }, [brokerage?.id]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   const filteredClients = clients.filter((c) =>
     search
@@ -72,10 +79,20 @@ export default function AgentDashboardPage() {
       {/* Client list */}
       <Card>
         <CardHeader>
-          <CardTitle>
-            <Users size={20} className="inline mr-2" />
-            Clients
-          </CardTitle>
+          <div className="flex items-center gap-3">
+            <CardTitle>
+              <Users size={20} className="inline mr-2" />
+              Clients
+            </CardTitle>
+            <Button
+              variant="cta"
+              size="sm"
+              onClick={() => setShowCreate(true)}
+            >
+              <Plus size={16} />
+              Add Client
+            </Button>
+          </div>
           <div className="relative">
             <Search
               size={16}
@@ -141,6 +158,13 @@ export default function AgentDashboardPage() {
           )}
         </div>
       </Card>
+
+      <CreateClientModal
+        open={showCreate}
+        onClose={() => setShowCreate(false)}
+        brokerageId={brokerage?.id || ""}
+        onCreated={loadData}
+      />
     </div>
   );
 }
