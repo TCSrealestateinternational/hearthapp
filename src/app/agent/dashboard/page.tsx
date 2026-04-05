@@ -82,32 +82,34 @@ export default function AgentDashboardPage() {
       {/* Client list */}
       <Card>
         <CardHeader>
-          <div className="flex items-center gap-3">
-            <CardTitle>
-              <Users size={20} className="inline mr-2" />
-              Clients
-            </CardTitle>
-            <Button
-              variant="cta"
-              size="sm"
-              onClick={() => setShowCreate(true)}
-            >
-              <Plus size={16} />
-              Add Client
-            </Button>
-          </div>
-          <div className="relative">
-            <Search
-              size={16}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary"
-            />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search clients..."
-              className="pl-9 pr-3 py-1.5 rounded-lg border border-border bg-background text-text-primary text-sm w-48"
-            />
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+            <div className="flex items-center gap-3">
+              <CardTitle>
+                <Users size={20} className="inline mr-2" />
+                Clients
+              </CardTitle>
+              <Button
+                variant="cta"
+                size="sm"
+                onClick={() => setShowCreate(true)}
+              >
+                <Plus size={16} />
+                Add Client
+              </Button>
+            </div>
+            <div className="relative sm:ml-auto">
+              <Search
+                size={16}
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary"
+              />
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search clients..."
+                className="pl-9 pr-3 py-1.5 rounded-lg border border-border bg-background text-text-primary text-sm w-full sm:w-48"
+              />
+            </div>
           </div>
         </CardHeader>
 
@@ -120,25 +122,39 @@ export default function AgentDashboardPage() {
               <Link
                 key={client.id}
                 href={`/agent/clients/${client.id}`}
-                className="flex items-center justify-between p-3 rounded-lg hover:bg-primary-light/50 transition-colors"
+                className="flex items-center gap-3 p-3 rounded-lg hover:bg-primary-light/50 transition-colors"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center text-primary font-semibold text-sm">
-                    {client.displayName
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")}
-                  </div>
-                  <div>
-                    <p className="font-medium text-text-primary">
-                      {client.displayName}
-                    </p>
-                    <p className="text-xs text-text-secondary">
-                      {client.email}
-                    </p>
+                <div className="w-10 h-10 shrink-0 rounded-full bg-primary-light flex items-center justify-center text-primary font-semibold text-sm">
+                  {client.displayName
+                    .split(" ")
+                    .map((n) => n[0])
+                    .join("")}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-text-primary truncate">
+                    {client.displayName}
+                  </p>
+                  <p className="text-xs text-text-secondary truncate">
+                    {client.email}
+                  </p>
+                  <div className="flex items-center gap-1.5 mt-1 sm:hidden">
+                    <Badge
+                      variant={
+                        client.status === "active" ? "success" : "warning"
+                      }
+                    >
+                      {client.status === "active" ? "Active" : "Pending"}
+                    </Badge>
+                    {client.roles
+                      .filter((r) => r !== "agent")
+                      .map((role) => (
+                        <Badge key={role} variant="primary">
+                          {role}
+                        </Badge>
+                      ))}
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="hidden sm:flex items-center gap-2 shrink-0">
                   <Badge
                     variant={
                       client.status === "active" ? "success" : "warning"
@@ -156,8 +172,8 @@ export default function AgentDashboardPage() {
                   <span className="text-xs text-text-secondary">
                     {clientTxs.length} tx
                   </span>
-                  <ArrowRight size={16} className="text-text-secondary" />
                 </div>
+                <ArrowRight size={16} className="text-text-secondary shrink-0" />
               </Link>
             );
           })}

@@ -40,7 +40,7 @@ function AgentShell({ children }: { children: ReactNode }) {
             </button>
           </div>
         </header>
-        <main className="flex-1 p-4 sm:p-6">{children}</main>
+        <main className="flex-1 p-4 sm:p-6 pb-20 md:pb-6">{children}</main>
       </div>
     </div>
   );
