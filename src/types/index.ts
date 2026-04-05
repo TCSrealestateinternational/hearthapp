@@ -262,6 +262,43 @@ export interface Thread {
   unreadCount: number;
 }
 
+// ── Subscription ──────────────────────────────────────────────
+
+export type SubscriptionPlan = "hearth_only" | "tracker_only" | "full_platform" | "white_label";
+export type SubscriptionStatus = "active" | "trialing" | "suspended" | "cancelled";
+
+export interface SubscriptionFeatures {
+  reTracker: boolean;
+  hearthPortal: boolean;
+  whiteLabel: boolean;
+  maxClients: number;
+}
+
+export interface Subscription {
+  plan: SubscriptionPlan;
+  status: SubscriptionStatus;
+  features: SubscriptionFeatures;
+  trialEndsAt: Date | null;
+  billingCycleEnd: Date | null;
+  whiteLabel?: {
+    brokerageSlug: string;
+    customDomain?: string;
+  };
+}
+
+// ── Milestone (subcollection of /transactions/{id}/milestones) ──
+
+export interface Milestone {
+  id: string;
+  label: string;
+  stage: string;
+  completed: boolean;
+  completedAt: Date | null;
+  completedBy: string | null;
+  clientVisible: boolean;
+  notifyClient: boolean;
+}
+
 // ── Document ───────────────────────────────────────────────────
 
 export interface Document {

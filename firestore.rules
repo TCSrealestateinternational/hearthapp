@@ -3,91 +3,145 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Helper: Check if user is authenticated
+    // ── Helper Functions ──
     function isAuth() {
       return request.auth != null;
     }
 
-    // Helper: Get user document
     function getUserData() {
       return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
     }
 
-    // Helper: Check if user belongs to brokerage
-    function belongsToBrokerage(brokerageId) {
-      return isAuth() && getUserData().brokerageId == brokerageId;
-    }
-
-    // Helper: Check if user is agent
     function isAgent() {
       return isAuth() && 'agent' in getUserData().roles;
     }
 
-    // Brokerages - read only for authenticated users in that brokerage
+    function belongsToBrokerage(brokerageId) {
+      return isAuth() && getUserData().brokerageId == brokerageId;
+    }
+
+    function isOwner(userId) {
+      return isAuth() && request.auth.uid == userId;
+    }
+
+    // ── Brokerages ──
     match /brokerages/{brokerageId} {
       allow read: if isAuth();
       allow write: if false; // Admin only via Firebase console
     }
 
-    // Users - users can read their own doc, agents can read all in their brokerage
+    // ── Users (shared between RE Tracker & Hearth) ──
     match /users/{userId} {
       allow read: if isAuth() && (
         request.auth.uid == userId ||
         isAgent()
       );
       allow update: if isAuth() && request.auth.uid == userId;
-      allow create: if isAgent();
+      allow create: if isAuth();
     }
 
-    // Transactions - scoped to brokerage
-    match /transactions/{transactionId} {
-      allow read: if isAuth() && belongsToBrokerage(resource.data.brokerageId);
+    // ── Transactions (bridge between RE Tracker deals & Hearth views) ──
+    match /transactions/{txId} {
+      allow read: if isAuth() && (
+        isAgent() ||
+        resource.data.clientId == request.auth.uid
+      );
       allow create: if isAgent();
-      allow update: if isAuth() && belongsToBrokerage(resource.data.brokerageId);
+      allow update: if isAgent();
       allow delete: if isAgent();
+
+      // Milestones subcollection
+      match /milestones/{mId} {
+        allow read: if isAuth() && (
+          isAgent() ||
+          (resource.data.clientVisible == true &&
+           get(/databases/$(database)/documents/transactions/$(txId)).data.clientId == request.auth.uid)
+        );
+        allow write: if isAgent();
+      }
+
+      // Cost estimates subcollection
+      match /costEstimate/{id} {
+        allow read: if isAuth();
+        allow write: if isAgent();
+      }
+
+      // Decision log subcollection
+      match /decisionLog/{id} {
+        allow read: if isAuth();
+        allow write: if isAgent();
+      }
     }
 
-    // Properties - anyone in the transaction's brokerage can read/write
+    // ── RE Tracker agent-only collections ──
+    match /timeEntries/{docId} {
+      allow read, write: if isAuth() && request.auth.uid == resource.data.userId;
+      allow create: if isAuth() && request.auth.uid == request.resource.data.userId;
+    }
+
+    match /clients/{docId} {
+      allow read: if isAuth() && request.auth.uid == resource.data.userId;
+      allow write: if isAuth() && request.auth.uid == resource.data.userId;
+      allow create: if isAuth() && request.auth.uid == request.resource.data.userId;
+    }
+
+    match /deals/{docId} {
+      allow read: if isAuth() && request.auth.uid == resource.data.userId;
+      allow write: if isAuth() && request.auth.uid == resource.data.userId;
+      allow create: if isAuth() && request.auth.uid == request.resource.data.userId;
+    }
+
+    match /checklists/{docId} {
+      allow read: if isAuth() && request.auth.uid == resource.data.userId;
+      allow write: if isAuth() && request.auth.uid == resource.data.userId;
+      allow create: if isAuth() && request.auth.uid == request.resource.data.userId;
+    }
+
+    match /dailyCheckIns/{docId} {
+      allow read, write: if isAuth() && request.auth.uid == resource.data.userId;
+      allow create: if isAuth() && request.auth.uid == request.resource.data.userId;
+    }
+
+    match /incomeGoals/{docId} {
+      allow read, write: if isAuth() && request.auth.uid == resource.data.userId;
+      allow create: if isAuth() && request.auth.uid == request.resource.data.userId;
+    }
+
+    match /referrals/{docId} {
+      allow read, write: if isAuth() && request.auth.uid == resource.data.userId;
+      allow create: if isAuth() && request.auth.uid == request.resource.data.userId;
+    }
+
+    // ── Hearth collections ──
     match /properties/{propertyId} {
       allow read, write: if isAuth();
     }
 
-    // Finance Scenarios
     match /financeScenarios/{scenarioId} {
       allow read, write: if isAuth();
     }
 
-    // Offers - scoped reads, agent writes
     match /offers/{offerId} {
       allow read: if isAuth();
       allow write: if isAgent();
     }
 
-    // Listings
     match /listings/{listingId} {
       allow read: if isAuth();
       allow write: if isAgent();
     }
 
-    // Checklists
-    match /checklists/{checklistId} {
-      allow read, write: if isAuth();
-    }
-
-    // Emotional Logs
     match /emotionalLogs/{logId} {
       allow read: if isAuth();
       allow create: if isAuth();
     }
 
-    // Messages
     match /messages/{messageId} {
       allow read: if isAuth();
       allow create: if isAuth();
-      allow update: if isAuth(); // For marking read
+      allow update: if isAuth();
     }
 
-    // Documents
     match /documents/{documentId} {
       allow read: if isAuth();
       allow create: if isAuth();

@@ -28,6 +28,7 @@ import type {
   EmotionalLog,
   Message,
   Document as DocType,
+  Milestone,
 } from "@/types";
 
 // ── Generic helpers ────────────────────────────────────────────
@@ -397,6 +398,31 @@ export async function createDocumentRecord(
   data: Omit<DocType, "id" | "createdAt">
 ): Promise<string> {
   return createDocument("documents", data as Record<string, unknown>);
+}
+
+// ── Milestones (subcollection of transactions) ─────────────────
+
+export function subscribeToMilestones(
+  transactionId: string,
+  callback: (milestones: Milestone[]) => void
+): Unsubscribe {
+  const q = query(
+    collection(db, "transactions", transactionId, "milestones"),
+    where("clientVisible", "==", true)
+  );
+  return onSnapshot(q, (snap) => {
+    const milestones = snap.docs
+      .map((d) => ({ id: d.id, ...timestampToDate(d.data()) }) as Milestone)
+      .sort((a, b) => {
+        // Sort by completedAt (completed items first, then by time)
+        if (a.completed && !b.completed) return -1;
+        if (!a.completed && b.completed) return 1;
+        const da = a.completedAt instanceof Date ? a.completedAt.getTime() : 0;
+        const db2 = b.completedAt instanceof Date ? b.completedAt.getTime() : 0;
+        return da - db2;
+      });
+    callback(milestones);
+  });
 }
 
 // ── Agent: All clients ─────────────────────────────────────────
