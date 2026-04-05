@@ -6,7 +6,7 @@ import { useBrokerage } from "@/hooks/useBrokerage";
 import { useTransactions } from "@/hooks/useTransaction";
 import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
-import { ProgressBar } from "@/components/shared/ProgressBar";
+import { MilestoneTimeline } from "@/components/shared/MilestoneTimeline";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import {
@@ -54,7 +54,7 @@ export default function DashboardPage() {
                 {tx.status}
               </Badge>
             </CardHeader>
-            <ProgressBar value={30} label="Progress" className="mb-4" />
+            <MilestoneTimeline transactionId={tx.id} />
           </Card>
         ))
       ) : (

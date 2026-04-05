@@ -146,5 +146,11 @@ service cloud.firestore {
       allow read: if isAuth();
       allow create: if isAuth();
     }
+
+    // ── Glossary ──
+    match /glossary/{termId} {
+      allow read: if isAuth();
+      allow write: if isAgent();
+    }
   }
 }

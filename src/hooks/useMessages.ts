@@ -12,15 +12,25 @@ import { db } from "@/lib/firebase";
 import { sendMessage as sendMsg, markMessageRead } from "@/lib/firestore";
 import type { Message } from "@/types";
 
+interface UseMessagesOptions {
+  brokerageId: string;
+  clientId: string;
+  currentUserId: string;
+  senderRole: "agent" | "client";
+  senderName: string;
+}
+
 /**
  * Messages are queried by a threadId field that equals the clientId.
  * Both agent and client messages in a thread share the same threadId.
  */
-export function useMessages(
-  brokerageId: string,
-  clientId: string,
-  currentUserId: string
-) {
+export function useMessages({
+  brokerageId,
+  clientId,
+  currentUserId,
+  senderRole,
+  senderName,
+}: UseMessagesOptions) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -64,20 +74,31 @@ export function useMessages(
     return unsubscribe;
   }, [brokerageId, clientId]);
 
+  // Auto-mark incoming messages as read
+  useEffect(() => {
+    if (!currentUserId) return;
+    for (const msg of messages) {
+      if (msg.senderId !== currentUserId && !msg.readAt) {
+        markMessageRead(msg.id);
+      }
+    }
+  }, [messages, currentUserId]);
+
   const send = useCallback(
     async (text: string, fileUrl?: string, fileName?: string) => {
       if (!brokerageId || !currentUserId) return;
       await sendMsg({
         brokerageId,
+        threadId: clientId,
         senderId: currentUserId,
-        senderName: "",
-        senderRole: "client",
+        senderName,
+        senderRole,
         text,
         fileUrl,
         fileName,
       });
     },
-    [brokerageId, currentUserId]
+    [brokerageId, clientId, currentUserId, senderName, senderRole]
   );
 
   const markRead = useCallback(async (messageId: string) => {

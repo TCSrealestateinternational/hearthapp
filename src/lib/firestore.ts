@@ -29,6 +29,7 @@ import type {
   Message,
   Document as DocType,
   Milestone,
+  GlossaryTerm,
 } from "@/types";
 
 // ── Generic helpers ────────────────────────────────────────────
@@ -423,6 +424,26 @@ export function subscribeToMilestones(
       });
     callback(milestones);
   });
+}
+
+// ── Glossary ──────────────────────────────────────────────────
+
+export function subscribeToGlossary(
+  callback: (terms: GlossaryTerm[]) => void
+): Unsubscribe {
+  const q = query(collection(db, "glossary"));
+  return onSnapshot(q, (snap) => {
+    const terms = snap.docs
+      .map((d) => ({ id: d.id, ...timestampToDate(d.data()) }) as GlossaryTerm)
+      .sort((a, b) => a.term.localeCompare(b.term));
+    callback(terms);
+  });
+}
+
+export async function getGlossaryTerm(
+  id: string
+): Promise<GlossaryTerm | null> {
+  return getDocument<GlossaryTerm>("glossary", id);
 }
 
 // ── Agent: All clients ─────────────────────────────────────────

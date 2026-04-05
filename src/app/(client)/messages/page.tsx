@@ -12,11 +12,13 @@ import { MessageCircle } from "lucide-react";
 export default function MessagesPage() {
   const { user } = useAuth();
   const { brokerage } = useBrokerage();
-  const { messages, loading, send } = useMessages(
-    brokerage?.id || "",
-    user?.id || "",
-    user?.id || ""
-  );
+  const { messages, loading, send } = useMessages({
+    brokerageId: brokerage?.id || "",
+    clientId: user?.id || "",
+    currentUserId: user?.id || "",
+    senderRole: "client",
+    senderName: user?.displayName || "",
+  });
 
   async function handleFileUpload(file: File) {
     if (!brokerage?.id) throw new Error("No brokerage");

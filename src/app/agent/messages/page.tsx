@@ -22,11 +22,15 @@ export default function AgentMessagesPage() {
     getAllClients(brokerage.id).then(setClients);
   }, [brokerage?.id]);
 
-  const { messages, send } = useMessages(
-    brokerage?.id || "",
-    selectedClientId || "",
-    agentUser?.id || ""
-  );
+  const selectedClient = clients.find((c) => c.id === selectedClientId);
+
+  const { messages, send } = useMessages({
+    brokerageId: brokerage?.id || "",
+    clientId: selectedClientId || "",
+    currentUserId: agentUser?.id || "",
+    senderRole: "agent",
+    senderName: brokerage?.agentName || agentUser?.displayName || "",
+  });
 
   return (
     <div className="max-w-5xl mx-auto">

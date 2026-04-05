@@ -1,7 +1,7 @@
 "use client";
 
 import type { Message } from "@/types";
-import { FileText } from "lucide-react";
+import { FileText, Check, CheckCheck } from "lucide-react";
 
 interface MessageBubbleProps {
   message: Message;
@@ -35,18 +35,23 @@ export function MessageBubble({ message, isOwn }: MessageBubbleProps) {
             {message.fileName || "Attachment"}
           </a>
         )}
-        <p
-          className={`text-[10px] mt-1 ${
-            isOwn ? "text-white/60" : "text-white/60"
-          }`}
-        >
-          {message.createdAt instanceof Date
-            ? message.createdAt.toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })
-            : ""}
-        </p>
+        <div className="flex items-center gap-1 mt-1">
+          <p className="text-[10px] text-white/60">
+            {message.createdAt instanceof Date
+              ? message.createdAt.toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+              : ""}
+          </p>
+          {isOwn && (
+            message.readAt ? (
+              <CheckCheck size={12} className="text-white/80" aria-label="Read" />
+            ) : (
+              <Check size={12} className="text-white/60" aria-label="Sent" />
+            )
+          )}
+        </div>
       </div>
     </div>
   );

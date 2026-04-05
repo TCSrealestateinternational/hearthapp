@@ -33,11 +33,13 @@ export default function AgentClientDetailPage() {
   const [properties, setProperties] = useState<Property[]>([]);
   const [emotionalLogs, setEmotionalLogs] = useState<EmotionalLog[]>([]);
 
-  const { messages, send } = useMessages(
-    brokerage?.id || "",
+  const { messages, send } = useMessages({
+    brokerageId: brokerage?.id || "",
     clientId,
-    agentUser?.id || ""
-  );
+    currentUserId: agentUser?.id || "",
+    senderRole: "agent",
+    senderName: brokerage?.agentName || agentUser?.displayName || "",
+  });
 
   useEffect(() => {
     getUser(clientId).then(setClient);

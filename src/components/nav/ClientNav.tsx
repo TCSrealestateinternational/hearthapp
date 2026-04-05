@@ -10,6 +10,7 @@ import {
   Heart,
   MessageCircle,
   UserCircle,
+  BookOpen,
 } from "lucide-react";
 
 interface NavItem {
@@ -44,6 +45,11 @@ export function ClientNav({ role, unreadCount }: ClientNavProps) {
       label: "Check-in",
       icon: <Heart size={20} />,
     },
+    {
+      href: "/glossary",
+      label: "Glossary",
+      icon: <BookOpen size={20} />,
+    },
   ];
 
   const sellerItems: NavItem[] = [
@@ -63,6 +69,11 @@ export function ClientNav({ role, unreadCount }: ClientNavProps) {
       href: "/seller/emotions",
       label: "Check-in",
       icon: <Heart size={20} />,
+    },
+    {
+      href: "/glossary",
+      label: "Glossary",
+      icon: <BookOpen size={20} />,
     },
   ];
 

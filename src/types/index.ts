@@ -244,6 +244,7 @@ export interface Message {
   id: string;
   brokerageId: string;
   transactionId?: string;
+  threadId?: string;
   senderId: string;
   senderName: string;
   senderRole: "agent" | "client";
@@ -297,6 +298,19 @@ export interface Milestone {
   completedBy: string | null;
   clientVisible: boolean;
   notifyClient: boolean;
+}
+
+// ── Glossary ──────────────────────────────────────────────────
+
+export interface GlossaryTerm {
+  id: string;
+  term: string;
+  plainDefinition: string;
+  buyerContext?: string;
+  sellerContext?: string;
+  aslVideoUrl?: string;
+  relatedTerms?: string[];
+  createdAt: Date;
 }
 
 // ── Document ───────────────────────────────────────────────────
