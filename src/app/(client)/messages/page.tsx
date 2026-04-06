@@ -5,7 +5,6 @@ import { useBrokerage } from "@/hooks/useBrokerage";
 import { useMessages } from "@/hooks/useMessages";
 import { MessageThread } from "@/components/messaging/MessageThread";
 import { MessageInput } from "@/components/messaging/MessageInput";
-import { uploadFile } from "@/lib/storage";
 import { Card } from "@/components/ui/Card";
 import { MessageCircle } from "lucide-react";
 
@@ -19,12 +18,6 @@ export default function MessagesPage() {
     senderRole: "client",
     senderName: user?.displayName || "",
   });
-
-  async function handleFileUpload(file: File) {
-    if (!brokerage?.id) throw new Error("No brokerage");
-    const result = await uploadFile(brokerage.id, "messages", file);
-    return { url: result.url, name: file.name };
-  }
 
   return (
     <div className="max-w-2xl mx-auto flex flex-col h-[calc(100vh-8rem)] md:h-[calc(100vh-10rem)]">
@@ -63,10 +56,7 @@ export default function MessagesPage() {
         )}
 
         <MessageInput
-          onSend={(text, fileUrl, fileName) =>
-            send(text, fileUrl, fileName)
-          }
-          onFileSelect={handleFileUpload}
+          onSend={(text) => send(text)}
         />
       </Card>
     </div>

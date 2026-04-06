@@ -7,7 +7,6 @@ import { getAllClients } from "@/lib/firestore";
 import { useMessages } from "@/hooks/useMessages";
 import { MessageThread } from "@/components/messaging/MessageThread";
 import { MessageInput } from "@/components/messaging/MessageInput";
-import { uploadFile } from "@/lib/storage";
 import { Card } from "@/components/ui/Card";
 import type { User } from "@/types";
 import { MessageCircle } from "lucide-react";
@@ -32,12 +31,6 @@ export default function AgentMessagesPage() {
     senderRole: "agent",
     senderName: brokerage?.agentName || agentUser?.displayName || "",
   });
-
-  async function handleFileUpload(file: File) {
-    if (!brokerage?.id) throw new Error("No brokerage");
-    const result = await uploadFile(brokerage.id, "messages", file);
-    return { url: result.url, name: file.name };
-  }
 
   return (
     <div className="max-w-5xl mx-auto">
@@ -100,10 +93,7 @@ export default function AgentMessagesPage() {
                 />
               )}
               <MessageInput
-                onSend={(text, fileUrl, fileName) =>
-                  send(text, fileUrl, fileName)
-                }
-                onFileSelect={handleFileUpload}
+                onSend={(text) => send(text)}
               />
             </>
           ) : (

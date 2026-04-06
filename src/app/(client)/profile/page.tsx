@@ -3,12 +3,14 @@
 import { useAuth } from "@/hooks/useAuth";
 import { useBrokerage } from "@/hooks/useBrokerage";
 import { Card, CardTitle } from "@/components/ui/Card";
-import { DocumentVault } from "@/components/shared/DocumentVault";
+import { DriveLink } from "@/components/shared/DriveLink";
 import { UserCircle, Mail, Phone } from "lucide-react";
 
 export default function ProfilePage() {
   const { user } = useAuth();
   const { brokerage } = useBrokerage();
+
+  const hasDriveLink = user?.driveFolderUrl || brokerage?.driveFolderUrl;
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
@@ -46,17 +48,32 @@ export default function ProfilePage() {
         </div>
       </Card>
 
-      {/* Document vault */}
-      <div>
-        <h2 className="text-lg font-semibold text-text-primary mb-3">
-          Documents
-        </h2>
-        <DocumentVault
-          brokerageId={brokerage?.id || ""}
-          userId={user?.id || ""}
-          driveFolderUrl={brokerage?.driveFolderUrl}
-        />
-      </div>
+      {/* Documents & Drive links */}
+      {hasDriveLink && (
+        <div>
+          <h2 className="text-lg font-semibold text-text-primary mb-3">
+            Documents
+          </h2>
+          <div className="space-y-3">
+            {user?.driveFolderUrl && (
+              <div>
+                <p className="text-sm text-text-secondary mb-1.5">
+                  Your shared folder from {brokerage?.agentName || "your agent"}
+                </p>
+                <DriveLink url={user.driveFolderUrl} />
+              </div>
+            )}
+            {brokerage?.driveFolderUrl && (
+              <div>
+                <p className="text-sm text-text-secondary mb-1.5">
+                  {brokerage.name} shared resources
+                </p>
+                <DriveLink url={brokerage.driveFolderUrl} />
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

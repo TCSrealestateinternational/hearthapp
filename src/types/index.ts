@@ -46,6 +46,7 @@ export interface User {
   status: UserStatus;
   activeRole?: "buyer" | "seller";
   avatarUrl?: string;
+  driveFolderUrl?: string;
   createdAt: Date;
   lastLoginAt: Date;
 }

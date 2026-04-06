@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { useBrokerage } from "@/hooks/useBrokerage";
-import { getUser, getTransactions, getChecklist, getProperties, getEmotionalLogs } from "@/lib/firestore";
+import { getUser, getTransactions, getChecklist, getProperties, getEmotionalLogs, updateUser } from "@/lib/firestore";
 import { useMessages } from "@/hooks/useMessages";
 import { MessageThread } from "@/components/messaging/MessageThread";
 import { MessageInput } from "@/components/messaging/MessageInput";
@@ -14,7 +14,7 @@ import { Card, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import type { User, Transaction, ChecklistItem, Property, EmotionalLog } from "@/types";
-import { ArrowLeft, Mail, Phone, Home, CheckSquare, Heart, Milestone as MilestoneIcon } from "lucide-react";
+import { ArrowLeft, Mail, Phone, Home, CheckSquare, Heart, FolderOpen } from "lucide-react";
 import Link from "next/link";
 
 type Tab = "overview" | "milestones" | "client-view" | "messages";
@@ -146,6 +146,42 @@ export default function AgentClientDetailPage() {
       {/* ── Overview Tab ── */}
       {activeTab === "overview" && (
         <div className="space-y-4">
+          {/* Google Drive link */}
+          <Card>
+            <CardTitle>
+              <FolderOpen size={18} className="inline mr-2" />
+              Shared Drive Folder
+            </CardTitle>
+            <p className="text-xs text-text-secondary mt-1 mb-3">
+              Add a Google Drive link so {client.displayName.split(" ")[0]} can access shared photos, videos, or documents.
+            </p>
+            <div className="flex gap-2">
+              <input
+                type="url"
+                placeholder="https://drive.google.com/drive/folders/..."
+                defaultValue={client.driveFolderUrl || ""}
+                onBlur={(e) => {
+                  const val = e.target.value.trim();
+                  if (val !== (client.driveFolderUrl || "")) {
+                    updateUser(clientId, { driveFolderUrl: val || undefined });
+                    setClient({ ...client, driveFolderUrl: val || undefined });
+                  }
+                }}
+                className="flex-1 px-3 py-2 rounded-lg border border-border bg-surface text-text-primary text-sm"
+              />
+              {client.driveFolderUrl && (
+                <a
+                  href={client.driveFolderUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-2 rounded-lg bg-primary-light text-primary text-sm font-medium hover:bg-primary-light/80 transition-colors"
+                >
+                  Open
+                </a>
+              )}
+            </div>
+          </Card>
+
           <Card>
             <CardTitle>Transactions</CardTitle>
             {transactions.length > 0 ? (
