@@ -1,104 +1,136 @@
 import type { ChecklistItem } from "@/types";
 
 export const BUYER_STAGES = [
-  "Pre-Approval",
-  "House Hunting",
-  "Under Contract",
-  "Inspections & Appraisal",
-  "Closing",
+  "Phase 1 — Pre-Search",
+  "Phase 2 — Active Home Search",
+  "Phase 3 — Offer",
+  "Phase 4 — Under Contract",
+  "Phase 5 — Inspection",
+  "Phase 6 — Appraisal",
+  "Phase 7 — Financing / Clear to Close",
+  "Phase 8 — Closing Prep",
+  "Phase 9 — Closing Day",
 ] as const;
 
 export const BUYER_CHECKLIST_TEMPLATE: Omit<
   ChecklistItem,
   "completed" | "completedAt" | "completedBy"
 >[] = [
-  // Pre-Approval
-  { id: "b-1", label: "Get pre-approved with lender", stage: "Pre-Approval" },
-  {
-    id: "b-2",
-    label: "Gather financial documents (pay stubs, tax returns, bank statements)",
-    stage: "Pre-Approval",
-  },
-  {
-    id: "b-3",
-    label: "Review credit report and address issues",
-    stage: "Pre-Approval",
-  },
-  {
-    id: "b-4",
-    label: "Determine budget and monthly payment comfort zone",
-    stage: "Pre-Approval",
-  },
+  // ── Phase 1 — Pre-Search ──────────────────────────────────
+  { id: "b-001", label: "Initial buyer consultation completed", stage: "Phase 1 — Pre-Search" },
+  { id: "b-002", label: "Buyer needs and wants documented", stage: "Phase 1 — Pre-Search" },
+  { id: "b-003", label: "Budget range confirmed", stage: "Phase 1 — Pre-Search" },
+  { id: "b-004", label: "Pre-approval required", stage: "Phase 1 — Pre-Search" },
+  { id: "b-005", label: "Pre-approval received and reviewed", stage: "Phase 1 — Pre-Search" },
+  { id: "b-006", label: "Lender contact information saved", stage: "Phase 1 — Pre-Search" },
+  { id: "b-007", label: "Buyer representation agreement signed", stage: "Phase 1 — Pre-Search" },
+  { id: "b-008", label: "ShowingTime app download prompt sent to buyer", stage: "Phase 1 — Pre-Search" },
+  { id: "b-009", label: "Buyer portal (Hearth) activated", stage: "Phase 1 — Pre-Search" },
+  { id: "b-010", label: "Search criteria entered (beds, baths, sq ft, location, must-haves)", stage: "Phase 1 — Pre-Search" },
+  { id: "b-011", label: "MLS search set up and auto emails activated", stage: "Phase 1 — Pre-Search" },
+  { id: "b-012", label: "Buyer education resources shared", stage: "Phase 1 — Pre-Search" },
 
-  // House Hunting
-  {
-    id: "b-5",
-    label: "Create wish list (must-haves vs. nice-to-haves)",
-    stage: "House Hunting",
-  },
-  {
-    id: "b-6",
-    label: "Tour properties and take notes",
-    stage: "House Hunting",
-  },
-  {
-    id: "b-7",
-    label: "Research neighborhoods and schools",
-    stage: "House Hunting",
-  },
-  {
-    id: "b-8",
-    label: "Compare top properties side-by-side",
-    stage: "House Hunting",
-  },
+  // ── Phase 2 — Active Home Search ──────────────────────────
+  { id: "b-013", label: "First showing scheduled", stage: "Phase 2 — Active Home Search" },
+  { id: "b-014", label: "Showing feedback collected after each property viewed", stage: "Phase 2 — Active Home Search" },
+  { id: "b-015", label: "Properties marked: interested / not interested / maybe", stage: "Phase 2 — Active Home Search" },
+  { id: "b-016", label: "Favorite properties list maintained", stage: "Phase 2 — Active Home Search" },
+  { id: "b-017", label: "Buyer consultation again if criteria shifts", stage: "Phase 2 — Active Home Search" },
+  { id: "b-018", label: "Pre-approval letter updated if needed", stage: "Phase 2 — Active Home Search" },
+  { id: "b-019", label: "HOA communities identified and fees researched", stage: "Phase 2 — Active Home Search" },
+  { id: "b-020", label: "School district research completed if needed", stage: "Phase 2 — Active Home Search" },
+  { id: "b-021", label: "Flood zone research completed if needed", stage: "Phase 2 — Active Home Search" },
+  { id: "b-022", label: "New construction options discussed if applicable", stage: "Phase 2 — Active Home Search" },
+  { id: "b-023", label: "Down payment assistance programs researched if applicable", stage: "Phase 2 — Active Home Search" },
 
-  // Under Contract
-  {
-    id: "b-9",
-    label: "Submit offer and negotiate terms",
-    stage: "Under Contract",
-  },
-  {
-    id: "b-10",
-    label: "Sign purchase agreement",
-    stage: "Under Contract",
-  },
-  {
-    id: "b-11",
-    label: "Submit earnest money deposit",
-    stage: "Under Contract",
-  },
-  {
-    id: "b-12",
-    label: "Secure homeowner's insurance",
-    stage: "Under Contract",
-  },
+  // ── Phase 3 — Offer ───────────────────────────────────────
+  { id: "b-024", label: "Comparable sales (CMA) reviewed with buyer", stage: "Phase 3 — Offer" },
+  { id: "b-025", label: "Offer price strategy discussed", stage: "Phase 3 — Offer" },
+  { id: "b-026", label: "Purchase price determined", stage: "Phase 3 — Offer" },
+  { id: "b-027", label: "Earnest money amount determined", stage: "Phase 3 — Offer" },
+  { id: "b-028", label: "Down payment amount determined", stage: "Phase 3 — Offer" },
+  { id: "b-029", label: "Financing type determined (conventional / FHA / VA / USDA / cash)", stage: "Phase 3 — Offer" },
+  { id: "b-030", label: "Inspection contingency included", stage: "Phase 3 — Offer" },
+  { id: "b-031", label: "Appraisal contingency included", stage: "Phase 3 — Offer" },
+  { id: "b-032", label: "Financing contingency included", stage: "Phase 3 — Offer" },
+  { id: "b-033", label: "Sale of buyer's home contingency (if applicable)", stage: "Phase 3 — Offer" },
+  { id: "b-034", label: "Closing date target set", stage: "Phase 3 — Offer" },
+  { id: "b-035", label: "Personal property inclusions requested", stage: "Phase 3 — Offer" },
+  { id: "b-036", label: "Possession date set", stage: "Phase 3 — Offer" },
+  { id: "b-037", label: "Offer written and reviewed with buyer", stage: "Phase 3 — Offer" },
+  { id: "b-038", label: "Offer submitted to listing agent", stage: "Phase 3 — Offer" },
+  { id: "b-039", label: "Offer response received and next steps determined", stage: "Phase 3 — Offer" },
+  { id: "b-040", label: "Earnest money instructions given to buyer", stage: "Phase 3 — Offer" },
+  { id: "b-041", label: "Earnest money delivered on time", stage: "Phase 3 — Offer" },
+  { id: "b-042", label: "Earnest money receipt confirmed", stage: "Phase 3 — Offer" },
 
-  // Inspections & Appraisal
-  {
-    id: "b-13",
-    label: "Schedule home inspection",
-    stage: "Inspections & Appraisal",
-  },
-  {
-    id: "b-14",
-    label: "Review inspection report and negotiate repairs",
-    stage: "Inspections & Appraisal",
-  },
-  {
-    id: "b-15",
-    label: "Appraisal ordered by lender",
-    stage: "Inspections & Appraisal",
-  },
-  {
-    id: "b-16",
-    label: "Review appraisal results",
-    stage: "Inspections & Appraisal",
-  },
+  // ── Phase 4 — Under Contract ──────────────────────────────
+  { id: "b-043", label: "Buyer notified — under contract celebration", stage: "Phase 4 — Under Contract" },
+  { id: "b-044", label: "Contract fully executed (all signatures)", stage: "Phase 4 — Under Contract" },
+  { id: "b-045", label: "Contract copies sent to all parties", stage: "Phase 4 — Under Contract" },
+  { id: "b-046", label: "Key dates calendar created and shared with buyer", stage: "Phase 4 — Under Contract" },
+  { id: "b-047", label: "Title company / attorney selected and contacted", stage: "Phase 4 — Under Contract" },
+  { id: "b-048", label: "Lender notified of ratified contract", stage: "Phase 4 — Under Contract" },
+  { id: "b-049", label: "Lender has received all required documents from buyer", stage: "Phase 4 — Under Contract" },
+  { id: "b-050", label: "Homeowner's insurance quotes started by buyer", stage: "Phase 4 — Under Contract" },
+  { id: "b-051", label: "HOA documents requested if applicable", stage: "Phase 4 — Under Contract" },
+  { id: "b-052", label: "HOA documents reviewed with buyer if applicable", stage: "Phase 4 — Under Contract" },
 
-  // Closing
-  { id: "b-17", label: "Final loan approval received", stage: "Closing" },
-  { id: "b-18", label: "Review closing disclosure", stage: "Closing" },
-  { id: "b-19", label: "Do final walk-through", stage: "Closing" },
-  { id: "b-20", label: "Sign closing documents and get keys!", stage: "Closing" },
+  // ── Phase 5 — Inspection ──────────────────────────────────
+  { id: "b-053", label: "Inspector selected", stage: "Phase 5 — Inspection" },
+  { id: "b-054", label: "Inspection scheduled", stage: "Phase 5 — Inspection" },
+  { id: "b-055", label: "Inspection date and time confirmed with all parties", stage: "Phase 5 — Inspection" },
+  { id: "b-056", label: "Buyer advised to attend inspection", stage: "Phase 5 — Inspection" },
+  { id: "b-057", label: "Inspection completed", stage: "Phase 5 — Inspection" },
+  { id: "b-058", label: "Inspection report received", stage: "Phase 5 — Inspection" },
+  { id: "b-059", label: "Inspection report reviewed with buyer", stage: "Phase 5 — Inspection" },
+  { id: "b-060", label: "Repair requests determined", stage: "Phase 5 — Inspection" },
+  { id: "b-061", label: "Repair request or credit submitted to seller", stage: "Phase 5 — Inspection" },
+  { id: "b-062", label: "Seller response to repair request received and resolved", stage: "Phase 5 — Inspection" },
+  { id: "b-063", label: "Inspection contingency waived or resolved in writing", stage: "Phase 5 — Inspection" },
+  { id: "b-064", label: "Radon test completed if applicable", stage: "Phase 5 — Inspection" },
+  { id: "b-065", label: "Sewer scope completed if applicable", stage: "Phase 5 — Inspection" },
+  { id: "b-066", label: "Well / septic inspection completed if applicable", stage: "Phase 5 — Inspection" },
+  { id: "b-067", label: "Mold inspection completed if applicable", stage: "Phase 5 — Inspection" },
+  { id: "b-068", label: "Structural engineer inspection completed if applicable", stage: "Phase 5 — Inspection" },
+
+  // ── Phase 6 — Appraisal ───────────────────────────────────
+  { id: "b-069", label: "Appraisal ordered by lender", stage: "Phase 6 — Appraisal" },
+  { id: "b-070", label: "Appraisal scheduled", stage: "Phase 6 — Appraisal" },
+  { id: "b-071", label: "Appraisal completed", stage: "Phase 6 — Appraisal" },
+  { id: "b-072", label: "Appraisal result received and reviewed with buyer", stage: "Phase 6 — Appraisal" },
+  { id: "b-073", label: "Appraisal contingency resolved in writing", stage: "Phase 6 — Appraisal" },
+
+  // ── Phase 7 — Financing / Clear to Close ──────────────────
+  { id: "b-074", label: "Lender has all documents", stage: "Phase 7 — Financing / Clear to Close" },
+  { id: "b-075", label: "Buyer has provided all requested documents to lender", stage: "Phase 7 — Financing / Clear to Close" },
+  { id: "b-076", label: "Underwriting submitted", stage: "Phase 7 — Financing / Clear to Close" },
+  { id: "b-077", label: "Underwriting conditions received and cleared", stage: "Phase 7 — Financing / Clear to Close" },
+  { id: "b-078", label: "Clear to close received from lender", stage: "Phase 7 — Financing / Clear to Close" },
+  { id: "b-079", label: "Closing disclosure received and reviewed with buyer", stage: "Phase 7 — Financing / Clear to Close" },
+  { id: "b-080", label: "Closing disclosure three-day waiting period confirmed", stage: "Phase 7 — Financing / Clear to Close" },
+  { id: "b-081", label: "Cash to close amount confirmed with buyer", stage: "Phase 7 — Financing / Clear to Close" },
+  { id: "b-082", label: "Wire transfer or cashier's check instructions given to buyer", stage: "Phase 7 — Financing / Clear to Close" },
+  { id: "b-083", label: "Buyer warned about wire fraud — verify instructions directly with title", stage: "Phase 7 — Financing / Clear to Close" },
+
+  // ── Phase 8 — Closing Prep ────────────────────────────────
+  { id: "b-084", label: "Final walkthrough scheduled", stage: "Phase 8 — Closing Prep" },
+  { id: "b-085", label: "Final walkthrough completed", stage: "Phase 8 — Closing Prep" },
+  { id: "b-086", label: "Final walkthrough issues noted and resolved (if any)", stage: "Phase 8 — Closing Prep" },
+  { id: "b-087", label: "Closing date, time, and location confirmed with buyer", stage: "Phase 8 — Closing Prep" },
+  { id: "b-088", label: "Buyer ID requirements confirmed (government-issued photo ID)", stage: "Phase 8 — Closing Prep" },
+  { id: "b-089", label: "Utility transfer / setup initiated by buyer", stage: "Phase 8 — Closing Prep" },
+  { id: "b-090", label: "Moving arrangements confirmed by buyer", stage: "Phase 8 — Closing Prep" },
+  { id: "b-091", label: "Homeowner's insurance policy bound and confirmed", stage: "Phase 8 — Closing Prep" },
+
+  // ── Phase 9 — Closing Day ─────────────────────────────────
+  { id: "b-092", label: "Closing completed", stage: "Phase 9 — Closing Day" },
+  { id: "b-093", label: "Keys received by buyer", stage: "Phase 9 — Closing Day" },
+  { id: "b-094", label: "Buyer celebration!", stage: "Phase 9 — Closing Day" },
+  { id: "b-095", label: "Closing documents copies given to buyer", stage: "Phase 9 — Closing Day" },
+  { id: "b-096", label: "Agent records closing in RE Tracker", stage: "Phase 9 — Closing Day" },
+  { id: "b-097", label: "Commission confirmed and recorded", stage: "Phase 9 — Closing Day" },
+  { id: "b-098", label: "Review request sent to buyer", stage: "Phase 9 — Closing Day" },
+  { id: "b-099", label: "Buyer added to post-closing follow-up sequence", stage: "Phase 9 — Closing Day" },
+  { id: "b-100", label: "Thank you note / gift sent", stage: "Phase 9 — Closing Day" },
 ];

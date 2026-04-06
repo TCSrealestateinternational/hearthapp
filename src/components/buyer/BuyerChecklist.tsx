@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import type { ChecklistItem } from "@/types";
 import { BUYER_STAGES } from "@/constants/checklist-buyer";
 import { ProgressBar } from "@/components/shared/ProgressBar";
@@ -13,9 +13,18 @@ interface BuyerChecklistProps {
   onToggle: (id: string, completed: boolean) => void;
 }
 
+function findCurrentStage(items: ChecklistItem[], stages: readonly string[]): string {
+  for (const stage of stages) {
+    const stageItems = items.filter((i) => i.stage === stage);
+    if (stageItems.some((i) => !i.completed)) return stage;
+  }
+  return stages[stages.length - 1];
+}
+
 export function BuyerChecklist({ items, onToggle }: BuyerChecklistProps) {
+  const currentStage = useMemo(() => findCurrentStage(items, BUYER_STAGES), [items]);
   const [expandedStages, setExpandedStages] = useState<Set<string>>(
-    new Set(BUYER_STAGES)
+    new Set([currentStage])
   );
 
   const totalCompleted = items.filter((i) => i.completed).length;
