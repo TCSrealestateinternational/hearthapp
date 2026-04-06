@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { useBrokerage } from "@/hooks/useBrokerage";
-import { getUser, getTransactions, getChecklist, getProperties, getEmotionalLogs, updateUser } from "@/lib/firestore";
+import { getUser, getTransactions, getChecklist, getProperties, updateUser } from "@/lib/firestore";
 import { useMessages } from "@/hooks/useMessages";
 import { MessageThread } from "@/components/messaging/MessageThread";
 import { MessageInput } from "@/components/messaging/MessageInput";
@@ -13,8 +13,8 @@ import { ProgressBar } from "@/components/shared/ProgressBar";
 import { Card, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import type { User, Transaction, ChecklistItem, Property, EmotionalLog } from "@/types";
-import { ArrowLeft, Mail, Phone, Home, CheckSquare, Heart, FolderOpen, Download } from "lucide-react";
+import type { User, Transaction, ChecklistItem, Property } from "@/types";
+import { ArrowLeft, Mail, Phone, Home, CheckSquare, FolderOpen, Download } from "lucide-react";
 import { exportClientPDF } from "@/lib/exportPdf";
 import Link from "next/link";
 
@@ -32,8 +32,6 @@ export default function AgentClientDetailPage() {
   // Client view preview data
   const [checklistItems, setChecklistItems] = useState<ChecklistItem[]>([]);
   const [properties, setProperties] = useState<Property[]>([]);
-  const [emotionalLogs, setEmotionalLogs] = useState<EmotionalLog[]>([]);
-
   const { messages, send } = useMessages({
     brokerageId: brokerage?.id || "",
     clientId,
@@ -59,7 +57,6 @@ export default function AgentClientDetailPage() {
       if (state?.items) setChecklistItems(state.items);
     });
     getProperties(tx.id).then(setProperties);
-    getEmotionalLogs(tx.id).then(setEmotionalLogs);
   }, [activeTab, transactions]);
 
   if (!client) {
@@ -129,7 +126,7 @@ export default function AgentClientDetailPage() {
           <Button
             variant="secondary"
             size="sm"
-            onClick={() => exportClientPDF({ user: client, transactions, checklistItems, properties, emotionalLogs })}
+            onClick={() => exportClientPDF({ user: client, transactions, checklistItems, properties })}
             className="shrink-0 flex items-center gap-1.5"
           >
             <Download size={14} />
@@ -350,37 +347,6 @@ export default function AgentClientDetailPage() {
                       {item.completed && "✓"}
                     </span>
                     {item.label}
-                  </div>
-                ))}
-              </div>
-            </Card>
-          )}
-
-          {/* Emotional check-in history */}
-          {emotionalLogs.length > 0 && (
-            <Card>
-              <CardTitle>
-                <Heart size={18} className="inline mr-2" />
-                Emotional Check-ins ({emotionalLogs.length})
-              </CardTitle>
-              <div className="mt-3 space-y-2">
-                {emotionalLogs.slice(0, 5).map((log) => (
-                  <div key={log.id} className="flex items-center justify-between p-2 rounded-lg bg-background">
-                    <div>
-                      <span className="text-sm font-medium text-text-primary capitalize">
-                        {log.mood}
-                      </span>
-                      {log.notes && (
-                        <p className="text-xs text-text-secondary mt-0.5 line-clamp-1">
-                          {log.notes}
-                        </p>
-                      )}
-                    </div>
-                    <span className="text-xs text-text-secondary shrink-0">
-                      {log.createdAt instanceof Date
-                        ? log.createdAt.toLocaleDateString()
-                        : ""}
-                    </span>
                   </div>
                 ))}
               </div>

@@ -7,7 +7,6 @@ import {
   Home,
   Calculator,
   CheckSquare,
-  Heart,
   MessageCircle,
   UserCircle,
   BookOpen,
@@ -41,11 +40,6 @@ export function ClientNav({ role, unreadCount }: ClientNavProps) {
       icon: <CheckSquare size={20} />,
     },
     {
-      href: "/buyer/emotions",
-      label: "Check-in",
-      icon: <Heart size={20} />,
-    },
-    {
       href: "/glossary",
       label: "Glossary",
       icon: <BookOpen size={20} />,
@@ -66,11 +60,6 @@ export function ClientNav({ role, unreadCount }: ClientNavProps) {
       icon: <CheckSquare size={20} />,
     },
     {
-      href: "/seller/emotions",
-      label: "Check-in",
-      icon: <Heart size={20} />,
-    },
-    {
       href: "/glossary",
       label: "Glossary",
       icon: <BookOpen size={20} />,
@@ -88,12 +77,12 @@ export function ClientNav({ role, unreadCount }: ClientNavProps) {
     { href: "/profile", label: "Profile", icon: <UserCircle size={20} /> },
   ];
 
-  // Mobile: show max 5 items — Home, primary tool, Messages, Check-in, Profile
+  // Mobile: show max 5 items — Home, primary tool, Messages, Checklist, Profile
   const mobileItems: NavItem[] = [
     items[0], // Home / Dashboard
     items[1], // Properties (buyer) or Listing (seller)
     bottomItems[0], // Messages
-    items.find((i) => i.href.includes("emotions"))!, // Check-in
+    items.find((i) => i.href.includes("checklist"))!, // Checklist
     bottomItems[1], // Profile
   ];
 

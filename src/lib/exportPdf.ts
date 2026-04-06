@@ -1,15 +1,14 @@
-import type { User, Transaction, ChecklistItem, Property, EmotionalLog } from "@/types";
+import type { User, Transaction, ChecklistItem, Property } from "@/types";
 
 interface ExportData {
   user: User;
   transactions: Transaction[];
   checklistItems?: ChecklistItem[];
   properties?: Property[];
-  emotionalLogs?: EmotionalLog[];
 }
 
 export function exportClientPDF(data: ExportData) {
-  const { user, transactions, checklistItems, properties, emotionalLogs } = data;
+  const { user, transactions, checklistItems, properties } = data;
 
   const row = (label: string, value: string | null | undefined) =>
     value ? `<tr><td style="padding:6px 10px;color:#6b7280;width:40%">${label}</td><td style="padding:6px 10px;font-weight:500">${value}</td></tr>` : "";
@@ -55,15 +54,6 @@ export function exportClientPDF(data: ExportData) {
        ).join("")}</tbody></table>`
     : "";
 
-  // Emotional logs
-  const emotionalHtml = emotionalLogs && emotionalLogs.length > 0
-    ? `<table style="width:100%;border-collapse:collapse;font-size:13px;border:1px solid #e5e7eb">
-       <thead><tr style="background:#0c414e;color:white"><th style="padding:6px 10px;text-align:left">Date</th><th style="padding:6px 10px;text-align:left">Mood</th><th style="padding:6px 10px;text-align:left">Notes</th></tr></thead>
-       <tbody>${emotionalLogs.map((log) =>
-         `<tr><td style="padding:6px 10px">${log.createdAt instanceof Date ? log.createdAt.toLocaleDateString() : ""}</td><td style="padding:6px 10px;text-transform:capitalize">${log.mood}</td><td style="padding:6px 10px">${log.notes || "—"}</td></tr>`
-       ).join("")}</tbody></table>`
-    : "";
-
   const html = `<html><head><title>${user.displayName} — Hearth</title>
   <style>
     body { font-family: system-ui, -apple-system, sans-serif; padding: 28px; color: #1f2937; max-width: 700px; margin: 0 auto; }
@@ -82,7 +72,6 @@ export function exportClientPDF(data: ExportData) {
   ${section("Transactions", txHtml)}
   ${section("Checklist", checklistHtml)}
   ${section("Properties", propsHtml)}
-  ${section("Emotional Check-ins", emotionalHtml)}
   </body></html>`;
 
   const win = window.open("", "_blank");

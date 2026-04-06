@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useBrokerage } from "@/hooks/useBrokerage";
-import { getTransactions, getChecklist, getProperties, getEmotionalLogs } from "@/lib/firestore";
+import { getTransactions, getChecklist, getProperties } from "@/lib/firestore";
 import { exportClientPDF } from "@/lib/exportPdf";
 import { Card, CardTitle } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -23,14 +23,13 @@ export default function ProfilePage() {
     try {
       const transactions = await getTransactions(brokerage.id, user.id);
       const tx = transactions[0];
-      let checklistItems, properties, emotionalLogs;
+      let checklistItems, properties;
       if (tx) {
         const checklistState = await getChecklist(tx.id);
         checklistItems = checklistState?.items;
         properties = await getProperties(tx.id);
-        emotionalLogs = await getEmotionalLogs(tx.id);
       }
-      exportClientPDF({ user, transactions, checklistItems, properties, emotionalLogs });
+      exportClientPDF({ user, transactions, checklistItems, properties });
     } catch (err) {
       console.error("PDF export failed:", err);
     } finally {

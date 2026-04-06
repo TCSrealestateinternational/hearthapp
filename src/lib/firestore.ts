@@ -25,7 +25,6 @@ import type {
   Offer,
   Listing,
   ChecklistState,
-  EmotionalLog,
   Message,
   Document as DocType,
   Milestone,
@@ -297,28 +296,6 @@ export async function saveChecklist(
     ...data,
     updatedAt: serverTimestamp(),
   });
-}
-
-// ── Emotional Logs ─────────────────────────────────────────────
-
-export async function getEmotionalLogs(
-  transactionId: string
-): Promise<EmotionalLog[]> {
-  const results = await queryDocuments<EmotionalLog>(
-    "emotionalLogs",
-    where("transactionId", "==", transactionId)
-  );
-  return results.sort((a, b) => {
-    const da = a.createdAt instanceof Date ? a.createdAt.getTime() : 0;
-    const db2 = b.createdAt instanceof Date ? b.createdAt.getTime() : 0;
-    return db2 - da;
-  });
-}
-
-export async function createEmotionalLog(
-  data: Omit<EmotionalLog, "id" | "createdAt">
-): Promise<string> {
-  return createDocument("emotionalLogs", data as Record<string, unknown>);
 }
 
 // ── Messages ───────────────────────────────────────────────────
