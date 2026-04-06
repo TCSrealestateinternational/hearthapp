@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import {
   collection,
   query,
@@ -31,17 +31,30 @@ export function useMessages({
   senderRole,
   senderName,
 }: UseMessagesOptions) {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [serverMessages, setServerMessages] = useState<Message[]>([]);
+  const [pendingMessages, setPendingMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
+  const [connected, setConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sendError, setSendError] = useState<string | null>(null);
+  const pendingIdsRef = useRef<Set<string>>(new Set());
 
   const ready = Boolean(brokerageId && clientId);
 
+  // Merge server messages with pending (optimistic) ones
+  const messages = [
+    ...serverMessages,
+    ...pendingMessages.filter(
+      (pm) => !serverMessages.some((sm) => pendingIdsRef.current.has(sm.id))
+    ),
+  ];
+
   useEffect(() => {
     if (!brokerageId || !clientId) {
-      setMessages([]);
+      setServerMessages([]);
+      setPendingMessages([]);
       setLoading(false);
+      setConnected(false);
       return;
     }
 
@@ -73,13 +86,20 @@ export function useMessages({
                 : undefined,
           } as Message;
         });
-        setMessages(msgs);
+        setServerMessages(msgs);
+        // Clear any pending messages that now appear in server data
+        const serverIds = new Set(msgs.map((m) => m.id));
+        setPendingMessages((prev) =>
+          prev.filter((pm) => !serverIds.has(pm.id) && !pendingIdsRef.current.has(pm.id))
+        );
         setLoading(false);
+        setConnected(true);
       },
       (err) => {
-        console.error("Messages query failed:", err);
+        console.error("Messages listener error:", err);
         setError(err.message);
         setLoading(false);
+        setConnected(false);
       }
     );
 
@@ -89,18 +109,35 @@ export function useMessages({
   // Auto-mark incoming messages as read
   useEffect(() => {
     if (!currentUserId) return;
-    for (const msg of messages) {
+    for (const msg of serverMessages) {
       if (msg.senderId !== currentUserId && !msg.readAt) {
         markMessageRead(msg.id);
       }
     }
-  }, [messages, currentUserId]);
+  }, [serverMessages, currentUserId]);
 
   const send = useCallback(
     async (text: string, fileUrl?: string, fileName?: string) => {
       if (!brokerageId || !currentUserId) return;
       setSendError(null);
-      const msg: Record<string, unknown> = {
+
+      // Optimistic: immediately show the message in the UI
+      const tempId = `pending_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+      const optimisticMsg: Message = {
+        id: tempId,
+        brokerageId,
+        threadId: clientId,
+        senderId: currentUserId,
+        senderName,
+        senderRole,
+        text,
+        fileUrl,
+        fileName,
+        createdAt: new Date(),
+      };
+      setPendingMessages((prev) => [...prev, optimisticMsg]);
+
+      const msgData: Record<string, unknown> = {
         brokerageId,
         threadId: clientId,
         senderId: currentUserId,
@@ -108,12 +145,19 @@ export function useMessages({
         senderRole,
         text,
       };
-      if (fileUrl) msg.fileUrl = fileUrl;
-      if (fileName) msg.fileName = fileName;
+      if (fileUrl) msgData.fileUrl = fileUrl;
+      if (fileName) msgData.fileName = fileName;
+
       try {
-        await sendMsg(msg as Parameters<typeof sendMsg>[0]);
+        const id = await sendMsg(msgData as Parameters<typeof sendMsg>[0]);
+        // Track the server ID so we can deduplicate when the snapshot fires
+        pendingIdsRef.current.add(id);
+        // Remove optimistic message (server version will appear via listener)
+        setPendingMessages((prev) => prev.filter((pm) => pm.id !== tempId));
       } catch (err) {
         console.error("Failed to send message:", err);
+        // Remove the optimistic message on failure
+        setPendingMessages((prev) => prev.filter((pm) => pm.id !== tempId));
         setSendError(
           err instanceof Error ? err.message : "Failed to send message"
         );
@@ -126,9 +170,9 @@ export function useMessages({
     await markMessageRead(messageId);
   }, []);
 
-  const unreadCount = messages.filter(
+  const unreadCount = serverMessages.filter(
     (m) => m.senderId !== currentUserId && !m.readAt
   ).length;
 
-  return { messages, loading, ready, error, sendError, send, markRead, unreadCount };
+  return { messages, loading, ready, connected, error, sendError, send, markRead, unreadCount };
 }

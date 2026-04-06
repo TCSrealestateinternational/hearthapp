@@ -1,7 +1,7 @@
 "use client";
 
 import type { Message } from "@/types";
-import { FileText, Check, CheckCheck } from "lucide-react";
+import { FileText, Check, CheckCheck, Clock } from "lucide-react";
 
 interface MessageBubbleProps {
   message: Message;
@@ -9,6 +9,8 @@ interface MessageBubbleProps {
 }
 
 export function MessageBubble({ message, isOwn }: MessageBubbleProps) {
+  const isPending = message.id.startsWith("pending_");
+
   return (
     <div className={`flex ${isOwn ? "justify-end" : "justify-start"}`}>
       <div
@@ -16,7 +18,7 @@ export function MessageBubble({ message, isOwn }: MessageBubbleProps) {
           isOwn
             ? "bg-cta text-white rounded-br-md"
             : "bg-primary text-white rounded-bl-md"
-        }`}
+        } ${isPending ? "opacity-70" : ""}`}
       >
         {!isOwn && (
           <p className="text-xs font-medium opacity-75 mb-0.5">
@@ -35,20 +37,24 @@ export function MessageBubble({ message, isOwn }: MessageBubbleProps) {
             {message.fileName || "Attachment"}
           </a>
         )}
-        <div className="flex items-center gap-1 mt-1">
-          <p className="text-[10px] text-white/60">
-            {message.createdAt instanceof Date
-              ? message.createdAt.toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })
-              : ""}
+        <div className="flex items-center gap-1 mt-1 justify-end">
+          <p className="text-[10px] text-white/70">
+            {isPending
+              ? "Sending..."
+              : message.createdAt instanceof Date
+                ? message.createdAt.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                : ""}
           </p>
           {isOwn && (
-            message.readAt ? (
-              <CheckCheck size={12} className="text-white/80" aria-label="Read" />
+            isPending ? (
+              <Clock size={12} className="text-white/60" aria-label="Sending" />
+            ) : message.readAt ? (
+              <CheckCheck size={14} className="text-white" aria-label="Read" />
             ) : (
-              <Check size={12} className="text-white/60" aria-label="Sent" />
+              <Check size={14} className="text-white/80" aria-label="Sent" />
             )
           )}
         </div>
