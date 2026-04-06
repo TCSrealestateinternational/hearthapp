@@ -14,7 +14,8 @@ import { Card, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import type { User, Transaction, ChecklistItem, Property, EmotionalLog } from "@/types";
-import { ArrowLeft, Mail, Phone, Home, CheckSquare, Heart, FolderOpen } from "lucide-react";
+import { ArrowLeft, Mail, Phone, Home, CheckSquare, Heart, FolderOpen, Download } from "lucide-react";
+import { exportClientPDF } from "@/lib/exportPdf";
 import Link from "next/link";
 
 type Tab = "overview" | "milestones" | "client-view" | "messages";
@@ -125,6 +126,15 @@ export default function AgentClientDetailPage() {
               </Badge>
             </div>
           </div>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => exportClientPDF({ user: client, transactions, checklistItems, properties, emotionalLogs })}
+            className="shrink-0 flex items-center gap-1.5"
+          >
+            <Download size={14} />
+            PDF
+          </Button>
         </div>
       </Card>
 

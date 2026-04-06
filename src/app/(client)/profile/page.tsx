@@ -1,16 +1,42 @@
 "use client";
 
+import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useBrokerage } from "@/hooks/useBrokerage";
+import { getTransactions, getChecklist, getProperties, getEmotionalLogs } from "@/lib/firestore";
+import { exportClientPDF } from "@/lib/exportPdf";
 import { Card, CardTitle } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 import { DriveLink } from "@/components/shared/DriveLink";
-import { UserCircle, Mail, Phone } from "lucide-react";
+import { UserCircle, Mail, Phone, Download } from "lucide-react";
 
 export default function ProfilePage() {
   const { user } = useAuth();
   const { brokerage } = useBrokerage();
+  const [downloading, setDownloading] = useState(false);
 
   const hasDriveLink = user?.driveFolderUrl || brokerage?.driveFolderUrl;
+
+  async function handleDownloadPDF() {
+    if (!user || !brokerage) return;
+    setDownloading(true);
+    try {
+      const transactions = await getTransactions(brokerage.id, user.id);
+      const tx = transactions[0];
+      let checklistItems, properties, emotionalLogs;
+      if (tx) {
+        const checklistState = await getChecklist(tx.id);
+        checklistItems = checklistState?.items;
+        properties = await getProperties(tx.id);
+        emotionalLogs = await getEmotionalLogs(tx.id);
+      }
+      exportClientPDF({ user, transactions, checklistItems, properties, emotionalLogs });
+    } catch (err) {
+      console.error("PDF export failed:", err);
+    } finally {
+      setDownloading(false);
+    }
+  }
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
@@ -47,6 +73,17 @@ export default function ProfilePage() {
           </div>
         </div>
       </Card>
+
+      {/* Download data */}
+      <Button
+        variant="secondary"
+        onClick={handleDownloadPDF}
+        disabled={downloading}
+        className="flex items-center gap-2"
+      >
+        <Download size={16} />
+        {downloading ? "Preparing..." : "Download My Data (PDF)"}
+      </Button>
 
       {/* Documents & Drive links */}
       {hasDriveLink && (
