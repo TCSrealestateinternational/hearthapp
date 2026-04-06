@@ -7,6 +7,7 @@ import { getAllClients } from "@/lib/firestore";
 import { useMessages } from "@/hooks/useMessages";
 import { MessageThread } from "@/components/messaging/MessageThread";
 import { MessageInput } from "@/components/messaging/MessageInput";
+import { uploadFile } from "@/lib/storage";
 import { Card } from "@/components/ui/Card";
 import type { User } from "@/types";
 import { MessageCircle } from "lucide-react";
@@ -24,13 +25,19 @@ export default function AgentMessagesPage() {
 
   const selectedClient = clients.find((c) => c.id === selectedClientId);
 
-  const { messages, send } = useMessages({
+  const { messages, error, send } = useMessages({
     brokerageId: brokerage?.id || "",
     clientId: selectedClientId || "",
     currentUserId: agentUser?.id || "",
     senderRole: "agent",
     senderName: brokerage?.agentName || agentUser?.displayName || "",
   });
+
+  async function handleFileUpload(file: File) {
+    if (!brokerage?.id) throw new Error("No brokerage");
+    const result = await uploadFile(brokerage.id, "messages", file);
+    return { url: result.url, name: file.name };
+  }
 
   return (
     <div className="max-w-5xl mx-auto">
@@ -79,14 +86,24 @@ export default function AgentMessagesPage() {
         <Card padding={false} className="flex-1 flex flex-col overflow-hidden">
           {selectedClientId ? (
             <>
-              <MessageThread
-                messages={messages}
-                currentUserId={agentUser?.id || ""}
-              />
+              {error ? (
+                <div className="flex-1 flex items-center justify-center">
+                  <div className="text-center p-4">
+                    <p className="text-red-600 font-medium">Unable to load messages</p>
+                    <p className="text-sm text-text-secondary mt-1">Please try refreshing the page.</p>
+                  </div>
+                </div>
+              ) : (
+                <MessageThread
+                  messages={messages}
+                  currentUserId={agentUser?.id || ""}
+                />
+              )}
               <MessageInput
                 onSend={(text, fileUrl, fileName) =>
                   send(text, fileUrl, fileName)
                 }
+                onFileSelect={handleFileUpload}
               />
             </>
           ) : (

@@ -6,6 +6,7 @@ import { AgentNav } from "@/components/nav/AgentNav";
 import { useAuth } from "@/hooks/useAuth";
 import { useBrokerage } from "@/hooks/useBrokerage";
 import { LogOut } from "lucide-react";
+import { InstallPrompt } from "@/components/shared/InstallPrompt";
 
 export function AgentShellWrapper({ children }: { children: ReactNode }) {
   return (
@@ -40,6 +41,7 @@ function AgentShell({ children }: { children: ReactNode }) {
             </button>
           </div>
         </header>
+        <InstallPrompt />
         <main className="flex-1 p-4 sm:p-6 pb-20 md:pb-6">{children}</main>
       </div>
     </div>

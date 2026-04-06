@@ -9,6 +9,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useRole } from "@/hooks/useRole";
 import { useBrokerage } from "@/hooks/useBrokerage";
 import { LogOut } from "lucide-react";
+import { InstallPrompt } from "@/components/shared/InstallPrompt";
 
 export function ClientShellWrapper({ children }: { children: ReactNode }) {
   return (
@@ -50,6 +51,8 @@ function ClientShell({ children }: { children: ReactNode }) {
             </button>
           </div>
         </header>
+
+        <InstallPrompt />
 
         {/* Main content */}
         <main className="flex-1 p-4 sm:p-6 pb-20 md:pb-6">{children}</main>

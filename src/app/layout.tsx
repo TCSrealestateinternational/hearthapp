@@ -21,6 +21,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${manrope.variable} h-full antialiased`}>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#2B5797" />
+        <link rel="icon" href="/icon-192.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/icon-192.svg" />
+      </head>
       <body className="min-h-full flex flex-col font-sans">{children}</body>
     </html>
   );

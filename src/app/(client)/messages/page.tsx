@@ -12,7 +12,7 @@ import { MessageCircle } from "lucide-react";
 export default function MessagesPage() {
   const { user } = useAuth();
   const { brokerage } = useBrokerage();
-  const { messages, loading, send } = useMessages({
+  const { messages, loading, error, send } = useMessages({
     brokerageId: brokerage?.id || "",
     clientId: user?.id || "",
     currentUserId: user?.id || "",
@@ -34,6 +34,13 @@ export default function MessagesPage() {
         {loading ? (
           <div className="flex-1 flex items-center justify-center">
             <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full" />
+          </div>
+        ) : error ? (
+          <div className="flex-1 flex items-center justify-center">
+            <div className="text-center p-4">
+              <p className="text-red-600 font-medium">Unable to load messages</p>
+              <p className="text-sm text-text-secondary mt-1">Please try refreshing the page.</p>
+            </div>
           </div>
         ) : messages.length > 0 ? (
           <MessageThread
