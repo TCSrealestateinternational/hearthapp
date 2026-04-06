@@ -65,7 +65,6 @@ export default function MessagesPage() {
 
         <MessageInput
           onSend={(text) => send(text)}
-          disabled={!brokerage?.id || !user?.id}
         />
       </Card>
     </div>

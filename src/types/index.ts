@@ -218,27 +218,6 @@ export interface ChecklistState {
   updatedAt: Date;
 }
 
-// ── Emotional Check-in ────────────────────────────────────────
-
-export type Mood =
-  | "excited"
-  | "confident"
-  | "neutral"
-  | "anxious"
-  | "overwhelmed"
-  | "frustrated";
-
-export interface EmotionalLog {
-  id: string;
-  transactionId: string;
-  userId: string;
-  mood: Mood;
-  notes: string;
-  stage: string;
-  prompt: string;
-  createdAt: Date;
-}
-
 // ── Messaging ──────────────────────────────────────────────────
 
 export interface Message {
