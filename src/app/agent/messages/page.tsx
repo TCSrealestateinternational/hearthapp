@@ -24,7 +24,7 @@ export default function AgentMessagesPage() {
 
   const selectedClient = clients.find((c) => c.id === selectedClientId);
 
-  const { messages, error, send } = useMessages({
+  const { messages, error, sendError, send } = useMessages({
     brokerageId: brokerage?.id || "",
     clientId: selectedClientId || "",
     currentUserId: agentUser?.id || "",
@@ -91,6 +91,11 @@ export default function AgentMessagesPage() {
                   messages={messages}
                   currentUserId={agentUser?.id || ""}
                 />
+              )}
+              {sendError && (
+                <div className="px-4 py-2 bg-red-50 border-t border-red-200">
+                  <p className="text-sm text-red-600">Failed to send: {sendError}</p>
+                </div>
               )}
               <MessageInput
                 onSend={(text) => send(text)}

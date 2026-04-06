@@ -34,13 +34,15 @@ export function useMessages({
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [sendError, setSendError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!brokerageId || !clientId) {
-      setLoading(false);
+      // Keep loading true until we have valid params
       return;
     }
 
+    setLoading(true);
     setError(null);
 
     const q = query(
@@ -94,6 +96,7 @@ export function useMessages({
   const send = useCallback(
     async (text: string, fileUrl?: string, fileName?: string) => {
       if (!brokerageId || !currentUserId) return;
+      setSendError(null);
       const msg: Record<string, unknown> = {
         brokerageId,
         threadId: clientId,
@@ -104,7 +107,14 @@ export function useMessages({
       };
       if (fileUrl) msg.fileUrl = fileUrl;
       if (fileName) msg.fileName = fileName;
-      await sendMsg(msg as Parameters<typeof sendMsg>[0]);
+      try {
+        await sendMsg(msg as Parameters<typeof sendMsg>[0]);
+      } catch (err) {
+        console.error("Failed to send message:", err);
+        setSendError(
+          err instanceof Error ? err.message : "Failed to send message"
+        );
+      }
     },
     [brokerageId, clientId, currentUserId, senderName, senderRole]
   );
@@ -117,5 +127,5 @@ export function useMessages({
     (m) => m.senderId !== currentUserId && !m.readAt
   ).length;
 
-  return { messages, loading, error, send, markRead, unreadCount };
+  return { messages, loading, error, sendError, send, markRead, unreadCount };
 }

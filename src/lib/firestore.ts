@@ -331,11 +331,7 @@ export function subscribeToMessages(
   const q = query(
     collection(db, "messages"),
     where("brokerageId", "==", brokerageId),
-    where(
-      "transactionId",
-      "in",
-      [clientId] // We use clientId as a thread key
-    )
+    where("threadId", "==", clientId)
   );
   return onSnapshot(q, (snap) => {
     const msgs = snap.docs
@@ -356,7 +352,7 @@ export async function getMessages(
   const results = await queryDocuments<Message>(
     "messages",
     where("brokerageId", "==", brokerageId),
-    where("senderId", "in", [clientId])
+    where("threadId", "==", clientId)
   );
   return results.sort((a, b) => {
     const da = a.createdAt instanceof Date ? a.createdAt.getTime() : 0;

@@ -11,7 +11,7 @@ import { MessageCircle } from "lucide-react";
 export default function MessagesPage() {
   const { user } = useAuth();
   const { brokerage } = useBrokerage();
-  const { messages, loading, error, send } = useMessages({
+  const { messages, loading, error, sendError, send } = useMessages({
     brokerageId: brokerage?.id || "",
     clientId: user?.id || "",
     currentUserId: user?.id || "",
@@ -20,7 +20,7 @@ export default function MessagesPage() {
   });
 
   return (
-    <div className="max-w-2xl mx-auto flex flex-col h-[calc(100vh-8rem)] md:h-[calc(100vh-10rem)]">
+    <div className="max-w-2xl mx-auto flex flex-col h-[calc(100vh-8rem)] md:h-[calc(100vh-10rem)] pb-16 md:pb-0">
       <h1 className="text-xl font-bold text-text-primary mb-4">Messages</h1>
 
       <Card padding={false} className="flex-1 flex flex-col overflow-hidden">
@@ -55,8 +55,15 @@ export default function MessagesPage() {
           </div>
         )}
 
+        {sendError && (
+          <div className="px-4 py-2 bg-red-50 border-t border-red-200">
+            <p className="text-sm text-red-600">Failed to send: {sendError}</p>
+          </div>
+        )}
+
         <MessageInput
           onSend={(text) => send(text)}
+          disabled={!brokerage?.id || !user?.id}
         />
       </Card>
     </div>
