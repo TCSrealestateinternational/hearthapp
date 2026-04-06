@@ -4,7 +4,7 @@ import type { Property } from "@/types";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { AddressLink } from "@/components/shared/AddressLink";
-import { Star } from "lucide-react";
+import { ExternalLink, Star } from "lucide-react";
 
 interface PropertyCardProps {
   property: Property;
@@ -74,6 +74,18 @@ export function PropertyCard({ property, onClick }: PropertyCardProps) {
           />
         ))}
       </div>
+      {property.mlsUrl && (
+        <a
+          href={property.mlsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(e) => e.stopPropagation()}
+          className="inline-flex items-center gap-1 text-xs text-primary hover:underline mt-2"
+        >
+          <ExternalLink size={12} />
+          View Listing
+        </a>
+      )}
       {property.notes && (
         <p className="text-sm text-text-secondary mt-2 line-clamp-2">
           {property.notes}

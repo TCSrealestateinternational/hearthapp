@@ -9,7 +9,8 @@ import { PropertyCard } from "@/components/buyer/PropertyCard";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import type { Property, PropertyStatus } from "@/types";
-import { Plus, Search, SlidersHorizontal } from "lucide-react";
+import { parseListingUrl } from "@/lib/parseListingUrl";
+import { Link2, Plus, Search, SlidersHorizontal } from "lucide-react";
 
 export default function PropertiesPage() {
   const { user } = useAuth();
@@ -22,11 +23,37 @@ export default function PropertiesPage() {
   const { properties, addProperty } = useTransaction(buyingTx?.id || "");
 
   const [showAdd, setShowAdd] = useState(false);
+  const [urlInput, setUrlInput] = useState("");
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<PropertyStatus | "all">(
     "all"
   );
   const [sortBy, setSortBy] = useState<"price" | "rating" | "date">("date");
+
+  async function quickAddFromUrl() {
+    const trimmed = urlInput.trim();
+    if (!trimmed) return;
+    const parsed = parseListingUrl(trimmed);
+    await addProperty({
+      transactionId: buyingTx?.id || "",
+      address: parsed || trimmed,
+      city: "",
+      state: "",
+      zip: "",
+      price: 0,
+      beds: 0,
+      baths: 0,
+      sqft: 0,
+      status: "interested",
+      rating: 0,
+      notes: "",
+      pros: [],
+      cons: [],
+      photos: [],
+      mlsUrl: trimmed,
+    });
+    setUrlInput("");
+  }
 
   const filtered = properties
     .filter((p) => {
@@ -53,6 +80,28 @@ export default function PropertiesPage() {
         <Button variant="cta" size="sm" onClick={() => setShowAdd(true)}>
           <Plus size={16} />
           Add Property
+        </Button>
+      </div>
+
+      {/* Quick-add from MLS/Zillow link */}
+      <div className="flex gap-2">
+        <div className="flex-1 flex items-center gap-2 bg-surface border border-border rounded-lg px-3 py-2.5">
+          <Link2 size={16} className="text-text-secondary shrink-0" />
+          <input
+            value={urlInput}
+            onChange={(e) => setUrlInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && quickAddFromUrl()}
+            placeholder="Paste a Zillow or Realtor.com link to quick-add a property..."
+            className="flex-1 text-sm bg-transparent focus:outline-none text-text-primary placeholder:text-text-secondary"
+          />
+        </div>
+        <Button
+          variant="cta"
+          size="sm"
+          onClick={quickAddFromUrl}
+          disabled={!urlInput.trim()}
+        >
+          Add
         </Button>
       </div>
 
@@ -138,6 +187,7 @@ function AddPropertyModal({
   onClose: () => void;
   onSave: (data: Omit<Property, "id" | "createdAt" | "updatedAt">) => void;
 }) {
+  const [mlsUrl, setMlsUrl] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("KY");
@@ -146,6 +196,14 @@ function AddPropertyModal({
   const [beds, setBeds] = useState(3);
   const [baths, setBaths] = useState(2);
   const [sqft, setSqft] = useState(1500);
+
+  function handleUrlPaste(value: string) {
+    setMlsUrl(value);
+    if (!address) {
+      const parsed = parseListingUrl(value);
+      if (parsed) setAddress(parsed);
+    }
+  }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -165,8 +223,10 @@ function AddPropertyModal({
       pros: [],
       cons: [],
       photos: [],
+      mlsUrl: mlsUrl || undefined,
     });
     // Reset
+    setMlsUrl("");
     setAddress("");
     setCity("");
     setZip("");
@@ -176,6 +236,21 @@ function AddPropertyModal({
   return (
     <Modal open={open} onClose={onClose} title="Add Property">
       <form onSubmit={handleSubmit} className="space-y-3">
+        <div>
+          <label className="block text-sm font-medium text-text-primary mb-1">
+            MLS / Zillow Link
+          </label>
+          <div className="flex items-center gap-2 border border-border rounded-lg px-3 py-2 bg-surface">
+            <Link2 size={14} className="text-text-secondary shrink-0" />
+            <input
+              type="url"
+              value={mlsUrl}
+              onChange={(e) => handleUrlPaste(e.target.value)}
+              placeholder="Paste listing URL to auto-fill address..."
+              className="flex-1 text-sm bg-transparent focus:outline-none text-text-primary placeholder:text-text-secondary"
+            />
+          </div>
+        </div>
         <div>
           <label className="block text-sm font-medium text-text-primary mb-1">
             Address
