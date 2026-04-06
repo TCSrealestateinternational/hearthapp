@@ -36,9 +36,12 @@ export function useMessages({
   const [error, setError] = useState<string | null>(null);
   const [sendError, setSendError] = useState<string | null>(null);
 
+  const ready = Boolean(brokerageId && clientId);
+
   useEffect(() => {
     if (!brokerageId || !clientId) {
-      // Keep loading true until we have valid params
+      setMessages([]);
+      setLoading(false);
       return;
     }
 
@@ -127,5 +130,5 @@ export function useMessages({
     (m) => m.senderId !== currentUserId && !m.readAt
   ).length;
 
-  return { messages, loading, error, sendError, send, markRead, unreadCount };
+  return { messages, loading, ready, error, sendError, send, markRead, unreadCount };
 }

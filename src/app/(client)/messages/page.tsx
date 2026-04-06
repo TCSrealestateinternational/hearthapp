@@ -9,9 +9,9 @@ import { Card } from "@/components/ui/Card";
 import { MessageCircle } from "lucide-react";
 
 export default function MessagesPage() {
-  const { user } = useAuth();
-  const { brokerage } = useBrokerage();
-  const { messages, loading, error, sendError, send } = useMessages({
+  const { user, loading: authLoading } = useAuth();
+  const { brokerage, loading: brokerageLoading } = useBrokerage();
+  const { messages, loading, ready, error, sendError, send } = useMessages({
     brokerageId: brokerage?.id || "",
     clientId: user?.id || "",
     currentUserId: user?.id || "",
@@ -19,12 +19,14 @@ export default function MessagesPage() {
     senderName: user?.displayName || "",
   });
 
+  const depsLoading = authLoading || brokerageLoading || loading;
+
   return (
     <div className="max-w-2xl mx-auto flex flex-col h-[calc(100vh-8rem)] md:h-[calc(100vh-10rem)] pb-16 md:pb-0">
       <h1 className="text-xl font-bold text-text-primary mb-4">Messages</h1>
 
       <Card padding={false} className="flex-1 flex flex-col overflow-hidden">
-        {loading ? (
+        {depsLoading ? (
           <div className="flex-1 flex items-center justify-center">
             <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full" />
           </div>
