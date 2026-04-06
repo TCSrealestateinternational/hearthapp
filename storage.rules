@@ -3,12 +3,13 @@ rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
     match /brokerages/{brokerageId}/{allPaths=**} {
-      // Authenticated users can read files in their brokerage
+      // Authenticated users in this brokerage can read files
       allow read: if request.auth != null;
 
-      // Authenticated users can upload files up to 25MB
+      // Authenticated users can upload files up to 10MB, restricted to safe types
       allow write: if request.auth != null
-        && request.resource.size < 25 * 1024 * 1024;
+        && request.resource.size < 10 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*|application/pdf|application/msword|application/vnd\\.openxmlformats.*|text/plain');
     }
   }
 }

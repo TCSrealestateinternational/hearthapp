@@ -24,6 +24,13 @@ service cloud.firestore {
       return isAuth() && request.auth.uid == userId;
     }
 
+    // Check if user is the client on this transaction, or an agent in the same brokerage
+    function canAccessTransaction(transactionId) {
+      let tx = get(/databases/$(database)/documents/transactions/$(transactionId)).data;
+      return tx.clientId == request.auth.uid ||
+             ('agent' in getUserData().roles && getUserData().brokerageId == tx.brokerageId);
+    }
+
     // ── Brokerages ──
     match /brokerages/{brokerageId} {
       allow read: if isAuth();
@@ -34,21 +41,27 @@ service cloud.firestore {
     match /users/{userId} {
       allow read: if isAuth() && (
         request.auth.uid == userId ||
-        isAgent()
+        (isAgent() && resource.data.brokerageId == getUserData().brokerageId)
       );
       allow update: if isAuth() && request.auth.uid == userId;
-      allow create: if isAuth();
+      allow create: if isAuth() && (
+        request.auth.uid == userId ||
+        (isAgent() && request.resource.data.brokerageId == getUserData().brokerageId)
+      );
     }
 
     // ── Transactions (bridge between RE Tracker deals & Hearth views) ──
     match /transactions/{txId} {
       allow read: if isAuth() && (
-        isAgent() ||
-        resource.data.clientId == request.auth.uid
+        resource.data.clientId == request.auth.uid ||
+        (isAgent() && belongsToBrokerage(resource.data.brokerageId))
       );
-      allow create: if isAgent();
-      allow update: if isAgent();
-      allow delete: if isAgent();
+      allow create: if isAgent()
+        && belongsToBrokerage(request.resource.data.brokerageId);
+      allow update: if isAgent()
+        && belongsToBrokerage(resource.data.brokerageId);
+      allow delete: if isAgent()
+        && belongsToBrokerage(resource.data.brokerageId);
 
       // Milestones subcollection
       match /milestones/{mId} {
@@ -62,13 +75,19 @@ service cloud.firestore {
 
       // Cost estimates subcollection
       match /costEstimate/{id} {
-        allow read: if isAuth();
+        allow read: if isAuth() && (
+          isAgent() ||
+          get(/databases/$(database)/documents/transactions/$(txId)).data.clientId == request.auth.uid
+        );
         allow write: if isAgent();
       }
 
       // Decision log subcollection
       match /decisionLog/{id} {
-        allow read: if isAuth();
+        allow read: if isAuth() && (
+          isAgent() ||
+          get(/databases/$(database)/documents/transactions/$(txId)).data.clientId == request.auth.uid
+        );
         allow write: if isAgent();
       }
     }
@@ -114,26 +133,34 @@ service cloud.firestore {
 
     // ── Hearth collections ──
     match /properties/{propertyId} {
-      allow read, write: if isAuth();
+      allow read: if isAuth() && canAccessTransaction(resource.data.transactionId);
+      allow create: if isAuth() && canAccessTransaction(request.resource.data.transactionId);
+      allow update, delete: if isAuth() && canAccessTransaction(resource.data.transactionId);
     }
 
     match /financeScenarios/{scenarioId} {
-      allow read, write: if isAuth();
+      allow read: if isAuth() && canAccessTransaction(resource.data.transactionId);
+      allow create: if isAuth() && canAccessTransaction(request.resource.data.transactionId);
+      allow update, delete: if isAuth() && canAccessTransaction(resource.data.transactionId);
     }
 
     match /offers/{offerId} {
-      allow read: if isAuth();
-      allow write: if isAgent();
+      allow read: if isAuth() && canAccessTransaction(resource.data.transactionId);
+      allow create: if isAgent() && canAccessTransaction(request.resource.data.transactionId);
+      allow update: if isAgent() && canAccessTransaction(resource.data.transactionId);
     }
 
     match /listings/{listingId} {
-      allow read: if isAuth();
-      allow write: if isAgent();
+      allow read: if isAuth() && canAccessTransaction(resource.data.transactionId);
+      allow create: if isAgent() && canAccessTransaction(request.resource.data.transactionId);
+      allow update: if isAgent() && canAccessTransaction(resource.data.transactionId);
     }
 
     match /emotionalLogs/{logId} {
-      allow read: if isAuth();
-      allow create: if isAuth();
+      allow read: if isAuth() && canAccessTransaction(resource.data.transactionId);
+      allow create: if isAuth()
+        && request.resource.data.userId == request.auth.uid
+        && canAccessTransaction(request.resource.data.transactionId);
     }
 
     match /messages/{messageId} {
@@ -146,8 +173,10 @@ service cloud.firestore {
     }
 
     match /documents/{documentId} {
-      allow read: if isAuth();
-      allow create: if isAuth();
+      allow read: if isAuth() && belongsToBrokerage(resource.data.brokerageId);
+      allow create: if isAuth()
+        && request.resource.data.uploadedBy == request.auth.uid
+        && belongsToBrokerage(request.resource.data.brokerageId);
     }
 
     // ── Glossary ──
