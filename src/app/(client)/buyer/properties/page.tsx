@@ -74,9 +74,9 @@ export default function PropertiesPage() {
     });
 
   return (
-    <div className="max-w-4xl mx-auto space-y-4">
+    <div className="max-w-6xl mx-auto space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold text-text-primary">My Properties</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">My Properties</h1>
         <Button variant="cta" size="sm" onClick={() => setShowAdd(true)}>
           <Plus size={16} />
           Add Property
@@ -95,6 +95,7 @@ export default function PropertiesPage() {
             className="flex-1 text-sm bg-transparent focus:outline-none text-text-primary placeholder:text-text-secondary"
           />
         </div>
+
         <Button
           variant="cta"
           size="sm"
@@ -117,7 +118,7 @@ export default function PropertiesPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by address or city..."
-            className="w-full pl-9 pr-3 py-2 rounded-lg border border-border bg-surface text-text-primary text-sm"
+            className="w-full pl-9 pr-3 py-2 rounded-xl border border-border bg-surface text-text-primary text-sm"
           />
         </div>
         <select
@@ -125,7 +126,7 @@ export default function PropertiesPage() {
           onChange={(e) =>
             setStatusFilter(e.target.value as PropertyStatus | "all")
           }
-          className="px-3 py-2 rounded-lg border border-border bg-surface text-text-primary text-sm"
+          className="px-3 py-2 rounded-xl border border-border bg-surface text-text-primary text-sm"
         >
           <option value="all">All Statuses</option>
           <option value="interested">Interested</option>
@@ -137,7 +138,7 @@ export default function PropertiesPage() {
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-          className="px-3 py-2 rounded-lg border border-border bg-surface text-text-primary text-sm"
+          className="px-3 py-2 rounded-xl border border-border bg-surface text-text-primary text-sm"
         >
           <option value="date">Newest First</option>
           <option value="price">Highest Price</option>
@@ -147,7 +148,7 @@ export default function PropertiesPage() {
 
       {/* Property grid */}
       {filtered.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((property) => (
             <PropertyCard key={property.id} property={property} />
           ))}
@@ -240,7 +241,7 @@ function AddPropertyModal({
           <label className="block text-sm font-medium text-text-primary mb-1">
             MLS / Zillow Link
           </label>
-          <div className="flex items-center gap-2 border border-border rounded-lg px-3 py-2 bg-surface">
+          <div className="flex items-center gap-2 border border-border rounded-xl px-3 py-2 bg-surface">
             <Link2 size={14} className="text-text-secondary shrink-0" />
             <input
               type="url"
@@ -260,7 +261,7 @@ function AddPropertyModal({
             required
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-            className="w-full px-3 py-2 rounded-lg border border-border bg-surface text-text-primary"
+            className="w-full px-3 py-2 rounded-xl border border-border bg-surface text-text-primary"
           />
         </div>
         <div className="grid grid-cols-3 gap-2">
@@ -273,7 +274,7 @@ function AddPropertyModal({
               required
               value={city}
               onChange={(e) => setCity(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg border border-border bg-surface text-text-primary"
+              className="w-full px-3 py-2 rounded-xl border border-border bg-surface text-text-primary"
             />
           </div>
           <div>
@@ -284,7 +285,7 @@ function AddPropertyModal({
               type="text"
               value={state}
               onChange={(e) => setState(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg border border-border bg-surface text-text-primary"
+              className="w-full px-3 py-2 rounded-xl border border-border bg-surface text-text-primary"
             />
           </div>
           <div>
@@ -295,7 +296,7 @@ function AddPropertyModal({
               type="text"
               value={zip}
               onChange={(e) => setZip(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg border border-border bg-surface text-text-primary"
+              className="w-full px-3 py-2 rounded-xl border border-border bg-surface text-text-primary"
             />
           </div>
         </div>
@@ -308,7 +309,7 @@ function AddPropertyModal({
             required
             value={price || ""}
             onChange={(e) => setPrice(Number(e.target.value))}
-            className="w-full px-3 py-2 rounded-lg border border-border bg-surface text-text-primary"
+            className="w-full px-3 py-2 rounded-xl border border-border bg-surface text-text-primary"
           />
         </div>
         <div className="grid grid-cols-3 gap-2">
@@ -320,7 +321,7 @@ function AddPropertyModal({
               type="number"
               value={beds}
               onChange={(e) => setBeds(Number(e.target.value))}
-              className="w-full px-3 py-2 rounded-lg border border-border bg-surface text-text-primary"
+              className="w-full px-3 py-2 rounded-xl border border-border bg-surface text-text-primary"
             />
           </div>
           <div>
@@ -331,7 +332,7 @@ function AddPropertyModal({
               type="number"
               value={baths}
               onChange={(e) => setBaths(Number(e.target.value))}
-              className="w-full px-3 py-2 rounded-lg border border-border bg-surface text-text-primary"
+              className="w-full px-3 py-2 rounded-xl border border-border bg-surface text-text-primary"
             />
           </div>
           <div>
@@ -342,7 +343,7 @@ function AddPropertyModal({
               type="number"
               value={sqft}
               onChange={(e) => setSqft(Number(e.target.value))}
-              className="w-full px-3 py-2 rounded-lg border border-border bg-surface text-text-primary"
+              className="w-full px-3 py-2 rounded-xl border border-border bg-surface text-text-primary"
             />
           </div>
         </div>

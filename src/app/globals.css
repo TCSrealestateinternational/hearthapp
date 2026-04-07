@@ -14,6 +14,11 @@
   --color-success: #16A34A;
   --color-warning: #EAB308;
   --color-error: #DC2626;
+  --color-surface-container: #F5F4F1;
+  --color-surface-container-high: #EEEDEA;
+  --glass-bg: rgba(255,255,255,0.80);
+  --glass-blur: 20px;
+  --glass-border: rgba(255,255,255,0.50);
 }
 
 @theme inline {
@@ -30,6 +35,11 @@
   --color-success: var(--color-success);
   --color-warning: var(--color-warning);
   --color-error: var(--color-error);
+  --color-surface-container: var(--color-surface-container);
+  --color-surface-container-high: var(--color-surface-container-high);
+  --glass-bg: var(--glass-bg);
+  --glass-blur: var(--glass-blur);
+  --glass-border: var(--glass-border);
   --font-sans: var(--font-manrope);
 }
 

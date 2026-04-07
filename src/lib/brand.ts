@@ -14,6 +14,8 @@ const CSS_VAR_MAP: Record<keyof BrandTokens, string> = {
   success: "--color-success",
   warning: "--color-warning",
   error: "--color-error",
+  surfaceContainer: "--color-surface-container",
+  surfaceContainerHigh: "--color-surface-container-high",
 };
 
 export function applyBrandTokens(tokens: BrandTokens): void {
@@ -40,4 +42,6 @@ export const defaultTokens: BrandTokens = {
   success: "#16A34A",
   warning: "#EAB308",
   error: "#DC2626",
+  surfaceContainer: "#F5F4F1",
+  surfaceContainerHigh: "#EEEDEA",
 };

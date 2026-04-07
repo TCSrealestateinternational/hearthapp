@@ -34,13 +34,13 @@ export function PropertyCard({ property, onClick }: PropertyCardProps) {
           <img
             src={property.photos[0]}
             alt={property.address}
-            className="w-full h-40 object-cover rounded-t-xl"
+            className="w-full h-48 object-cover rounded-t-2xl"
           />
         </div>
       )}
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1 min-w-0">
-          <p className="font-semibold text-text-primary text-lg">
+          <p className="font-bold text-text-primary text-xl">
             ${property.price.toLocaleString()}
           </p>
           <div className="text-sm text-text-secondary mt-0.5">

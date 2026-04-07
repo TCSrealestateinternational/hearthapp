@@ -24,7 +24,7 @@ export default function FinancePage() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      <h1 className="text-xl font-bold text-text-primary">
+      <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">
         Finance Calculator
       </h1>
 

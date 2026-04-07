@@ -77,48 +77,44 @@ export function ClientNav({ role, unreadCount }: ClientNavProps) {
     { href: "/profile", label: "Profile", icon: <UserCircle size={20} /> },
   ];
 
-  // Mobile: show max 5 items — Home, primary tool, Messages, Checklist, Profile
+  // Mobile: 4 items — Dashboard, Properties/Listing, Messages, Profile
   const mobileItems: NavItem[] = [
-    items[0], // Home / Dashboard
+    items[0], // Dashboard
     items[1], // Properties (buyer) or Listing (seller)
     bottomItems[0], // Messages
-    items.find((i) => i.href.includes("checklist"))!, // Checklist
     bottomItems[1], // Profile
   ];
 
   return (
     <>
-      {/* Desktop sidebar */}
-      <nav className="hidden md:flex flex-col w-56 border-r border-border bg-surface p-4 gap-1">
-        <div className="mb-6">
-          <h2 className="text-lg font-bold text-primary">Hearth</h2>
-        </div>
+      {/* Desktop horizontal nav — embedded in header */}
+      <nav className="hidden md:flex items-center gap-1">
         {items.map((item) => (
-          <NavLink key={item.href} item={item} active={pathname === item.href} />
+          <DesktopNavLink key={item.href} item={item} active={pathname === item.href} />
         ))}
-        <div className="mt-auto pt-4 border-t border-border space-y-1">
-          {bottomItems.map((item) => (
-            <NavLink
-              key={item.href}
-              item={item}
-              active={pathname === item.href}
-              badge={item.href === "/messages" ? unreadCount : undefined}
-            />
-          ))}
-        </div>
+        {bottomItems.map((item) => (
+          <DesktopNavLink
+            key={item.href}
+            item={item}
+            active={pathname === item.href}
+            badge={item.href === "/messages" ? unreadCount : undefined}
+          />
+        ))}
       </nav>
 
-      {/* Mobile bottom tabs — 5 items max */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-border z-40 safe-area-bottom">
-        <div className="flex items-center justify-around px-1 py-1">
+      {/* Mobile bottom tabs — 4 items, glass effect */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--glass-bg)] backdrop-blur-xl border-t border-[var(--glass-border)] rounded-t-2xl z-40 safe-area-bottom">
+        <div className="flex items-center justify-around px-2 py-2">
           {mobileItems.map((item) => {
             const active = pathname === item.href;
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex flex-col items-center gap-0.5 min-w-0 px-1 py-1.5 text-[11px] relative ${
-                  active ? "text-primary" : "text-text-secondary"
+                className={`flex flex-col items-center gap-0.5 min-w-0 px-3 py-1.5 text-[11px] relative rounded-xl transition-colors ${
+                  active
+                    ? "text-primary bg-primary-light"
+                    : "text-text-secondary"
                 }`}
               >
                 {item.icon}
@@ -137,7 +133,7 @@ export function ClientNav({ role, unreadCount }: ClientNavProps) {
   );
 }
 
-function NavLink({
+function DesktopNavLink({
   item,
   active,
   badge,
@@ -149,7 +145,7 @@ function NavLink({
   return (
     <Link
       href={item.href}
-      className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors relative ${
+      className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-colors relative ${
         active
           ? "bg-primary-light text-primary"
           : "text-text-secondary hover:bg-primary-light/50 hover:text-text-primary"
@@ -158,7 +154,7 @@ function NavLink({
       {item.icon}
       {item.label}
       {badge && badge > 0 ? (
-        <span className="ml-auto bg-error text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+        <span className="bg-error text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
           {badge}
         </span>
       ) : null}

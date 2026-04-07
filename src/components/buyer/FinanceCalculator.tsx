@@ -115,7 +115,7 @@ export function FinanceCalculator({
     <div className="space-y-4">
       {/* Summary cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Card className="bg-primary text-white border-0">
+        <Card className="bg-primary text-white border-0 rounded-2xl">
           <p className="text-sm opacity-80">Estimated Monthly Payment</p>
           <p className="text-3xl font-bold mt-1">
             {formatDollars(calc.monthlyTotal)}
@@ -126,7 +126,7 @@ export function FinanceCalculator({
               ` + PMI ${formatDollars(calc.monthlyPMI)}`}
           </p>
         </Card>
-        <Card className="bg-secondary text-white border-0">
+        <Card className="bg-secondary text-white border-0 rounded-2xl">
           <p className="text-sm opacity-80">Cash to Close</p>
           <p className="text-3xl font-bold mt-1">
             {formatDollars(calc.cashToClose)}
@@ -198,7 +198,7 @@ export function FinanceCalculator({
               <select
                 value={loanType}
                 onChange={(e) => setLoanType(e.target.value as LoanType)}
-                className="w-full px-3 py-2 rounded-lg border border-border bg-surface text-text-primary"
+                className="w-full px-3 py-2 rounded-xl border border-border bg-surface text-text-primary"
               >
                 <option value="conventional">Conventional</option>
                 <option value="fha">FHA</option>
@@ -213,7 +213,7 @@ export function FinanceCalculator({
               <select
                 value={loanTermYears}
                 onChange={(e) => setLoanTermYears(Number(e.target.value))}
-                className="w-full px-3 py-2 rounded-lg border border-border bg-surface text-text-primary"
+                className="w-full px-3 py-2 rounded-xl border border-border bg-surface text-text-primary"
               >
                 <option value={30}>30 years</option>
                 <option value={20}>20 years</option>
@@ -223,7 +223,7 @@ export function FinanceCalculator({
           </div>
 
           {(loanType === "va" || loanType === "usda") && (
-            <p className="text-sm text-cta bg-cta/10 p-2 rounded-lg">
+            <p className="text-sm text-cta bg-cta/10 p-2 rounded-xl">
               Note: VA and USDA loans have specific eligibility requirements and
               may include a funding fee. Check with your lender for details.
             </p>
@@ -292,7 +292,7 @@ export function FinanceCalculator({
               </div>
 
               {/* Monthly breakdown */}
-              <div className="bg-primary-light rounded-lg p-4 space-y-2 text-sm">
+              <div className="bg-primary-light rounded-xl p-4 space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span className="text-text-secondary">Principal & Interest</span>
                   <span className="font-medium">{formatDollars(calc.monthlyPI)}</span>
@@ -343,7 +343,7 @@ export function FinanceCalculator({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder='e.g. "123 Main St - 20% down"'
-              className="w-full px-3 py-2 rounded-lg border border-border bg-surface text-text-primary"
+              className="w-full px-3 py-2 rounded-xl border border-border bg-surface text-text-primary"
             />
           </div>
           <Button
@@ -407,7 +407,7 @@ function InputField({
           min={min}
           max={max}
           step={step}
-          className={`w-full px-3 py-2 rounded-lg border border-border bg-surface text-text-primary ${
+          className={`w-full px-3 py-2 rounded-xl border border-border bg-surface text-text-primary ${
             prefix ? "pl-7" : ""
           } ${suffix ? "pr-7" : ""}`}
         />

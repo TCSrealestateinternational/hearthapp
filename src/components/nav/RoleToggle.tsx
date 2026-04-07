@@ -7,10 +7,10 @@ interface RoleToggleProps {
 
 export function RoleToggle({ activeRole, onToggle }: RoleToggleProps) {
   return (
-    <div className="inline-flex items-center bg-primary-light rounded-full p-0.5">
+    <div className="inline-flex items-center bg-primary-light rounded-full p-1">
       <button
         onClick={activeRole !== "buyer" ? onToggle : undefined}
-        className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+        className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${
           activeRole === "buyer"
             ? "bg-primary text-white"
             : "text-text-secondary hover:text-text-primary"
@@ -20,7 +20,7 @@ export function RoleToggle({ activeRole, onToggle }: RoleToggleProps) {
       </button>
       <button
         onClick={activeRole !== "seller" ? onToggle : undefined}
-        className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+        className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${
           activeRole === "seller"
             ? "bg-primary text-white"
             : "text-text-secondary hover:text-text-primary"

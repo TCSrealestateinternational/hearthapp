@@ -14,6 +14,8 @@ export interface BrandTokens {
   success: string;
   warning: string;
   error: string;
+  surfaceContainer?: string;
+  surfaceContainerHigh?: string;
 }
 
 export interface Brokerage {

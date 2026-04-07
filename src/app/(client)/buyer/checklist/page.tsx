@@ -67,8 +67,8 @@ export default function BuyerChecklistPage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-4">
-      <h1 className="text-xl font-bold text-text-primary">Buyer Checklist</h1>
+    <div className="max-w-5xl mx-auto space-y-4">
+      <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">Buyer Checklist</h1>
       <BuyerChecklist items={items} onToggle={handleToggle} />
     </div>
   );

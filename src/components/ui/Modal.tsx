@@ -34,14 +34,14 @@ export function Modal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div
-        className="absolute inset-0 bg-black/50"
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
         onClick={onClose}
         aria-hidden
       />
       <div
-        className={`relative bg-surface rounded-xl shadow-xl w-full ${maxWidth} max-h-[90vh] overflow-y-auto`}
+        className={`relative bg-surface rounded-2xl shadow-2xl w-full ${maxWidth} max-h-[90vh] overflow-y-auto`}
       >
-        <div className="sticky top-0 bg-surface flex items-center justify-between p-4 border-b border-border rounded-t-xl">
+        <div className="sticky top-0 bg-surface flex items-center justify-between p-4 border-b border-border rounded-t-2xl">
           <h2 className="text-lg font-semibold text-text-primary">{title}</h2>
           <button
             onClick={onClose}

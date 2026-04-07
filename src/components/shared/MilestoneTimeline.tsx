@@ -57,32 +57,32 @@ export function MilestoneTimeline({ transactionId }: MilestoneTimelineProps) {
   if (milestones.length === 0) {
     return (
       <div
-        className="rounded-xl border border-gray-200 bg-white p-8 text-center"
+        className="rounded-xl border border-border bg-surface p-8 text-center"
         role="status"
         aria-label="No milestones yet"
       >
-        <p className="text-sm text-gray-400">No milestones to show yet.</p>
+        <p className="text-sm text-text-secondary">No milestones to show yet.</p>
       </div>
     );
   }
 
   return (
     <div
-      className="rounded-xl border border-gray-200 bg-white p-6"
+      className="rounded-xl border border-border bg-surface p-6"
       role="region"
       aria-label="Transaction milestone timeline"
     >
       {/* Progress header */}
       <div className="mb-6 flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-gray-900">Your Progress</h3>
-        <span className="text-sm font-medium text-gray-500" aria-label={`${pct} percent complete`}>
+        <h3 className="text-lg font-semibold text-text-primary">Your Progress</h3>
+        <span className="text-sm font-medium text-text-secondary" aria-label={`${pct} percent complete`}>
           {completedCount}/{totalCount} ({pct}%)
         </span>
       </div>
 
       {/* Progress bar */}
       <div
-        className="mb-8 h-2 overflow-hidden rounded-full bg-gray-100"
+        className="mb-8 h-2 overflow-hidden rounded-full bg-surface-container"
         role="progressbar"
         aria-valuenow={pct}
         aria-valuemin={0}
@@ -90,7 +90,7 @@ export function MilestoneTimeline({ transactionId }: MilestoneTimelineProps) {
         aria-label="Overall milestone progress"
       >
         <div
-          className="h-full rounded-full bg-emerald-500 transition-all duration-500"
+          className="h-full rounded-full bg-success transition-all duration-500"
           style={{ width: `${pct}%` }}
         />
       </div>
@@ -103,7 +103,7 @@ export function MilestoneTimeline({ transactionId }: MilestoneTimelineProps) {
             <div key={stage} role="listitem">
               <h4
                 className={`mb-3 text-xs font-bold uppercase tracking-wider ${
-                  stageCompleted ? "text-emerald-600" : "text-gray-400"
+                  stageCompleted ? "text-success" : "text-text-secondary"
                 }`}
               >
                 {stage}
@@ -115,29 +115,29 @@ export function MilestoneTimeline({ transactionId }: MilestoneTimelineProps) {
                     <div
                       key={milestone.id}
                       className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-colors ${
-                        milestone.completed ? "bg-emerald-50" : "bg-gray-50"
-                      } ${isCelebrating ? "animate-pulse ring-2 ring-emerald-400" : ""}`}
+                        milestone.completed ? "bg-primary-light" : "bg-surface-container"
+                      } ${isCelebrating ? "animate-pulse ring-2 ring-success" : ""}`}
                       role="listitem"
                       aria-label={`${milestone.label}: ${milestone.completed ? "completed" : "pending"}`}
                     >
                       {milestone.completed ? (
                         <CheckCircle
                           size={18}
-                          className="shrink-0 text-emerald-500"
+                          className="shrink-0 text-success"
                           aria-hidden="true"
                         />
                       ) : (
                         <Circle
                           size={18}
-                          className="shrink-0 text-gray-300"
+                          className="shrink-0 text-border"
                           aria-hidden="true"
                         />
                       )}
                       <span
                         className={`text-sm ${
                           milestone.completed
-                            ? "font-medium text-emerald-700"
-                            : "text-gray-500"
+                            ? "font-medium text-primary"
+                            : "text-text-secondary"
                         }`}
                       >
                         {milestone.label}
@@ -145,7 +145,7 @@ export function MilestoneTimeline({ transactionId }: MilestoneTimelineProps) {
                       {isCelebrating && (
                         <PartyPopper
                           size={16}
-                          className="ml-auto shrink-0 text-amber-500"
+                          className="ml-auto shrink-0 text-cta"
                           aria-label="Celebration! This milestone was just completed."
                         />
                       )}

@@ -27,19 +27,15 @@ export function AgentNav() {
 
   return (
     <>
-      {/* Desktop sidebar */}
-      <nav className="hidden md:flex flex-col w-56 border-r border-border bg-surface p-4 gap-1">
-        <div className="mb-6">
-          <h2 className="text-lg font-bold text-primary">Hearth</h2>
-          <p className="text-xs text-text-secondary">Agent Portal</p>
-        </div>
+      {/* Desktop horizontal nav — embedded in header */}
+      <nav className="hidden md:flex items-center gap-1">
         {items.map((item) => {
           const active = pathname.startsWith(item.href);
           return (
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+              className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
                 active
                   ? "bg-primary-light text-primary"
                   : "text-text-secondary hover:bg-primary-light/50 hover:text-text-primary"
@@ -52,17 +48,19 @@ export function AgentNav() {
         })}
       </nav>
 
-      {/* Mobile bottom tabs */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-border z-40">
-        <div className="flex items-center justify-around px-2 py-1">
+      {/* Mobile bottom tabs — glass effect */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--glass-bg)] backdrop-blur-xl border-t border-[var(--glass-border)] rounded-t-2xl z-40">
+        <div className="flex items-center justify-around px-2 py-2">
           {items.map((item) => {
             const active = pathname.startsWith(item.href);
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex flex-col items-center gap-0.5 px-3 py-1.5 text-xs ${
-                  active ? "text-primary" : "text-text-secondary"
+                className={`flex flex-col items-center gap-0.5 px-3 py-1.5 text-xs rounded-xl transition-colors ${
+                  active
+                    ? "text-primary bg-primary-light"
+                    : "text-text-secondary"
                 }`}
               >
                 {item.icon}

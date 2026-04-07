@@ -49,7 +49,7 @@ export function FileUpload({
           const file = e.dataTransfer.files[0];
           if (file) handleFile(file);
         }}
-        className={`flex flex-col items-center justify-center gap-2 p-6 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${
+        className={`flex flex-col items-center justify-center gap-2 p-6 border-2 border-dashed rounded-xl cursor-pointer transition-colors ${
           dragOver
             ? "border-primary bg-primary-light"
             : "border-border hover:border-primary/50"

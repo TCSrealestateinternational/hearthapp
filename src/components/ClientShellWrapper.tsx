@@ -25,42 +25,40 @@ function ClientShell({ children }: { children: ReactNode }) {
   const { brokerage } = useBrokerage();
 
   return (
-    <div className="flex min-h-screen">
-      <ClientNav role={activeRole} unreadCount={0} />
-      <div className="flex-1 flex flex-col">
-        {/* Top bar */}
-        <header className="flex items-center justify-between px-4 py-3 border-b border-border bg-surface">
-          <div className="flex items-center gap-3">
-            <h1 className="text-lg font-bold text-primary md:hidden">
-              Hearth
-            </h1>
-            {isDual && (
-              <RoleToggle activeRole={activeRole} onToggle={toggleRole} />
-            )}
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="text-sm text-text-secondary hidden sm:inline">
-              {user?.displayName}
-            </span>
-            <button
-              onClick={signOut}
-              className="p-2 rounded-lg text-text-secondary hover:bg-primary-light transition-colors"
-              title="Sign out"
-            >
-              <LogOut size={18} />
-            </button>
-          </div>
-        </header>
-
-        <InstallPrompt />
-
-        {/* Main content */}
-        <main className="flex-1 p-4 sm:p-6 pb-20 md:pb-6">{children}</main>
-
-        {/* Footer - desktop only */}
-        <div className="hidden md:block">
-          <Footer brokerage={brokerage} />
+    <div className="flex flex-col min-h-screen">
+      {/* Sticky glass header */}
+      <header className="sticky top-0 z-30 flex items-center justify-between px-4 sm:px-8 py-3 bg-[var(--glass-bg)] backdrop-blur-xl border-b border-[var(--glass-border)]">
+        <div className="flex items-center gap-4">
+          <h1 className="text-lg font-bold text-primary">Hearth</h1>
+          <ClientNav role={activeRole} unreadCount={0} />
         </div>
+        <div className="flex items-center gap-3">
+          {isDual && (
+            <RoleToggle activeRole={activeRole} onToggle={toggleRole} />
+          )}
+          <span className="text-sm text-text-secondary hidden sm:inline">
+            {user?.displayName}
+          </span>
+          <button
+            onClick={signOut}
+            className="p-2 rounded-xl text-text-secondary hover:bg-primary-light transition-colors"
+            title="Sign out"
+          >
+            <LogOut size={18} />
+          </button>
+        </div>
+      </header>
+
+      <InstallPrompt />
+
+      {/* Main content */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-8 py-6 sm:py-8 pb-24 md:pb-8">
+        {children}
+      </main>
+
+      {/* Footer */}
+      <div className="hidden md:block">
+        <Footer brokerage={brokerage} />
       </div>
     </div>
   );
