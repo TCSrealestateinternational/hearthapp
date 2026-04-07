@@ -6,7 +6,7 @@ import { useMessages } from "@/hooks/useMessages";
 import { MessageThread } from "@/components/messaging/MessageThread";
 import { MessageInput } from "@/components/messaging/MessageInput";
 import { Card } from "@/components/ui/Card";
-import { MessageCircle, WifiOff } from "lucide-react";
+import { AlertTriangle, MessageCircle, WifiOff } from "lucide-react";
 
 export default function MessagesPage() {
   const { user, loading: authLoading } = useAuth();
@@ -20,6 +20,7 @@ export default function MessagesPage() {
   });
 
   const depsLoading = authLoading || brokerageLoading || loading;
+  const missingSetup = !depsLoading && (!brokerage?.id || !user?.id);
 
   return (
     <div className="max-w-2xl mx-auto flex flex-col h-[calc(100vh-8rem)] md:h-[calc(100vh-10rem)] pb-16 md:pb-0">
@@ -29,6 +30,18 @@ export default function MessagesPage() {
         {depsLoading ? (
           <div className="flex-1 flex items-center justify-center">
             <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full" />
+          </div>
+        ) : missingSetup ? (
+          <div className="flex-1 flex items-center justify-center">
+            <div className="text-center p-4">
+              <AlertTriangle size={40} className="mx-auto mb-3 text-warning" />
+              <p className="text-text-primary font-medium">Messaging not available</p>
+              <p className="text-sm text-text-secondary mt-1 max-w-xs">
+                {!brokerage?.id
+                  ? "Your brokerage account hasn't been set up yet. Please contact your agent."
+                  : "Your user profile couldn't be loaded. Please try logging out and back in."}
+              </p>
+            </div>
           </div>
         ) : error ? (
           <div className="flex-1 flex items-center justify-center">
@@ -76,7 +89,7 @@ export default function MessagesPage() {
           </div>
         )}
 
-        {!error && (
+        {!error && !missingSetup && (
           <MessageInput
             onSend={(text) => send(text)}
           />

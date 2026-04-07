@@ -118,7 +118,14 @@ export function useMessages({
 
   const send = useCallback(
     async (text: string, fileUrl?: string, fileName?: string) => {
-      if (!brokerageId || !currentUserId) return;
+      if (!brokerageId || !currentUserId) {
+        setSendError(
+          !brokerageId
+            ? "Brokerage not connected — messaging is unavailable."
+            : "Not signed in — please log in to send messages."
+        );
+        return;
+      }
       setSendError(null);
 
       // Optimistic: immediately show the message in the UI
