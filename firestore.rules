@@ -34,7 +34,8 @@ service cloud.firestore {
     // ── Brokerages ──
     match /brokerages/{brokerageId} {
       allow read: if isAuth();
-      allow write: if false; // Admin only via Firebase console
+      allow create: if isAuth(); // TEMP: open for setup — revert after seeding
+      allow update, delete: if false;
     }
 
     // ── Users (shared between RE Tracker & Hearth) ──
