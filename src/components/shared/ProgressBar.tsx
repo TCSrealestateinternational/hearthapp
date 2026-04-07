@@ -31,7 +31,7 @@ export function ProgressBar({
           )}
         </div>
       )}
-      <div className="w-full h-2 bg-primary-light rounded-full overflow-hidden">
+      <div className="w-full h-2.5 bg-surface-container rounded-full overflow-hidden">
         <div
           className="h-full bg-primary rounded-full transition-all duration-500"
           style={{ width: `${clamped}%` }}

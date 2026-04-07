@@ -38,25 +38,25 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
-      <h1 className="text-xl font-bold text-text-primary">Profile</h1>
+    <div className="max-w-3xl mx-auto space-y-6">
+      <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">Profile</h1>
 
       {/* Profile info */}
       <Card>
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-primary-light flex items-center justify-center">
+          <div className="w-20 h-20 rounded-full bg-primary-light flex items-center justify-center">
             {user?.avatarUrl ? (
               <img
                 src={user.avatarUrl}
                 alt={user.displayName}
-                className="w-16 h-16 rounded-full object-cover"
+                className="w-20 h-20 rounded-full object-cover"
               />
             ) : (
               <UserCircle size={32} className="text-primary" />
             )}
           </div>
           <div>
-            <p className="text-lg font-semibold text-text-primary">
+            <p className="text-xl font-bold text-text-primary">
               {user?.displayName}
             </p>
             <div className="flex items-center gap-1 text-sm text-text-secondary">

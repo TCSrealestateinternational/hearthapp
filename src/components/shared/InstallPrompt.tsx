@@ -9,7 +9,7 @@ export function InstallPrompt() {
   if (!visible) return null;
 
   return (
-    <div className="mx-4 mt-3 p-4 bg-surface border border-border rounded-xl shadow-sm">
+    <div className="mx-4 mt-3 p-4 bg-surface border border-border rounded-2xl shadow-sm">
       <div className="flex items-start gap-3">
         <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
           <Download size={20} className="text-white" />

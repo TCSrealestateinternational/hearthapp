@@ -32,7 +32,7 @@ export default function ComparePage() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-4">
-      <h1 className="text-xl font-bold text-text-primary">
+      <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">
         Compare Properties
       </h1>
 
@@ -42,7 +42,7 @@ export default function ComparePage() {
           <button
             key={p.id}
             onClick={() => toggleSelect(p.id)}
-            className={`px-3 py-1.5 rounded-full text-sm border transition-colors ${
+            className={`px-4 py-2 rounded-full text-sm border transition-colors ${
               selected.has(p.id)
                 ? "bg-primary text-white border-primary"
                 : "bg-surface text-text-primary border-border hover:border-primary"
@@ -60,7 +60,7 @@ export default function ComparePage() {
           </p>
         </Card>
       ) : (
-        <Card padding={false}>
+        <Card padding={false} className="rounded-2xl overflow-hidden">
           <div className="p-4 sm:p-6">
             <PropertyCompare properties={compareList} />
           </div>

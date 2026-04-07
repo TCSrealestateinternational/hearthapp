@@ -23,8 +23,8 @@ export default function MessagesPage() {
   const missingSetup = !depsLoading && (!brokerage?.id || !user?.id);
 
   return (
-    <div className="max-w-2xl mx-auto flex flex-col h-[calc(100vh-8rem)] md:h-[calc(100vh-10rem)] pb-16 md:pb-0">
-      <h1 className="text-xl font-bold text-text-primary mb-4">Messages</h1>
+    <div className="max-w-2xl mx-auto flex flex-col h-[calc(100vh-5rem)] md:h-[calc(100vh-6rem)] pb-16 md:pb-0">
+      <h1 className="text-2xl font-extrabold tracking-tight text-text-primary mb-4">Messages</h1>
 
       <Card padding={false} className="flex-1 flex flex-col overflow-hidden">
         {depsLoading ? (

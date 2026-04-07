@@ -16,7 +16,7 @@ export function ChecklistItemRow({ item, onToggle }: ChecklistItemRowProps) {
           e.preventDefault();
           onToggle(item.id, !item.completed);
         }}
-        className={`flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
+        className={`flex-shrink-0 w-6 h-6 rounded-md border-2 flex items-center justify-center transition-colors ${
           item.completed
             ? "bg-primary border-primary"
             : "border-border hover:border-primary"

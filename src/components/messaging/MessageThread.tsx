@@ -33,13 +33,13 @@ export function MessageThread({ messages, currentUserId }: MessageThreadProps) {
   }
 
   return (
-    <div className="flex-1 overflow-y-auto p-4 space-y-4">
+    <div className="flex-1 overflow-y-auto p-5 space-y-4">
       {grouped.map((group) => (
         <div key={group.date}>
-          <div className="flex items-center gap-3 my-4">
-            <div className="flex-1 h-px bg-border" />
-            <span className="text-xs text-text-secondary">{group.date}</span>
-            <div className="flex-1 h-px bg-border" />
+          <div className="flex items-center gap-3 my-3">
+            <div className="flex-1 h-px bg-border/60" />
+            <span className="text-[10px] text-text-secondary/70 uppercase tracking-wider">{group.date}</span>
+            <div className="flex-1 h-px bg-border/60" />
           </div>
           <div className="space-y-2">
             {group.messages.map((msg) => (

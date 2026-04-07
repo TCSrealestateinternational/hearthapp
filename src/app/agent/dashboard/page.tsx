@@ -45,7 +45,7 @@ export default function AgentDashboardPage() {
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-text-primary">
+        <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">
           Welcome back, {user?.displayName?.split(" ")[0]}
         </h1>
         <p className="text-text-secondary mt-1">
@@ -107,7 +107,7 @@ export default function AgentDashboardPage() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search clients..."
-                className="pl-9 pr-3 py-1.5 rounded-lg border border-border bg-background text-text-primary text-sm w-full sm:w-48"
+                className="pl-9 pr-3 py-1.5 rounded-xl border border-border bg-background text-text-primary text-sm w-full sm:w-48"
               />
             </div>
           </div>
@@ -124,7 +124,7 @@ export default function AgentDashboardPage() {
                 href={`/agent/clients/${client.id}`}
                 className="flex items-center gap-3 p-3 rounded-lg hover:bg-primary-light/50 transition-colors"
               >
-                <div className="w-10 h-10 shrink-0 rounded-full bg-primary-light flex items-center justify-center text-primary font-semibold text-sm">
+                <div className="w-10 h-10 shrink-0 rounded-xl bg-primary-light flex items-center justify-center text-primary font-semibold text-sm">
                   {client.displayName
                     .split(" ")
                     .map((n) => n[0])

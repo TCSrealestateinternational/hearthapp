@@ -28,7 +28,7 @@ export default function ListingPage() {
   if (!listing) {
     return (
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-xl font-bold text-text-primary mb-4">
+        <h1 className="text-2xl font-extrabold tracking-tight text-text-primary mb-4">
           My Listing
         </h1>
         <Card>
@@ -51,7 +51,7 @@ export default function ListingPage() {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h1 className="text-xl font-bold text-text-primary mb-4">My Listing</h1>
+      <h1 className="text-2xl font-extrabold tracking-tight text-text-primary mb-4">My Listing</h1>
       <ListingDetail listing={listing} />
     </div>
   );

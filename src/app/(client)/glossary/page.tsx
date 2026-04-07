@@ -44,15 +44,15 @@ export default function GlossaryPage() {
 
   if (loading) {
     return (
-      <div className="max-w-2xl mx-auto flex items-center justify-center py-20">
+      <div className="max-w-3xl mx-auto flex items-center justify-center py-20">
         <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full" />
       </div>
     );
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <h1 className="text-xl font-bold text-text-primary mb-4">
+    <div className="max-w-3xl mx-auto">
+      <h1 className="text-2xl font-extrabold tracking-tight text-text-primary mb-4">
         Real Estate Glossary
       </h1>
 
@@ -68,7 +68,7 @@ export default function GlossaryPage() {
           placeholder="Search terms..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-surface text-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+          className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-surface text-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
           aria-label="Search glossary terms"
         />
       </div>
@@ -98,7 +98,7 @@ export default function GlossaryPage() {
         <div className="space-y-6" role="list" aria-label="Glossary terms">
           {Array.from(grouped.entries()).map(([letter, letterTerms]) => (
             <div key={letter} role="listitem">
-              <h2 className="text-xs font-bold uppercase tracking-wider text-text-secondary mb-2 sticky top-0 bg-background py-1 z-10">
+              <h2 className="text-xs font-bold uppercase tracking-wider text-text-secondary mb-2 sticky top-0 bg-background py-1 z-10 border-l-2 border-primary pl-2">
                 {letter}
               </h2>
               <div className="space-y-2">

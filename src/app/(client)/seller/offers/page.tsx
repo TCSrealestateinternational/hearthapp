@@ -37,7 +37,7 @@ export default function OffersPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold text-text-primary">Offers</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">Offers</h1>
         <div className="inline-flex items-center bg-primary-light rounded-full p-0.5">
           <button
             onClick={() => setView("offers")}

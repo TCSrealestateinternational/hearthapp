@@ -90,14 +90,14 @@ export default function AgentClientDetailPage() {
       {/* Client header */}
       <Card>
         <div className="flex items-center gap-3 sm:gap-4">
-          <div className="w-12 h-12 sm:w-14 sm:h-14 shrink-0 rounded-full bg-primary-light flex items-center justify-center text-primary font-bold text-base sm:text-lg">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 shrink-0 rounded-xl bg-primary-light flex items-center justify-center text-primary font-bold text-base sm:text-lg">
             {client.displayName
               .split(" ")
               .map((n) => n[0])
               .join("")}
           </div>
           <div className="min-w-0 flex-1">
-            <h1 className="text-lg sm:text-xl font-bold text-text-primary truncate">
+            <h1 className="text-lg sm:text-xl font-extrabold tracking-tight text-text-primary truncate">
               {client.displayName}
             </h1>
             <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-sm text-text-secondary">
@@ -174,7 +174,7 @@ export default function AgentClientDetailPage() {
                     setClient({ ...client, driveFolderUrl: val || undefined });
                   }
                 }}
-                className="flex-1 px-3 py-2 rounded-lg border border-border bg-surface text-text-primary text-sm"
+                className="flex-1 px-3 py-2 rounded-xl border border-border bg-surface text-text-primary text-sm"
               />
               {client.driveFolderUrl && (
                 <a

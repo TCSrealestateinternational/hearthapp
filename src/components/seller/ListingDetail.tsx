@@ -32,8 +32,8 @@ export function ListingDetail({ listing }: ListingDetailProps) {
               key={i}
               src={photo}
               alt={`${listing.address} photo ${i + 1}`}
-              className={`rounded-lg object-cover w-full ${
-                i === 0 ? "col-span-2 h-48 sm:h-64" : "h-32"
+              className={`rounded-2xl object-cover w-full ${
+                i === 0 ? "col-span-2 h-56 sm:h-72" : "h-36"
               }`}
             />
           ))}

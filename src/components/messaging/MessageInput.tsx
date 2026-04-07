@@ -43,7 +43,7 @@ export function MessageInput({
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex items-end gap-2 p-4 border-t border-border bg-surface"
+      className="flex items-end gap-2 p-4 border-t border-border bg-surface-container"
     >
       {onFileSelect && (
         <>

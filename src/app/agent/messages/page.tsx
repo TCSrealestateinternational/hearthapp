@@ -34,9 +34,9 @@ export default function AgentMessagesPage() {
 
   return (
     <div className="max-w-5xl mx-auto">
-      <h1 className="text-xl font-bold text-text-primary mb-4">Messages</h1>
+      <h1 className="text-2xl font-extrabold tracking-tight text-text-primary mb-4">Messages</h1>
 
-      <div className="flex gap-4 h-[calc(100vh-12rem)]">
+      <div className="flex gap-4 h-[calc(100vh-8rem)]">
         {/* Thread list */}
         <Card
           padding={false}
