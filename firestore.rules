@@ -157,12 +157,23 @@ service cloud.firestore {
     }
 
     match /messages/{messageId} {
-      allow read: if isAuth() && belongsToBrokerage(resource.data.brokerageId);
+      // Client can read their own thread; agent can read any thread in their brokerage
+      allow read: if isAuth() && (
+        resource.data.threadId == request.auth.uid ||
+        ('agent' in getUserData().roles && getUserData().brokerageId == resource.data.brokerageId)
+      );
+      // Anyone can send as themselves
       allow create: if isAuth()
         && request.resource.data.senderId == request.auth.uid
-        && belongsToBrokerage(request.resource.data.brokerageId);
-      allow update: if isAuth()
-        && belongsToBrokerage(resource.data.brokerageId);
+        && (
+          request.resource.data.threadId == request.auth.uid ||
+          ('agent' in getUserData().roles && getUserData().brokerageId == request.resource.data.brokerageId)
+        );
+      // Read receipts — anyone in the thread can update
+      allow update: if isAuth() && (
+        resource.data.threadId == request.auth.uid ||
+        ('agent' in getUserData().roles && getUserData().brokerageId == resource.data.brokerageId)
+      );
     }
 
     match /documents/{documentId} {
