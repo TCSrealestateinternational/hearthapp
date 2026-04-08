@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { useBrokerage } from "@/hooks/useBrokerage";
 import { useTransactions, useTransaction } from "@/hooks/useTransaction";
@@ -10,6 +11,8 @@ import { Button } from "@/components/ui/Button";
 import { Trash2 } from "lucide-react";
 
 export default function FinancePage() {
+  const router = useRouter();
+  useEffect(() => { router.replace("/finance"); }, [router]);
   const { user } = useAuth();
   const { brokerage } = useBrokerage();
   const { transactions } = useTransactions(

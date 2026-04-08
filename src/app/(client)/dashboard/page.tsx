@@ -129,9 +129,9 @@ export default function DashboardPage() {
                 label="Properties"
               />
               <QuickAction
-                href="/buyer/finance"
+                href="/finance"
                 icon={<Calculator size={20} />}
-                label="Calculator"
+                label="Calculators"
               />
               <QuickAction
                 href="/buyer/checklist"
@@ -161,6 +161,11 @@ export default function DashboardPage() {
                 href="/seller/offers"
                 icon={<Calculator size={20} />}
                 label="Offers"
+              />
+              <QuickAction
+                href="/finance"
+                icon={<Calculator size={20} />}
+                label="Calculators"
               />
               <QuickAction
                 href="/seller/checklist"

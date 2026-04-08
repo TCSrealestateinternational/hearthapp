@@ -30,7 +30,7 @@ export function ClientNav({ role, unreadCount }: ClientNavProps) {
     { href: "/dashboard", label: "Home", icon: <LayoutDashboard size={20} /> },
     { href: "/buyer/properties", label: "Properties", icon: <Home size={20} /> },
     {
-      href: "/buyer/finance",
+      href: "/finance",
       label: "Finance",
       icon: <Calculator size={20} />,
     },
@@ -52,6 +52,11 @@ export function ClientNav({ role, unreadCount }: ClientNavProps) {
     {
       href: "/seller/offers",
       label: "Offers",
+      icon: <Calculator size={20} />,
+    },
+    {
+      href: "/finance",
+      label: "Finance",
       icon: <Calculator size={20} />,
     },
     {
