@@ -3,6 +3,8 @@
 import type { Offer } from "@/types";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
+import { GlossaryHighlight } from "@/components/ui/GlossaryTooltip";
+import { useGlossaryTerms } from "@/contexts/GlossaryContext";
 
 interface OfferCardProps {
   offer: Offer;
@@ -21,6 +23,7 @@ const statusVariant: Record<
 };
 
 export function OfferCard({ offer, isHighest = false }: OfferCardProps) {
+  const { terms } = useGlossaryTerms();
   return (
     <Card
       className={`${isHighest ? "ring-2 ring-cta" : ""}`}
@@ -65,14 +68,16 @@ export function OfferCard({ offer, isHighest = false }: OfferCardProps) {
           <div className="flex flex-wrap gap-1 mt-0.5">
             {offer.contingencies.map((c, i) => (
               <Badge key={i} variant="default">
-                {c}
+                <GlossaryHighlight text={c} terms={terms} />
               </Badge>
             ))}
           </div>
         </div>
       )}
       {offer.notes && (
-        <p className="text-sm text-text-secondary mt-2">{offer.notes}</p>
+        <p className="text-sm text-text-secondary mt-2">
+          <GlossaryHighlight text={offer.notes} terms={terms} />
+        </p>
       )}
     </Card>
   );

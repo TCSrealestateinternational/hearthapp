@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
+import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { useGlossary } from "@/hooks/useGlossary";
 import { useAuth } from "@/hooks/useAuth";
 import { useRole } from "@/hooks/useRole";
@@ -16,9 +18,31 @@ export default function GlossaryPage() {
   const { user } = useAuth();
   const { activeRole } = useRole(user);
   const { terms, loading } = useGlossary();
+  const searchParams = useSearchParams();
+  const linkedTermId = searchParams.get("term");
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [groupMode, setGroupMode] = useState<GroupMode>("category");
+  const scrolledRef = useRef(false);
+
+  // Auto-expand and scroll to a term when linked from elsewhere
+  useEffect(() => {
+    if (linkedTermId && !loading && terms.length > 0 && !scrolledRef.current) {
+      setExpandedId(linkedTermId);
+      scrolledRef.current = true;
+      // Wait for DOM to render the expanded card
+      requestAnimationFrame(() => {
+        const el = document.getElementById(`glossary-${linkedTermId}`);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else {
+          // Try scrolling to the card button instead
+          const btn = document.querySelector(`[aria-controls="glossary-${linkedTermId}"]`);
+          btn?.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      });
+    }
+  }, [linkedTermId, loading, terms]);
 
   const filtered = useMemo(() => {
     if (!searchQuery.trim()) return terms;
@@ -229,11 +253,33 @@ export default function GlossaryPage() {
 
                           {term.relatedTerms && term.relatedTerms.length > 0 && (
                             <div className="flex flex-wrap gap-1.5">
-                              {term.relatedTerms.map((related) => (
-                                <Badge key={related} variant="default">
-                                  {related}
-                                </Badge>
-                              ))}
+                              {term.relatedTerms.map((related) => {
+                                const relatedTerm = terms.find(
+                                  (t) => t.term.toLowerCase() === related.toLowerCase()
+                                );
+                                return relatedTerm ? (
+                                  <Link
+                                    key={related}
+                                    href={`/glossary?term=${encodeURIComponent(relatedTerm.id)}`}
+                                    onClick={() => {
+                                      setExpandedId(relatedTerm.id);
+                                      requestAnimationFrame(() => {
+                                        document
+                                          .querySelector(`[aria-controls="glossary-${relatedTerm.id}"]`)
+                                          ?.scrollIntoView({ behavior: "smooth", block: "center" });
+                                      });
+                                    }}
+                                  >
+                                    <Badge variant="default" className="hover:bg-primary/10 cursor-pointer">
+                                      {related}
+                                    </Badge>
+                                  </Link>
+                                ) : (
+                                  <Badge key={related} variant="default">
+                                    {related}
+                                  </Badge>
+                                );
+                              })}
                             </div>
                           )}
                         </div>

@@ -1,6 +1,8 @@
 "use client";
 
 import type { ChecklistItem } from "@/types";
+import { GlossaryHighlight } from "@/components/ui/GlossaryTooltip";
+import { useGlossaryTerms } from "@/contexts/GlossaryContext";
 import { Check } from "lucide-react";
 
 interface ChecklistItemRowProps {
@@ -9,6 +11,7 @@ interface ChecklistItemRowProps {
 }
 
 export function ChecklistItemRow({ item, onToggle }: ChecklistItemRowProps) {
+  const { terms } = useGlossaryTerms();
   return (
     <label className="flex items-center gap-3 py-2 px-2 rounded-lg hover:bg-primary-light/50 cursor-pointer transition-colors">
       <button
@@ -31,7 +34,7 @@ export function ChecklistItemRow({ item, onToggle }: ChecklistItemRowProps) {
             : "text-text-primary"
         }`}
       >
-        {item.label}
+        <GlossaryHighlight text={item.label} terms={terms} />
       </span>
     </label>
   );

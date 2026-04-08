@@ -5,6 +5,7 @@ import { AuthGuard } from "@/components/AuthGuard";
 import { ClientNav } from "@/components/nav/ClientNav";
 import { RoleToggle } from "@/components/nav/RoleToggle";
 import { Footer } from "@/components/Footer";
+import { GlossaryProvider } from "@/contexts/GlossaryContext";
 import { useAuth } from "@/hooks/useAuth";
 import { useRole } from "@/hooks/useRole";
 import { useBrokerage } from "@/hooks/useBrokerage";
@@ -14,7 +15,9 @@ import { InstallPrompt } from "@/components/shared/InstallPrompt";
 export function ClientShellWrapper({ children }: { children: ReactNode }) {
   return (
     <AuthGuard>
-      <ClientShell>{children}</ClientShell>
+      <GlossaryProvider>
+        <ClientShell>{children}</ClientShell>
+      </GlossaryProvider>
     </AuthGuard>
   );
 }

@@ -3,6 +3,8 @@
 import { useEffect, useState, useRef } from "react";
 import { CheckCircle, Circle, PartyPopper } from "lucide-react";
 import { subscribeToMilestones } from "@/lib/firestore";
+import { GlossaryHighlight } from "@/components/ui/GlossaryTooltip";
+import { useGlossaryTerms } from "@/contexts/GlossaryContext";
 import type { Milestone } from "@/types";
 
 interface MilestoneTimelineProps {
@@ -21,6 +23,7 @@ function groupByStage(milestones: Milestone[]): Map<string, Milestone[]> {
 }
 
 export function MilestoneTimeline({ transactionId }: MilestoneTimelineProps) {
+  const { terms } = useGlossaryTerms();
   const [milestones, setMilestones] = useState<Milestone[]>([]);
   const [celebrating, setCelebrating] = useState<string | null>(null);
   const prevCompletedRef = useRef<Set<string>>(new Set());
@@ -106,7 +109,7 @@ export function MilestoneTimeline({ transactionId }: MilestoneTimelineProps) {
                   stageCompleted ? "text-success" : "text-text-secondary"
                 }`}
               >
-                {stage}
+                <GlossaryHighlight text={stage} terms={terms} />
               </h4>
               <div className="space-y-2">
                 {items.map((milestone) => {
@@ -140,7 +143,7 @@ export function MilestoneTimeline({ transactionId }: MilestoneTimelineProps) {
                             : "text-text-secondary"
                         }`}
                       >
-                        {milestone.label}
+                        <GlossaryHighlight text={milestone.label} terms={terms} />
                       </span>
                       {isCelebrating && (
                         <PartyPopper

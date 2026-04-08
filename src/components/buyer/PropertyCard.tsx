@@ -3,7 +3,9 @@
 import type { Property } from "@/types";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
+import { GlossaryHighlight } from "@/components/ui/GlossaryTooltip";
 import { AddressLink } from "@/components/shared/AddressLink";
+import { useGlossaryTerms } from "@/contexts/GlossaryContext";
 import { ExternalLink, Star } from "lucide-react";
 
 interface PropertyCardProps {
@@ -24,6 +26,7 @@ const statusVariant: Record<
 };
 
 export function PropertyCard({ property, onClick }: PropertyCardProps) {
+  const { terms } = useGlossaryTerms();
   return (
     <Card
       className="cursor-pointer hover:border-primary/30 transition-colors"
@@ -88,7 +91,7 @@ export function PropertyCard({ property, onClick }: PropertyCardProps) {
       )}
       {property.notes && (
         <p className="text-sm text-text-secondary mt-2 line-clamp-2">
-          {property.notes}
+          <GlossaryHighlight text={property.notes} terms={terms} />
         </p>
       )}
     </Card>

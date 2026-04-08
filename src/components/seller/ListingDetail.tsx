@@ -3,7 +3,9 @@
 import type { Listing } from "@/types";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
+import { GlossaryHighlight } from "@/components/ui/GlossaryTooltip";
 import { AddressLink } from "@/components/shared/AddressLink";
+import { useGlossaryTerms } from "@/contexts/GlossaryContext";
 import { Calendar } from "lucide-react";
 
 interface ListingDetailProps {
@@ -22,6 +24,7 @@ const statusVariant: Record<
 };
 
 export function ListingDetail({ listing }: ListingDetailProps) {
+  const { terms } = useGlossaryTerms();
   return (
     <div className="space-y-4">
       {/* Photos */}
@@ -71,7 +74,7 @@ export function ListingDetail({ listing }: ListingDetailProps) {
         </div>
         {listing.description && (
           <p className="text-sm text-text-primary mt-3">
-            {listing.description}
+            <GlossaryHighlight text={listing.description} terms={terms} />
           </p>
         )}
       </Card>
@@ -93,7 +96,7 @@ export function ListingDetail({ listing }: ListingDetailProps) {
                   </p>
                   {showing.feedback && (
                     <p className="text-sm text-text-secondary mt-0.5">
-                      {showing.feedback}
+                      <GlossaryHighlight text={showing.feedback} terms={terms} />
                     </p>
                   )}
                 </div>
@@ -115,7 +118,7 @@ export function ListingDetail({ listing }: ListingDetailProps) {
                   {entry.date}
                 </span>
                 <span className="text-sm text-text-primary">
-                  {entry.event}
+                  <GlossaryHighlight text={entry.event} terms={terms} />
                 </span>
               </div>
             ))}

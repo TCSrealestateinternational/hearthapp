@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { createPortal } from "react-dom";
+import Link from "next/link";
 import type { GlossaryTerm } from "@/types";
 
 // ── Standalone tooltip shown on hover ────────────────────────
@@ -48,12 +49,15 @@ function Tooltip({ term, anchorRect }: TooltipProps) {
       <p className="text-xs text-text-secondary leading-relaxed">
         {term.plainDefinition}
       </p>
+      <p className="text-[10px] text-text-secondary/60 mt-1.5">
+        Tap to see full definition
+      </p>
     </div>,
     document.body
   );
 }
 
-// ── Highlighted term span ────────────────────────────────────
+// ── Highlighted term as clickable link ───────────────────────
 
 interface HighlightedTermProps {
   text: string;
@@ -62,7 +66,7 @@ interface HighlightedTermProps {
 
 function HighlightedTerm({ text, term }: HighlightedTermProps) {
   const [hovered, setHovered] = useState(false);
-  const spanRef = useRef<HTMLSpanElement>(null);
+  const spanRef = useRef<HTMLAnchorElement>(null);
   const [rect, setRect] = useState<DOMRect | null>(null);
 
   const handleEnter = useCallback(() => {
@@ -78,17 +82,17 @@ function HighlightedTerm({ text, term }: HighlightedTermProps) {
 
   return (
     <>
-      <span
+      <Link
         ref={spanRef}
+        href={`/glossary?term=${encodeURIComponent(term.id)}`}
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
         onFocus={handleEnter}
         onBlur={handleLeave}
-        tabIndex={0}
-        className="underline decoration-primary/40 decoration-dotted underline-offset-2 cursor-help transition-colors hover:text-primary hover:decoration-primary"
+        className="underline decoration-primary/40 decoration-dotted underline-offset-2 cursor-pointer transition-colors hover:text-primary hover:decoration-primary"
       >
         {text}
-      </span>
+      </Link>
       {hovered && rect && <Tooltip term={term} anchorRect={rect} />}
     </>
   );
@@ -106,8 +110,9 @@ interface GlossaryHighlightProps {
 }
 
 /**
- * Renders text with glossary terms highlighted and hoverable.
- * Each term gets a dotted underline; hovering shows the definition.
+ * Renders text with glossary terms highlighted and clickable.
+ * Each matched term gets a dotted underline; hovering shows a preview tooltip,
+ * clicking navigates to the glossary page with the full definition.
  */
 export function GlossaryHighlight({
   text,
