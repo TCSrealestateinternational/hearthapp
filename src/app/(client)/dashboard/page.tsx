@@ -17,6 +17,10 @@ import {
   MessageCircle,
   ArrowRight,
   BookOpen,
+  Clock,
+  FileText,
+  Search,
+  CircleDot,
 } from "lucide-react";
 
 export default function DashboardPage() {
@@ -70,17 +74,7 @@ export default function DashboardPage() {
               </Card>
             ))
           ) : (
-            <Card variant="elevated">
-              <div className="text-center py-8">
-                <p className="text-text-secondary">
-                  No active {activeRole === "buyer" ? "buying" : "selling"}{" "}
-                  transactions yet.
-                </p>
-                <p className="text-sm text-text-secondary mt-1">
-                  Your agent will set up your transaction when you are ready.
-                </p>
-              </div>
-            </Card>
+            <GettingStarted role={activeRole} agentName={brokerage?.agentName} />
           )}
         </div>
 
@@ -187,6 +181,115 @@ export default function DashboardPage() {
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+function GettingStarted({
+  role,
+  agentName,
+}: {
+  role: "buyer" | "seller" | undefined;
+  agentName: string | undefined;
+}) {
+  const agent = agentName?.split(" ")[0] || "Your agent";
+  const isBuyer = role === "buyer" || !role;
+
+  const buyerSteps = [
+    {
+      icon: <FileText size={18} />,
+      title: "Get pre-approved",
+      detail: `${agent} may ask for your pre-approval letter so you're ready to make offers.`,
+    },
+    {
+      icon: <Search size={18} />,
+      title: "Share your preferences",
+      detail:
+        "Let your agent know your price range, must-haves, and preferred neighborhoods.",
+    },
+    {
+      icon: <Home size={18} />,
+      title: "Browse properties",
+      detail:
+        "Start tracking homes you like. You can save and compare them here once your search begins.",
+    },
+    {
+      icon: <BookOpen size={18} />,
+      title: "Learn the lingo",
+      detail:
+        "Check out the Glossary to get comfortable with real estate terms before showings start.",
+    },
+  ];
+
+  const sellerSteps = [
+    {
+      icon: <FileText size={18} />,
+      title: "Gather your documents",
+      detail: `${agent} may need your deed, survey, or HOA docs to prepare your listing.`,
+    },
+    {
+      icon: <Home size={18} />,
+      title: "Prep your home",
+      detail:
+        "Small repairs and decluttering go a long way. Your agent can advise on what matters most.",
+    },
+    {
+      icon: <Calculator size={18} />,
+      title: "Understand your numbers",
+      detail:
+        "Use the calculators to estimate your net proceeds and closing costs.",
+    },
+    {
+      icon: <BookOpen size={18} />,
+      title: "Learn the lingo",
+      detail:
+        "Check out the Glossary so you feel confident reviewing offers and contracts.",
+    },
+  ];
+
+  const steps = isBuyer ? buyerSteps : sellerSteps;
+
+  return (
+    <div className="space-y-4">
+      <Card variant="elevated">
+        <div className="flex items-center gap-3 mb-1">
+          <Clock size={20} className="text-cta" />
+          <p className="text-lg font-bold text-text-primary">
+            Waiting on your transaction
+          </p>
+        </div>
+        <p className="text-sm text-text-secondary">
+          {agent} hasn&apos;t started your {isBuyer ? "buying" : "selling"}{" "}
+          transaction yet. In the meantime, here&apos;s how to get ready:
+        </p>
+      </Card>
+
+      {steps.map((step, i) => (
+        <Card key={i} variant="container" className="flex items-start gap-4">
+          <span className="mt-0.5 p-2 rounded-xl bg-primary-light text-primary shrink-0">
+            {step.icon}
+          </span>
+          <div>
+            <div className="flex items-center gap-2">
+              <CircleDot size={14} className="text-text-secondary" />
+              <p className="font-semibold text-text-primary">{step.title}</p>
+            </div>
+            <p className="text-sm text-text-secondary mt-0.5">{step.detail}</p>
+          </div>
+        </Card>
+      ))}
+
+      <Card variant="container" className="text-center py-6">
+        <p className="text-sm text-text-secondary">
+          Have questions? Send {agent} a message anytime.
+        </p>
+        <Link href="/messages" className="inline-block mt-3">
+          <Button variant="cta" size="sm">
+            <MessageCircle size={16} />
+            Message {agent}
+          </Button>
+        </Link>
+      </Card>
     </div>
   );
 }
