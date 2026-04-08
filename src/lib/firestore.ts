@@ -88,6 +88,10 @@ async function removeDocument(path: string, id: string): Promise<void> {
 
 // ── Brokerage ──────────────────────────────────────────────────
 
+export async function getBrokerage(id: string): Promise<Brokerage | null> {
+  return getDocument<Brokerage>("brokerages", id);
+}
+
 export async function getBrokerageBySlug(
   slug: string
 ): Promise<Brokerage | null> {
@@ -96,6 +100,21 @@ export async function getBrokerageBySlug(
     where("slug", "==", slug)
   );
   return results[0] ?? null;
+}
+
+export async function createBrokerage(
+  data: Omit<Brokerage, "createdAt"> & { id: string }
+): Promise<string> {
+  const { id, ...rest } = data;
+  await setDoc(doc(db, "brokerages", id), {
+    ...rest,
+    createdAt: serverTimestamp(),
+  });
+  return id;
+}
+
+export function generateId(collectionName: string): string {
+  return doc(collection(db, collectionName)).id;
 }
 
 // ── Users ──────────────────────────────────────────────────────

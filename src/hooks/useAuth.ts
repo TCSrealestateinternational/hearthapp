@@ -48,10 +48,20 @@ export function useAuth() {
     return userData;
   }
 
+  async function refreshUser() {
+    const fbUser = auth.currentUser;
+    if (fbUser) {
+      const userData = await getUser(fbUser.uid);
+      setState({ firebaseUser: fbUser, user: userData, loading: false });
+      return userData;
+    }
+    return null;
+  }
+
   async function signOut() {
     await fbSignOut(auth);
     setState({ firebaseUser: null, user: null, loading: false });
   }
 
-  return { ...state, login, signOut };
+  return { ...state, login, refreshUser, signOut };
 }

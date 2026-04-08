@@ -128,8 +128,18 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <p className="text-center text-xs text-text-secondary mt-8">
-            Your agent will set up your account.
+          <p className="text-center text-sm text-text-secondary mt-8">
+            Are you an agent?{" "}
+            <a
+              href="/signup/agent"
+              className="font-semibold text-primary hover:underline"
+            >
+              Create your account
+            </a>
+          </p>
+
+          <p className="text-center text-xs text-text-secondary mt-3">
+            Clients: your agent will set up your account.
             <br />
             Contact them if you need access.
           </p>
