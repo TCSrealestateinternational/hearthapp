@@ -284,10 +284,32 @@ export interface Milestone {
 
 // ── Glossary ──────────────────────────────────────────────────
 
+export type GlossaryCategory =
+  | "Pre-Offer & Market Analysis"
+  | "Offer & Acceptance"
+  | "Property Inspection & Appraisal"
+  | "Financing & Mortgage"
+  | "Title & Ownership"
+  | "Closing & Settlement"
+  | "Contingencies"
+  | "Property Types & Structures"
+  | "Property Features & Condition"
+  | "Special Assessments & Fees"
+  | "Investment-Specific Terms"
+  | "Land & Farm-Specific"
+  | "New Construction"
+  | "Taxes & Financial Aspects"
+  | "Legal & Administrative"
+  | "Issues & Problems"
+  | "Communication & Timelines"
+  | "Post-Closing"
+  | "General";
+
 export interface GlossaryTerm {
   id: string;
   term: string;
   plainDefinition: string;
+  category?: GlossaryCategory;
   buyerContext?: string;
   sellerContext?: string;
   aslVideoUrl?: string;

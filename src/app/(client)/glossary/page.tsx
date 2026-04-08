@@ -4,10 +4,13 @@ import { useState, useMemo } from "react";
 import { useGlossary } from "@/hooks/useGlossary";
 import { useAuth } from "@/hooks/useAuth";
 import { useRole } from "@/hooks/useRole";
+import { CATEGORY_ORDER } from "@/data/defaultGlossaryTerms";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
-import { Search, ChevronDown, ChevronUp, BookOpen } from "lucide-react";
-import type { GlossaryTerm } from "@/types";
+import { Search, ChevronDown, ChevronUp, BookOpen, Layers } from "lucide-react";
+import type { GlossaryTerm, GlossaryCategory } from "@/types";
+
+type GroupMode = "category" | "alpha";
 
 export default function GlossaryPage() {
   const { user } = useAuth();
@@ -15,6 +18,7 @@ export default function GlossaryPage() {
   const { terms, loading } = useGlossary();
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [groupMode, setGroupMode] = useState<GroupMode>("category");
 
   const filtered = useMemo(() => {
     if (!searchQuery.trim()) return terms;
@@ -26,8 +30,35 @@ export default function GlossaryPage() {
     );
   }, [terms, searchQuery]);
 
+  // Group by category
+  const groupedByCategory = useMemo(() => {
+    const groups = new Map<string, GlossaryTerm[]>();
+    for (const term of filtered) {
+      const cat = term.category || "General";
+      const existing = groups.get(cat) ?? [];
+      existing.push(term);
+      groups.set(cat, existing);
+    }
+
+    // Sort by CATEGORY_ORDER
+    const sorted = new Map<string, GlossaryTerm[]>();
+    for (const cat of CATEGORY_ORDER) {
+      const items = groups.get(cat);
+      if (items && items.length > 0) {
+        sorted.set(cat, items);
+      }
+    }
+    // Any remaining categories not in CATEGORY_ORDER
+    for (const [cat, items] of groups) {
+      if (!sorted.has(cat)) {
+        sorted.set(cat, items);
+      }
+    }
+    return sorted;
+  }, [filtered]);
+
   // Group alphabetically
-  const grouped = useMemo(() => {
+  const groupedAlpha = useMemo(() => {
     const groups = new Map<string, GlossaryTerm[]>();
     for (const term of filtered) {
       const letter = term.term[0]?.toUpperCase() || "#";
@@ -35,8 +66,10 @@ export default function GlossaryPage() {
       existing.push(term);
       groups.set(letter, existing);
     }
-    return groups;
+    return new Map([...groups.entries()].sort(([a], [b]) => a.localeCompare(b)));
   }, [filtered]);
+
+  const grouped = groupMode === "category" ? groupedByCategory : groupedAlpha;
 
   function toggle(id: string) {
     setExpandedId((prev) => (prev === id ? null : id));
@@ -52,9 +85,28 @@ export default function GlossaryPage() {
 
   return (
     <div className="max-w-3xl mx-auto">
-      <h1 className="text-2xl font-extrabold tracking-tight text-text-primary mb-4">
-        Real Estate Glossary
-      </h1>
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">
+          Real Estate Glossary
+        </h1>
+
+        {/* Group toggle */}
+        <button
+          onClick={() =>
+            setGroupMode((m) => (m === "category" ? "alpha" : "category"))
+          }
+          className="flex items-center gap-1.5 text-xs font-medium text-text-secondary hover:text-primary transition-colors px-3 py-1.5 rounded-lg border border-border hover:border-primary/30"
+          aria-label={`Group by ${groupMode === "category" ? "alphabet" : "category"}`}
+        >
+          <Layers size={14} />
+          {groupMode === "category" ? "A-Z" : "By Topic"}
+        </button>
+      </div>
+
+      <p className="text-sm text-text-secondary mb-6">
+        Real estate transaction terms defined for average buyers &amp; sellers.
+        Tap any term to learn more.
+      </p>
 
       {/* Search */}
       <div className="relative mb-6">
@@ -72,6 +124,12 @@ export default function GlossaryPage() {
           aria-label="Search glossary terms"
         />
       </div>
+
+      {/* Term count */}
+      <p className="text-xs text-text-secondary mb-4">
+        {filtered.length} term{filtered.length !== 1 ? "s" : ""}
+        {searchQuery.trim() ? ` matching "${searchQuery}"` : ""}
+      </p>
 
       {filtered.length === 0 ? (
         <Card>
@@ -95,14 +153,17 @@ export default function GlossaryPage() {
           </div>
         </Card>
       ) : (
-        <div className="space-y-6" role="list" aria-label="Glossary terms">
-          {Array.from(grouped.entries()).map(([letter, letterTerms]) => (
-            <div key={letter} role="listitem">
+        <div className="space-y-8" role="list" aria-label="Glossary terms">
+          {Array.from(grouped.entries()).map(([group, groupTerms]) => (
+            <div key={group} role="listitem">
               <h2 className="text-xs font-bold uppercase tracking-wider text-text-secondary mb-2 sticky top-0 bg-background py-1 z-10 border-l-2 border-primary pl-2">
-                {letter}
+                {group}
+                <span className="ml-2 font-normal text-text-secondary/60">
+                  ({groupTerms.length})
+                </span>
               </h2>
               <div className="space-y-2">
-                {letterTerms.map((term) => {
+                {groupTerms.map((term) => {
                   const isExpanded = expandedId === term.id;
                   const roleContext =
                     activeRole === "buyer"
