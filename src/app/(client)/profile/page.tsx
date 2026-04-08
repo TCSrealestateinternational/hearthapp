@@ -8,10 +8,10 @@ import { exportClientPDF } from "@/lib/exportPdf";
 import { Card, CardTitle } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { DriveLink } from "@/components/shared/DriveLink";
-import { UserCircle, Mail, Phone, Download } from "lucide-react";
+import { UserCircle, Mail, Phone, Download, LogOut } from "lucide-react";
 
 export default function ProfilePage() {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const { brokerage } = useBrokerage();
   const [downloading, setDownloading] = useState(false);
 
@@ -110,6 +110,16 @@ export default function ProfilePage() {
           </div>
         </div>
       )}
+
+      {/* Sign out */}
+      <Button
+        variant="secondary"
+        onClick={signOut}
+        className="flex items-center gap-2 text-red-600 border-red-200 hover:bg-red-50"
+      >
+        <LogOut size={16} />
+        Sign Out
+      </Button>
     </div>
   );
 }
