@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   Users,
   MessageCircle,
+  UserCircle,
 } from "lucide-react";
 
 const items = [
@@ -19,6 +20,11 @@ const items = [
     href: "/agent/messages",
     label: "Messages",
     icon: <MessageCircle size={20} />,
+  },
+  {
+    href: "/agent/profile",
+    label: "Profile",
+    icon: <UserCircle size={20} />,
   },
 ];
 

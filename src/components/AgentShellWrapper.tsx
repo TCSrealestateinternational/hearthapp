@@ -5,7 +5,6 @@ import { AuthGuard } from "@/components/AuthGuard";
 import { AgentNav } from "@/components/nav/AgentNav";
 import { useAuth } from "@/hooks/useAuth";
 import { useBrokerage } from "@/hooks/useBrokerage";
-import { LogOut } from "lucide-react";
 import { InstallPrompt } from "@/components/shared/InstallPrompt";
 
 export function AgentShellWrapper({ children }: { children: ReactNode }) {
@@ -17,7 +16,7 @@ export function AgentShellWrapper({ children }: { children: ReactNode }) {
 }
 
 function AgentShell({ children }: { children: ReactNode }) {
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   useBrokerage();
 
   return (
@@ -31,18 +30,9 @@ function AgentShell({ children }: { children: ReactNode }) {
           </div>
           <AgentNav />
         </div>
-        <div className="flex items-center gap-3">
-          <span className="text-sm text-text-secondary hidden sm:inline">
-            {user?.displayName}
-          </span>
-          <button
-            onClick={signOut}
-            className="p-2 rounded-xl text-text-secondary hover:bg-primary-light transition-colors"
-            title="Sign out"
-          >
-            <LogOut size={18} />
-          </button>
-        </div>
+        <span className="text-sm text-text-secondary hidden sm:inline">
+          {user?.displayName}
+        </span>
       </header>
 
       <InstallPrompt />

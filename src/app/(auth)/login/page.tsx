@@ -46,7 +46,7 @@ export default function LoginPage() {
       className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat p-4"
       style={{
         backgroundImage:
-          "linear-gradient(to bottom, rgba(47,82,51,0.45), rgba(26,60,94,0.55)), url('/images/house-bg.jpg')",
+          "linear-gradient(to bottom, rgba(47,82,51,0.45), rgba(26,60,94,0.55)), url('/images/house-bg.png')",
       }}
     >
       {/* Frosted glass card */}
