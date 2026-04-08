@@ -123,209 +123,200 @@ export default function AgentSignupPage() {
     "w-full px-4 py-3 rounded-xl border border-border bg-surface text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/50";
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left panel — desktop only, editorial gradient */}
-      <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-primary to-secondary flex-col justify-center px-12 lg:px-16">
-        <h2 className="text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
-          Grow your
-          <br />
-          brokerage.
-        </h2>
-        <p className="mt-4 text-lg text-white/70 max-w-md">
-          Create your Hearth account, invite clients, and manage transactions —
-          all from one dashboard.
-        </p>
-      </div>
-
-      {/* Right panel — form */}
-      <div className="flex-1 flex items-center justify-center p-6 sm:p-8">
-        <div className="w-full max-w-sm">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-extrabold tracking-tight text-text-primary">
-              Agent Sign Up
-            </h1>
-            <p className="text-text-secondary mt-2">
-              Create your brokerage account
-            </p>
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Name */}
-            <div>
-              <label
-                htmlFor="displayName"
-                className="block text-sm font-semibold text-text-primary mb-1.5"
-              >
-                Full Name
-              </label>
-              <input
-                id="displayName"
-                type="text"
-                required
-                value={form.displayName}
-                onChange={(e) => update("displayName", e.target.value)}
-                className={inputClass}
-                placeholder="Jane Smith"
-              />
-            </div>
-
-            {/* Email */}
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-semibold text-text-primary mb-1.5"
-              >
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                required
-                value={form.email}
-                onChange={(e) => update("email", e.target.value)}
-                className={inputClass}
-                placeholder="you@example.com"
-              />
-            </div>
-
-            {/* Password */}
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-semibold text-text-primary mb-1.5"
-                >
-                  Password
-                </label>
-                <input
-                  id="password"
-                  type="password"
-                  required
-                  value={form.password}
-                  onChange={(e) => update("password", e.target.value)}
-                  className={inputClass}
-                  placeholder="6+ characters"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="confirmPassword"
-                  className="block text-sm font-semibold text-text-primary mb-1.5"
-                >
-                  Confirm
-                </label>
-                <input
-                  id="confirmPassword"
-                  type="password"
-                  required
-                  value={form.confirmPassword}
-                  onChange={(e) => update("confirmPassword", e.target.value)}
-                  className={inputClass}
-                  placeholder="Repeat password"
-                />
-              </div>
-            </div>
-
-            {/* Phone */}
-            <div>
-              <label
-                htmlFor="phone"
-                className="block text-sm font-semibold text-text-primary mb-1.5"
-              >
-                Phone
-              </label>
-              <input
-                id="phone"
-                type="tel"
-                value={form.phone}
-                onChange={(e) => update("phone", e.target.value)}
-                className={inputClass}
-                placeholder="(555) 555-5555"
-              />
-            </div>
-
-            {/* Brokerage Name */}
-            <div>
-              <label
-                htmlFor="brokerageName"
-                className="block text-sm font-semibold text-text-primary mb-1.5"
-              >
-                Brokerage Name
-              </label>
-              <input
-                id="brokerageName"
-                type="text"
-                required
-                value={form.brokerageName}
-                onChange={(e) => update("brokerageName", e.target.value)}
-                className={inputClass}
-                placeholder="Acme Realty"
-              />
-            </div>
-
-            {/* Title & License */}
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label
-                  htmlFor="agentTitle"
-                  className="block text-sm font-semibold text-text-primary mb-1.5"
-                >
-                  Title
-                </label>
-                <input
-                  id="agentTitle"
-                  type="text"
-                  value={form.agentTitle}
-                  onChange={(e) => update("agentTitle", e.target.value)}
-                  className={inputClass}
-                  placeholder="Broker / Agent"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="licenseNumber"
-                  className="block text-sm font-semibold text-text-primary mb-1.5"
-                >
-                  License #
-                </label>
-                <input
-                  id="licenseNumber"
-                  type="text"
-                  value={form.licenseNumber}
-                  onChange={(e) => update("licenseNumber", e.target.value)}
-                  className={inputClass}
-                  placeholder="Optional"
-                />
-              </div>
-            </div>
-
-            {error && (
-              <p className="text-sm text-error bg-red-50 p-3 rounded-xl">
-                {error}
-              </p>
-            )}
-
-            <Button
-              type="submit"
-              variant="cta"
-              size="lg"
-              loading={loading}
-              className="w-full"
-            >
-              Create Account
-            </Button>
-          </form>
-
-          <p className="text-center text-sm text-text-secondary mt-6">
-            Already have an account?{" "}
-            <Link
-              href="/login"
-              className="font-semibold text-primary hover:underline"
-            >
-              Sign in
-            </Link>
+    <div
+      className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat p-4"
+      style={{
+        backgroundImage:
+          "linear-gradient(to bottom, rgba(47,82,51,0.45), rgba(26,60,94,0.55)), url('/images/house-bg.jpg')",
+      }}
+    >
+      {/* Frosted glass card */}
+      <div className="w-full max-w-md bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl p-8 sm:p-10">
+        <div className="text-center mb-6">
+          <h1 className="text-3xl font-extrabold tracking-tight text-text-primary">
+            Agent Sign Up
+          </h1>
+          <p className="text-text-secondary mt-2">
+            Create your brokerage account
           </p>
         </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Name */}
+          <div>
+            <label
+              htmlFor="displayName"
+              className="block text-xs font-bold uppercase tracking-wider text-text-secondary mb-1.5"
+            >
+              Full Name
+            </label>
+            <input
+              id="displayName"
+              type="text"
+              required
+              value={form.displayName}
+              onChange={(e) => update("displayName", e.target.value)}
+              className={inputClass}
+              placeholder="Jane Smith"
+            />
+          </div>
+
+          {/* Email */}
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-xs font-bold uppercase tracking-wider text-text-secondary mb-1.5"
+            >
+              Email Address
+            </label>
+            <input
+              id="email"
+              type="email"
+              required
+              value={form.email}
+              onChange={(e) => update("email", e.target.value)}
+              className={inputClass}
+              placeholder="you@example.com"
+            />
+          </div>
+
+          {/* Password */}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-xs font-bold uppercase tracking-wider text-text-secondary mb-1.5"
+              >
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                required
+                value={form.password}
+                onChange={(e) => update("password", e.target.value)}
+                className={inputClass}
+                placeholder="6+ characters"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="confirmPassword"
+                className="block text-xs font-bold uppercase tracking-wider text-text-secondary mb-1.5"
+              >
+                Confirm
+              </label>
+              <input
+                id="confirmPassword"
+                type="password"
+                required
+                value={form.confirmPassword}
+                onChange={(e) => update("confirmPassword", e.target.value)}
+                className={inputClass}
+                placeholder="Repeat password"
+              />
+            </div>
+          </div>
+
+          {/* Phone */}
+          <div>
+            <label
+              htmlFor="phone"
+              className="block text-xs font-bold uppercase tracking-wider text-text-secondary mb-1.5"
+            >
+              Phone
+            </label>
+            <input
+              id="phone"
+              type="tel"
+              value={form.phone}
+              onChange={(e) => update("phone", e.target.value)}
+              className={inputClass}
+              placeholder="(555) 555-5555"
+            />
+          </div>
+
+          {/* Brokerage Name */}
+          <div>
+            <label
+              htmlFor="brokerageName"
+              className="block text-xs font-bold uppercase tracking-wider text-text-secondary mb-1.5"
+            >
+              Brokerage Name
+            </label>
+            <input
+              id="brokerageName"
+              type="text"
+              required
+              value={form.brokerageName}
+              onChange={(e) => update("brokerageName", e.target.value)}
+              className={inputClass}
+              placeholder="Acme Realty"
+            />
+          </div>
+
+          {/* Title & License */}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label
+                htmlFor="agentTitle"
+                className="block text-xs font-bold uppercase tracking-wider text-text-secondary mb-1.5"
+              >
+                Title
+              </label>
+              <input
+                id="agentTitle"
+                type="text"
+                value={form.agentTitle}
+                onChange={(e) => update("agentTitle", e.target.value)}
+                className={inputClass}
+                placeholder="Broker / Agent"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="licenseNumber"
+                className="block text-xs font-bold uppercase tracking-wider text-text-secondary mb-1.5"
+              >
+                License #
+              </label>
+              <input
+                id="licenseNumber"
+                type="text"
+                value={form.licenseNumber}
+                onChange={(e) => update("licenseNumber", e.target.value)}
+                className={inputClass}
+                placeholder="Optional"
+              />
+            </div>
+          </div>
+
+          {error && (
+            <p className="text-sm text-error bg-red-50 p-3 rounded-xl">
+              {error}
+            </p>
+          )}
+
+          <Button
+            type="submit"
+            variant="cta"
+            size="lg"
+            loading={loading}
+            className="w-full rounded-full"
+          >
+            Create Account
+          </Button>
+        </form>
+
+        <p className="text-center text-sm text-text-secondary mt-6">
+          Already have an account?{" "}
+          <Link
+            href="/login"
+            className="font-semibold text-primary hover:underline"
+          >
+            Sign in
+          </Link>
+        </p>
       </div>
     </div>
   );
