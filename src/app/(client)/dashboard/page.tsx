@@ -109,79 +109,125 @@ export default function DashboardPage() {
         )}
       </div>
 
-      {/* Quick actions — 3 cols each in bento style */}
-      <div>
-        <h2 className="text-lg font-semibold text-text-primary mb-3">
-          Quick Actions
-        </h2>
-        <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
-          {activeRole === "buyer" ? (
-            <>
-              <QuickAction
-                href="/buyer/properties"
-                icon={<Home size={20} />}
-                label="Properties"
-              />
-              <QuickAction
-                href="/finance"
-                icon={<Calculator size={20} />}
-                label="Calculators"
-              />
-              <QuickAction
-                href="/buyer/checklist"
-                icon={<CheckSquare size={20} />}
-                label="Checklist"
-              />
-              <QuickAction
-                href="/messages"
-                icon={<MessageCircle size={20} />}
-                label="Messages"
-                badge={unreadCount > 0 ? unreadCount : undefined}
-              />
-              <QuickAction
-                href="/glossary"
-                icon={<BookOpen size={20} />}
-                label="Glossary"
-              />
-            </>
-          ) : (
-            <>
-              <QuickAction
-                href="/seller/listing"
-                icon={<Home size={20} />}
-                label="My Listing"
-              />
-              <QuickAction
-                href="/seller/offers"
-                icon={<Calculator size={20} />}
-                label="Offers"
-              />
-              <QuickAction
-                href="/finance"
-                icon={<Calculator size={20} />}
-                label="Calculators"
-              />
-              <QuickAction
-                href="/seller/checklist"
-                icon={<CheckSquare size={20} />}
-                label="Checklist"
-              />
-              <QuickAction
-                href="/messages"
-                icon={<MessageCircle size={20} />}
-                label="Messages"
-                badge={unreadCount > 0 ? unreadCount : undefined}
-              />
-              <QuickAction
-                href="/glossary"
-                icon={<BookOpen size={20} />}
-                label="Glossary"
-              />
-            </>
-          )}
-        </div>
-      </div>
+      {/* Quick menu — Wayfair-style vertical list */}
+      <QuickMenu activeRole={activeRole} unreadCount={unreadCount} />
     </div>
+  );
+}
+
+type MenuItem = {
+  href: string;
+  icon: React.ReactNode;
+  label: string;
+  badge?: number;
+};
+
+type MenuGroup = {
+  label: string;
+  items: MenuItem[];
+};
+
+function QuickMenu({
+  activeRole,
+  unreadCount,
+}: {
+  activeRole: "buyer" | "seller" | undefined;
+  unreadCount: number;
+}) {
+  const isBuyer = activeRole === "buyer" || !activeRole;
+  const badge = unreadCount > 0 ? unreadCount : undefined;
+
+  const groups: MenuGroup[] = isBuyer
+    ? [
+        {
+          label: "Explore",
+          items: [
+            { href: "/buyer/properties", icon: <Home size={20} />, label: "Properties" },
+            { href: "/buyer/compare", icon: <Search size={20} />, label: "Compare Homes" },
+            { href: "/buyer/checklist", icon: <CheckSquare size={20} />, label: "Buying Checklist" },
+          ],
+        },
+        {
+          label: "Tools",
+          items: [
+            { href: "/finance", icon: <Calculator size={20} />, label: "Calculators" },
+            { href: "/glossary", icon: <BookOpen size={20} />, label: "Glossary" },
+          ],
+        },
+        {
+          label: "Account",
+          items: [
+            { href: "/messages", icon: <MessageCircle size={20} />, label: "Messages", badge },
+          ],
+        },
+      ]
+    : [
+        {
+          label: "My Sale",
+          items: [
+            { href: "/seller/listing", icon: <Home size={20} />, label: "My Listing" },
+            { href: "/seller/offers", icon: <FileText size={20} />, label: "Offers" },
+            { href: "/seller/checklist", icon: <CheckSquare size={20} />, label: "Selling Checklist" },
+          ],
+        },
+        {
+          label: "Tools",
+          items: [
+            { href: "/finance", icon: <Calculator size={20} />, label: "Calculators" },
+            { href: "/glossary", icon: <BookOpen size={20} />, label: "Glossary" },
+          ],
+        },
+        {
+          label: "Account",
+          items: [
+            { href: "/messages", icon: <MessageCircle size={20} />, label: "Messages", badge },
+          ],
+        },
+      ];
+
+  return (
+    <div className="bg-surface border border-border rounded-2xl shadow-sm overflow-hidden">
+      <div className="px-5 sm:px-6 pt-5 pb-3">
+        <h2 className="text-lg font-semibold text-text-primary">Quick Menu</h2>
+        <p className="text-sm text-text-secondary mt-0.5">Jump to any section</p>
+      </div>
+
+      {groups.map((group) => (
+        <div key={group.label} className="border-t border-border">
+          <p className="px-5 sm:px-6 pt-4 pb-1 text-xs font-bold uppercase tracking-wider text-text-secondary">
+            {group.label}
+          </p>
+          <div className="pb-2">
+            {group.items.map((item) => (
+              <MenuRow key={item.href} {...item} />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function MenuRow({ href, icon, label, badge }: MenuItem) {
+  return (
+    <Link
+      href={href}
+      className="flex items-center gap-4 px-5 sm:px-6 py-3 hover:bg-primary-light transition-colors group"
+    >
+      <span className="w-11 h-11 rounded-xl bg-primary-light text-primary flex items-center justify-center shrink-0 transition-colors group-hover:bg-primary group-hover:text-white">
+        {icon}
+      </span>
+      <span className="flex-1 text-text-primary font-medium">{label}</span>
+      {badge !== undefined && (
+        <span className="min-w-[22px] h-[22px] flex items-center justify-center rounded-full bg-error text-white text-xs font-bold px-1.5">
+          {badge}
+        </span>
+      )}
+      <ArrowRight
+        size={16}
+        className="text-text-secondary transition-colors group-hover:text-primary"
+      />
+    </Link>
   );
 }
 
@@ -294,33 +340,3 @@ function GettingStarted({
   );
 }
 
-function QuickAction({
-  href,
-  icon,
-  label,
-  badge,
-}: {
-  href: string;
-  icon: React.ReactNode;
-  label: string;
-  badge?: number;
-}) {
-  return (
-    <Link href={href}>
-      <Card
-        variant="container"
-        className="relative flex flex-col items-center gap-2 py-4 hover:border-primary/30 hover:shadow-md transition-all cursor-pointer group"
-      >
-        <span className="p-2 rounded-xl bg-primary-light text-primary transition-colors group-hover:bg-primary group-hover:text-white">
-          {icon}
-        </span>
-        <span className="text-sm font-medium text-text-primary">{label}</span>
-        {badge !== undefined && (
-          <span className="absolute top-2 right-2 min-w-[20px] h-5 flex items-center justify-center rounded-full bg-error text-white text-xs font-bold px-1.5">
-            {badge}
-          </span>
-        )}
-      </Card>
-    </Link>
-  );
-}
