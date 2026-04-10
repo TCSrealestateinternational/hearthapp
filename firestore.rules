@@ -122,7 +122,10 @@ service cloud.firestore {
             || request.auth.token.email == resource.data.clientEmail);
       allow create: if isAuth()
         && request.auth.uid == request.resource.data.agentId;
-      allow update: if isAuth();
+      // Only the owning agent, or the invited client (matched by email), can update
+      allow update: if isAuth()
+        && (request.auth.uid == resource.data.agentId
+            || request.auth.token.email == resource.data.clientEmail);
     }
 
     // ── RE Tracker agent-only collections ──
