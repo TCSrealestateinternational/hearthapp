@@ -142,6 +142,10 @@ export async function updateUser(
   return updateDocument("users", id, data as Record<string, unknown>);
 }
 
+export async function getUsersByEmail(email: string): Promise<User[]> {
+  return queryDocuments<User>("users", where("email", "==", email));
+}
+
 // ── Transactions ───────────────────────────────────────────────
 
 export async function getTransactions(
@@ -441,11 +445,16 @@ export async function getGlossaryTerm(
 // ── Agent: All clients ─────────────────────────────────────────
 
 export async function getAllClients(brokerageId: string): Promise<User[]> {
-  const users = await queryDocuments<User>(
-    "users",
-    where("brokerageId", "==", brokerageId)
-  );
-  return users
+  const [byPrimary, byArray] = await Promise.all([
+    queryDocuments<User>("users", where("brokerageId", "==", brokerageId)),
+    queryDocuments<User>(
+      "users",
+      where("brokerageIds", "array-contains", brokerageId)
+    ),
+  ]);
+  const map = new Map<string, User>();
+  [...byPrimary, ...byArray].forEach((u) => map.set(u.id, u));
+  return [...map.values()]
     .filter((u) => !u.roles.includes("agent"))
     .sort((a, b) => a.displayName.localeCompare(b.displayName));
 }

@@ -5,13 +5,15 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { useBrokerage } from "@/hooks/useBrokerage";
 import { Button } from "@/components/ui/Button";
+import { BrokerageSwitch } from "@/components/BrokerageSwitch";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { user, login, pendingSwitch, confirmSwitch, declineSwitch } =
+    useAuth();
   const { brokerage } = useBrokerage();
   const router = useRouter();
 
@@ -21,15 +23,22 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const user = await login(email, password);
-      if (user?.roles.includes("agent")) {
-        router.push("/agent/dashboard");
-      } else {
-        router.push("/dashboard");
+      const loggedInUser = await login(email, password);
+      if (loggedInUser) {
+        if (loggedInUser.roles.includes("agent")) {
+          router.push("/agent/dashboard");
+        } else {
+          router.push("/dashboard");
+        }
       }
+      // If null, pendingSwitch will be set — BrokerageSwitch renders
     } catch (err: unknown) {
       const code = (err as { code?: string })?.code || "";
-      if (code === "auth/user-not-found" || code === "auth/wrong-password" || code === "auth/invalid-credential") {
+      if (
+        code === "auth/user-not-found" ||
+        code === "auth/wrong-password" ||
+        code === "auth/invalid-credential"
+      ) {
         setError("Invalid email or password. Please try again.");
       } else if (code === "auth/invalid-api-key") {
         setError("App configuration error. Please contact support.");
@@ -39,6 +48,41 @@ export default function LoginPage() {
     } finally {
       setLoading(false);
     }
+  }
+
+  async function handleConfirmSwitch() {
+    const updatedUser = await confirmSwitch();
+    if (updatedUser) {
+      if (updatedUser.roles.includes("agent")) {
+        router.push("/agent/dashboard");
+      } else {
+        router.push("/dashboard");
+      }
+    }
+    return updatedUser;
+  }
+
+  async function handleDeclineSwitch() {
+    await declineSwitch();
+    if (user) {
+      if (user.roles.includes("agent")) {
+        router.push("/agent/dashboard");
+      } else {
+        router.push("/dashboard");
+      }
+    }
+  }
+
+  // Show brokerage switch prompt if pending
+  if (pendingSwitch && user) {
+    return (
+      <BrokerageSwitch
+        user={user}
+        pendingSwitch={pendingSwitch}
+        onConfirm={handleConfirmSwitch}
+        onDecline={handleDeclineSwitch}
+      />
+    );
   }
 
   return (
@@ -105,7 +149,10 @@ export default function LoginPage() {
           </div>
 
           {error && (
-            <p role="alert" className="text-sm text-error bg-red-50 p-3 rounded-xl">
+            <p
+              role="alert"
+              className="text-sm text-error bg-red-50 p-3 rounded-xl"
+            >
               {error}
             </p>
           )}

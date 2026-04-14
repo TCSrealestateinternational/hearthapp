@@ -38,9 +38,17 @@ export interface Brokerage {
 export type UserRole = "buyer" | "seller" | "dual" | "agent";
 export type UserStatus = "pending" | "active";
 
+export interface BrokerageProfile {
+  roles: UserRole[];
+  displayName?: string;
+}
+
 export interface User {
   id: string;
   brokerageId: string;
+  brokerageIds?: string[];
+  pendingBrokerageId?: string;
+  brokerageProfiles?: Record<string, BrokerageProfile>;
   email: string;
   displayName: string;
   phone?: string;
