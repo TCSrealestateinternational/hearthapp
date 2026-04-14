@@ -31,10 +31,18 @@ export function ProgressBar({
           )}
         </div>
       )}
-      <div className="w-full h-2.5 bg-surface-container rounded-full overflow-hidden">
+      <div
+        role="progressbar"
+        aria-valuenow={Math.round(clamped)}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label={label || "Progress"}
+        className="w-full h-2.5 bg-surface-container rounded-full overflow-hidden"
+      >
         <div
           className="h-full bg-primary rounded-full transition-all duration-500"
           style={{ width: `${clamped}%` }}
+          aria-hidden="true"
         />
       </div>
     </div>

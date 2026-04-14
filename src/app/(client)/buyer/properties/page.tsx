@@ -92,6 +92,7 @@ export default function PropertiesPage() {
             onChange={(e) => setUrlInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && quickAddFromUrl()}
             placeholder="Paste a Zillow or Realtor.com link to quick-add a property..."
+            aria-label="Paste a listing URL"
             className="flex-1 text-sm bg-transparent focus:outline-none text-text-primary placeholder:text-text-secondary"
           />
         </div>

@@ -232,14 +232,16 @@ export function FinanceCalculator({
           {/* Collapsible breakdown */}
           <button
             onClick={() => setExpanded(!expanded)}
+            aria-expanded={expanded}
+            aria-controls="detailed-breakdown"
             className="flex items-center gap-2 text-sm font-medium text-primary"
           >
-            {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+            {expanded ? <ChevronUp size={16} aria-hidden="true" /> : <ChevronDown size={16} aria-hidden="true" />}
             {expanded ? "Hide" : "Show"} detailed breakdown
           </button>
 
           {expanded && (
-            <div className="space-y-4 pt-2 border-t border-border">
+            <div id="detailed-breakdown" className="space-y-4 pt-2 border-t border-border">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <InputField
                   label="Property Tax Rate"

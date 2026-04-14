@@ -75,6 +75,7 @@ export function MilestoneTimeline({ transactionId }: MilestoneTimelineProps) {
       role="region"
       aria-label="Transaction milestone timeline"
     >
+      <span role="status" aria-live="polite" className="sr-only">{celebrating ? "Milestone completed!" : ""}</span>
       {/* Progress header */}
       <div className="mb-6 flex items-center justify-between">
         <h3 className="text-lg font-semibold text-text-primary">Your Progress</h3>
@@ -149,7 +150,7 @@ export function MilestoneTimeline({ transactionId }: MilestoneTimelineProps) {
                         <PartyPopper
                           size={16}
                           className="ml-auto shrink-0 text-cta"
-                          aria-label="Celebration! This milestone was just completed."
+                          aria-hidden="true"
                         />
                       )}
                     </div>

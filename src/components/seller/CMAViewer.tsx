@@ -68,6 +68,11 @@ export function CMAViewer({
             </div>
           </div>
           {listPrice && (
+            <p className="sr-only">
+              Your list price of ${listPrice.toLocaleString()} falls between the suggested low of ${priceRangeLow.toLocaleString()} and high of ${priceRangeHigh.toLocaleString()}.
+            </p>
+          )}
+          {listPrice && (
             <p className="text-center text-sm text-cta font-medium mt-2">
               Your list price: ${listPrice.toLocaleString()}
             </p>
@@ -81,7 +86,7 @@ export function CMAViewer({
           <CardTitle>Comparative Market Analysis</CardTitle>
           <a href={cmaUrl} target="_blank" rel="noopener noreferrer">
             <Button variant="secondary" size="sm">
-              <Download size={14} />
+              <Download size={14} aria-hidden="true" />
               Download
             </Button>
           </a>

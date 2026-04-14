@@ -82,9 +82,10 @@ export function DocumentVault({
                 href={doc.fileUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`${doc.fileName} (${formatSize(doc.fileSize)}), opens in new tab`}
                 className="flex items-center gap-3 p-2 rounded-lg hover:bg-primary-light/50 transition-colors"
               >
-                <FileText size={20} className="text-primary flex-shrink-0" />
+                <FileText size={20} className="text-primary flex-shrink-0" aria-hidden="true" />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-text-primary truncate">
                     {doc.fileName}
@@ -93,7 +94,7 @@ export function DocumentVault({
                     {formatSize(doc.fileSize)}
                   </p>
                 </div>
-                <Download size={16} className="text-text-secondary" />
+                <Download size={16} className="text-text-secondary" aria-hidden="true" />
               </a>
             ))}
           </div>

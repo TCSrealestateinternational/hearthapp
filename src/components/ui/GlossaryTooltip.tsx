@@ -8,11 +8,12 @@ import type { GlossaryTerm } from "@/types";
 // ── Standalone tooltip shown on hover ────────────────────────
 
 interface TooltipProps {
+  id: string;
   term: GlossaryTerm;
   anchorRect: DOMRect;
 }
 
-function Tooltip({ term, anchorRect }: TooltipProps) {
+function Tooltip({ id, term, anchorRect }: TooltipProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<{ top: number; left: number }>({
     top: 0,
@@ -41,6 +42,7 @@ function Tooltip({ term, anchorRect }: TooltipProps) {
   return createPortal(
     <div
       ref={ref}
+      id={id}
       role="tooltip"
       className="pointer-events-none fixed z-[9999] max-w-xs rounded-xl border border-border bg-surface p-3 shadow-lg animate-in fade-in-0 zoom-in-95 duration-150"
       style={{ top: position.top, left: position.left }}
@@ -68,6 +70,7 @@ function HighlightedTerm({ text, term }: HighlightedTermProps) {
   const [hovered, setHovered] = useState(false);
   const spanRef = useRef<HTMLAnchorElement>(null);
   const [rect, setRect] = useState<DOMRect | null>(null);
+  const tooltipId = `glossary-tooltip-${term.id}`;
 
   const handleEnter = useCallback(() => {
     if (spanRef.current) {
@@ -89,11 +92,12 @@ function HighlightedTerm({ text, term }: HighlightedTermProps) {
         onMouseLeave={handleLeave}
         onFocus={handleEnter}
         onBlur={handleLeave}
+        aria-describedby={hovered ? tooltipId : undefined}
         className="underline decoration-primary/40 decoration-dotted underline-offset-2 cursor-pointer transition-colors hover:text-primary hover:decoration-primary"
       >
         {text}
       </Link>
-      {hovered && rect && <Tooltip term={term} anchorRect={rect} />}
+      {hovered && rect && <Tooltip id={tooltipId} term={term} anchorRect={rect} />}
     </>
   );
 }

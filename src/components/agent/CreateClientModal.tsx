@@ -162,10 +162,11 @@ export function CreateClientModal({
       ) : (
         <form onSubmit={handleSubmit} className="space-y-3">
           <div>
-            <label className="block text-sm font-medium text-text-primary mb-1">
+            <label htmlFor="client-name" className="block text-sm font-medium text-text-primary mb-1">
               Full Name
             </label>
             <input
+              id="client-name"
               type="text"
               required
               value={displayName}
@@ -176,10 +177,11 @@ export function CreateClientModal({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-text-primary mb-1">
+            <label htmlFor="client-email" className="block text-sm font-medium text-text-primary mb-1">
               Email
             </label>
             <input
+              id="client-email"
               type="email"
               required
               value={email}
@@ -190,10 +192,11 @@ export function CreateClientModal({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-text-primary mb-1">
+            <label htmlFor="client-phone" className="block text-sm font-medium text-text-primary mb-1">
               Phone (optional)
             </label>
             <input
+              id="client-phone"
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
@@ -203,10 +206,11 @@ export function CreateClientModal({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-text-primary mb-1">
+            <label htmlFor="client-role" className="block text-sm font-medium text-text-primary mb-1">
               Role
             </label>
             <select
+              id="client-role"
               value={role}
               onChange={(e) =>
                 setRole(e.target.value as "buyer" | "seller" | "dual")
@@ -230,7 +234,7 @@ export function CreateClientModal({
           </div>
 
           {error && (
-            <p className="text-sm text-error bg-red-50 p-2 rounded-lg">
+            <p role="alert" className="text-sm text-error bg-red-50 p-2 rounded-lg">
               {error}
             </p>
           )}

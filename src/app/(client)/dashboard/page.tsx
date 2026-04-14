@@ -4,7 +4,6 @@ import { useAuth } from "@/hooks/useAuth";
 import { useRole } from "@/hooks/useRole";
 import { useBrokerage } from "@/hooks/useBrokerage";
 import { useTransactions } from "@/hooks/useTransaction";
-import { useMessages } from "@/hooks/useMessages";
 import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { MilestoneTimeline } from "@/components/shared/MilestoneTimeline";
@@ -31,14 +30,6 @@ export default function DashboardPage() {
     brokerage?.id || "",
     user?.id || ""
   );
-  const { unreadCount } = useMessages({
-    brokerageId: brokerage?.id || "",
-    clientId: user?.id || "",
-    currentUserId: user?.id || "",
-    senderRole: "client",
-    senderName: user?.displayName || "",
-  });
-
   const activeTxs = transactions.filter(
     (t) => t.type === (activeRole === "buyer" ? "buying" : "selling")
   );
@@ -110,7 +101,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Quick menu — Wayfair-style vertical list */}
-      <QuickMenu activeRole={activeRole} unreadCount={unreadCount} />
+      <QuickMenu activeRole={activeRole} />
     </div>
   );
 }
@@ -129,13 +120,10 @@ type MenuGroup = {
 
 function QuickMenu({
   activeRole,
-  unreadCount,
 }: {
   activeRole: "buyer" | "seller" | undefined;
-  unreadCount: number;
 }) {
   const isBuyer = activeRole === "buyer" || !activeRole;
-  const badge = unreadCount > 0 ? unreadCount : undefined;
 
   const groups: MenuGroup[] = isBuyer
     ? [
@@ -154,12 +142,6 @@ function QuickMenu({
             { href: "/glossary", icon: <BookOpen size={20} />, label: "Glossary" },
           ],
         },
-        {
-          label: "Account",
-          items: [
-            { href: "/messages", icon: <MessageCircle size={20} />, label: "Messages", badge },
-          ],
-        },
       ]
     : [
         {
@@ -175,12 +157,6 @@ function QuickMenu({
           items: [
             { href: "/finance", icon: <Calculator size={20} />, label: "Calculators" },
             { href: "/glossary", icon: <BookOpen size={20} />, label: "Glossary" },
-          ],
-        },
-        {
-          label: "Account",
-          items: [
-            { href: "/messages", icon: <MessageCircle size={20} />, label: "Messages", badge },
           ],
         },
       ];
@@ -214,17 +190,18 @@ function MenuRow({ href, icon, label, badge }: MenuItem) {
       href={href}
       className="flex items-center gap-4 px-5 sm:px-6 py-3 hover:bg-primary-light transition-colors group"
     >
-      <span className="w-11 h-11 rounded-xl bg-primary-light text-primary flex items-center justify-center shrink-0 transition-colors group-hover:bg-primary group-hover:text-white">
+      <span className="w-11 h-11 rounded-xl bg-primary-light text-primary flex items-center justify-center shrink-0 transition-colors group-hover:bg-primary group-hover:text-white" aria-hidden="true">
         {icon}
       </span>
       <span className="flex-1 text-text-primary font-medium">{label}</span>
       {badge !== undefined && (
-        <span className="min-w-[22px] h-[22px] flex items-center justify-center rounded-full bg-error text-white text-xs font-bold px-1.5">
+        <span className="min-w-[22px] h-[22px] flex items-center justify-center rounded-full bg-error text-white text-xs font-bold px-1.5" aria-hidden="true">
           {badge}
         </span>
       )}
       <ArrowRight
         size={16}
+        aria-hidden="true"
         className="text-text-secondary transition-colors group-hover:text-primary"
       />
     </Link>

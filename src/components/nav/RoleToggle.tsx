@@ -7,8 +7,9 @@ interface RoleToggleProps {
 
 export function RoleToggle({ activeRole, onToggle }: RoleToggleProps) {
   return (
-    <div className="inline-flex items-center bg-primary-light rounded-full p-1">
+    <div role="group" aria-label="Select your role" className="inline-flex items-center bg-primary-light rounded-full p-1">
       <button
+        aria-pressed={activeRole === "buyer"}
         onClick={activeRole !== "buyer" ? onToggle : undefined}
         className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${
           activeRole === "buyer"
@@ -19,6 +20,7 @@ export function RoleToggle({ activeRole, onToggle }: RoleToggleProps) {
         Buying
       </button>
       <button
+        aria-pressed={activeRole === "seller"}
         onClick={activeRole !== "seller" ? onToggle : undefined}
         className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${
           activeRole === "seller"

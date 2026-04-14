@@ -101,8 +101,9 @@ export default function GlossaryPage() {
 
   if (loading) {
     return (
-      <div className="max-w-3xl mx-auto flex items-center justify-center py-20">
-        <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full" />
+      <div className="max-w-3xl mx-auto flex items-center justify-center py-20" role="status" aria-label="Loading glossary">
+        <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full" aria-hidden="true" />
+        <span className="sr-only">Loading glossary...</span>
       </div>
     );
   }
@@ -177,9 +178,9 @@ export default function GlossaryPage() {
           </div>
         </Card>
       ) : (
-        <div className="space-y-8" role="list" aria-label="Glossary terms">
+        <div className="space-y-8" aria-label="Glossary terms">
           {Array.from(grouped.entries()).map(([group, groupTerms]) => (
-            <div key={group} role="listitem">
+            <div key={group}>
               <h2 className="text-xs font-bold uppercase tracking-wider text-text-secondary mb-2 sticky top-0 bg-background py-1 z-10 border-l-2 border-primary pl-2">
                 {group}
                 <span className="ml-2 font-normal text-text-secondary/60">
@@ -206,9 +207,9 @@ export default function GlossaryPage() {
                           {term.term}
                         </span>
                         {isExpanded ? (
-                          <ChevronUp size={18} className="text-text-secondary shrink-0" />
+                          <ChevronUp size={18} className="text-text-secondary shrink-0" aria-hidden="true" />
                         ) : (
-                          <ChevronDown size={18} className="text-text-secondary shrink-0" />
+                          <ChevronDown size={18} className="text-text-secondary shrink-0" aria-hidden="true" />
                         )}
                       </button>
 

@@ -107,6 +107,7 @@ export default function AgentDashboardPage() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search clients..."
+                aria-label="Search clients by name or email"
                 className="pl-9 pr-3 py-1.5 rounded-xl border border-border bg-background text-text-primary text-sm w-full sm:w-48"
               />
             </div>

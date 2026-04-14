@@ -37,7 +37,16 @@ export function FileUpload({
   return (
     <div>
       <div
+        role="button"
+        tabIndex={0}
+        aria-label={`${label}, maximum size ${maxSizeMB}MB`}
         onClick={() => inputRef.current?.click()}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            inputRef.current?.click();
+          }
+        }}
         onDragOver={(e) => {
           e.preventDefault();
           setDragOver(true);
@@ -55,7 +64,7 @@ export function FileUpload({
             : "border-border hover:border-primary/50"
         }`}
       >
-        <Upload size={24} className="text-text-secondary" />
+        <Upload size={24} className="text-text-secondary" aria-hidden="true" />
         <span className="text-sm text-text-secondary">{label}</span>
         <span className="text-xs text-text-secondary">
           Max {maxSizeMB}MB
@@ -67,8 +76,10 @@ export function FileUpload({
         accept={accept}
         onChange={onChange}
         className="hidden"
+        aria-label="Choose file to upload"
+        tabIndex={-1}
       />
-      {error && <p className="mt-1 text-sm text-error">{error}</p>}
+      {error && <p role="alert" className="mt-1 text-sm text-error">{error}</p>}
     </div>
   );
 }

@@ -13,19 +13,19 @@ interface ChecklistItemRowProps {
 export function ChecklistItemRow({ item, onToggle }: ChecklistItemRowProps) {
   const { terms } = useGlossaryTerms();
   return (
-    <label className="flex items-center gap-3 py-2 px-2 rounded-lg hover:bg-primary-light/50 cursor-pointer transition-colors">
+    <div className="flex items-center gap-3 py-2 px-2 rounded-lg hover:bg-primary-light/50 transition-colors">
       <button
-        onClick={(e) => {
-          e.preventDefault();
-          onToggle(item.id, !item.completed);
-        }}
-        className={`flex-shrink-0 w-6 h-6 rounded-md border-2 flex items-center justify-center transition-colors ${
+        role="checkbox"
+        aria-checked={item.completed}
+        aria-label={item.label}
+        onClick={() => onToggle(item.id, !item.completed)}
+        className={`flex-shrink-0 w-6 h-6 rounded-md border-2 flex items-center justify-center transition-colors cursor-pointer ${
           item.completed
             ? "bg-primary border-primary"
             : "border-border hover:border-primary"
         }`}
       >
-        {item.completed && <Check size={14} className="text-white" />}
+        {item.completed && <Check size={14} className="text-white" aria-hidden="true" />}
       </button>
       <span
         className={`text-sm ${
@@ -36,6 +36,6 @@ export function ChecklistItemRow({ item, onToggle }: ChecklistItemRowProps) {
       >
         <GlossaryHighlight text={item.label} terms={terms} />
       </span>
-    </label>
+    </div>
   );
 }

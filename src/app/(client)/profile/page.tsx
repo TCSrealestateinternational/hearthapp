@@ -60,12 +60,12 @@ export default function ProfilePage() {
               {user?.displayName}
             </p>
             <div className="flex items-center gap-1 text-sm text-text-secondary">
-              <Mail size={14} />
+              <Mail size={14} aria-hidden="true" />
               <span>{user?.email}</span>
             </div>
             {user?.phone && (
               <div className="flex items-center gap-1 text-sm text-text-secondary">
-                <Phone size={14} />
+                <Phone size={14} aria-hidden="true" />
                 <span>{user.phone}</span>
               </div>
             )}

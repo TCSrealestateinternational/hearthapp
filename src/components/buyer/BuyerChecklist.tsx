@@ -55,18 +55,21 @@ export function BuyerChecklist({ items, onToggle }: BuyerChecklistProps) {
             ? (stageCompleted / stageItems.length) * 100
             : 0;
         const isExpanded = expandedStages.has(stage);
+        const panelId = `stage-panel-${stage.replace(/\s+/g, "-").toLowerCase()}`;
 
         return (
           <Card key={stage}>
             <button
               onClick={() => toggleStage(stage)}
+              aria-expanded={isExpanded}
+              aria-controls={panelId}
               className="w-full flex items-center justify-between"
             >
               <div className="flex items-center gap-2">
                 {isExpanded ? (
-                  <ChevronDown size={16} className="text-text-secondary" />
+                  <ChevronDown size={16} className="text-text-secondary" aria-hidden="true" />
                 ) : (
-                  <ChevronRight size={16} className="text-text-secondary" />
+                  <ChevronRight size={16} className="text-text-secondary" aria-hidden="true" />
                 )}
                 <CardTitle>{stage}</CardTitle>
               </div>
@@ -82,7 +85,7 @@ export function BuyerChecklist({ items, onToggle }: BuyerChecklistProps) {
             />
 
             {isExpanded && (
-              <div className="mt-3 space-y-1">
+              <div id={panelId} className="mt-3 space-y-1">
                 {stageItems.map((item) => (
                   <ChecklistItemRow
                     key={item.id}

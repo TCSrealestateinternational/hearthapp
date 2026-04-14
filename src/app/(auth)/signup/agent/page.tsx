@@ -292,7 +292,7 @@ export default function AgentSignupPage() {
           </div>
 
           {error && (
-            <p className="text-sm text-error bg-red-50 p-3 rounded-xl">
+            <p role="alert" className="text-sm text-error bg-red-50 p-3 rounded-xl">
               {error}
             </p>
           )}

@@ -61,8 +61,9 @@ export default function AgentClientDetailPage() {
 
   if (!client) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full" />
+      <div className="flex items-center justify-center h-64" role="status" aria-label="Loading client">
+        <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full" aria-hidden="true" />
+        <span className="sr-only">Loading client...</span>
       </div>
     );
   }
@@ -83,7 +84,7 @@ export default function AgentClientDetailPage() {
         href="/agent/dashboard"
         className="inline-flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
       >
-        <ArrowLeft size={16} />
+        <ArrowLeft size={16} aria-hidden="true" />
         Back to Dashboard
       </Link>
 
@@ -143,6 +144,7 @@ export default function AgentClientDetailPage() {
             variant={activeTab === key ? "primary" : "secondary"}
             size="sm"
             onClick={() => setActiveTab(key)}
+            aria-pressed={activeTab === key}
             className="shrink-0"
           >
             {label}

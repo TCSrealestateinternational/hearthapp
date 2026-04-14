@@ -30,7 +30,7 @@ export function AddressLink({
       onClick={(e) => e.stopPropagation()}
       className={`inline-flex items-center gap-1 text-primary hover:underline ${className}`}
     >
-      <MapPin size={14} className="flex-shrink-0" />
+      <MapPin size={14} className="flex-shrink-0" aria-hidden="true" />
       <span className="truncate">{display}</span>
     </a>
   );

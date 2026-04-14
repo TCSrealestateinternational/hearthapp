@@ -49,17 +49,20 @@ export function MessageInput({
         <>
           <button
             type="button"
+            aria-label="Attach file"
             onClick={() => fileRef.current?.click()}
             disabled={disabled || uploading}
             className="p-2 rounded-lg text-text-secondary hover:bg-primary-light transition-colors disabled:opacity-50"
           >
-            <Paperclip size={20} />
+            <Paperclip size={20} aria-hidden="true" />
           </button>
           <input
             ref={fileRef}
             type="file"
             onChange={handleFile}
             className="hidden"
+            aria-label="Choose file to attach"
+            tabIndex={-1}
           />
         </>
       )}
@@ -68,6 +71,7 @@ export function MessageInput({
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="Type a message..."
+        aria-label="Message text"
         disabled={disabled}
         className="flex-1 px-4 py-2 rounded-full border border-border bg-background text-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
         onKeyDown={(e) => {
@@ -79,10 +83,11 @@ export function MessageInput({
       />
       <button
         type="submit"
+        aria-label="Send message"
         disabled={disabled || (!text.trim() && !uploading)}
         className="p-2 rounded-full bg-cta text-white hover:bg-cta-hover transition-colors disabled:opacity-50"
       >
-        <Send size={18} />
+        <Send size={18} aria-hidden="true" />
       </button>
     </form>
   );

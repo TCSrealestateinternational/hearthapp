@@ -12,7 +12,7 @@ export function InstallPrompt() {
     <div className="mx-4 mt-3 p-4 bg-surface border border-border rounded-2xl shadow-sm">
       <div className="flex items-start gap-3">
         <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-          <Download size={20} className="text-white" />
+          <Download size={20} className="text-white" aria-hidden="true" />
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-sm font-semibold text-text-primary">
@@ -32,9 +32,9 @@ export function InstallPrompt() {
         <button
           onClick={dismiss}
           className="flex-shrink-0 p-1 rounded text-text-secondary hover:bg-primary-light transition-colors"
-          aria-label="Dismiss"
+          aria-label="Dismiss install prompt"
         >
-          <X size={16} />
+          <X size={16} aria-hidden="true" />
         </button>
       </div>
       {!showIOSGuide && (

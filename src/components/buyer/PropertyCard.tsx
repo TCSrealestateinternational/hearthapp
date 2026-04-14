@@ -31,12 +31,20 @@ export function PropertyCard({ property, onClick }: PropertyCardProps) {
     <Card
       className="cursor-pointer hover:border-primary/30 transition-colors"
       onClick={onClick}
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={onClick ? (e: React.KeyboardEvent) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onClick();
+        }
+      } : undefined}
     >
       {property.photos[0] && (
         <div className="relative -mx-4 -mt-4 sm:-mx-6 sm:-mt-6 mb-4">
           <img
             src={property.photos[0]}
-            alt={property.address}
+            alt={`Photo of ${property.address}`}
             className="w-full h-48 object-cover rounded-t-2xl"
           />
         </div>
@@ -64,11 +72,12 @@ export function PropertyCard({ property, onClick }: PropertyCardProps) {
         <span>{property.baths} bath</span>
         <span>{property.sqft.toLocaleString()} sqft</span>
       </div>
-      <div className="flex items-center gap-1 mt-2">
+      <div className="flex items-center gap-1 mt-2" aria-label={`Rating: ${property.rating} out of 5 stars`}>
         {[1, 2, 3, 4, 5].map((star) => (
           <Star
             key={star}
             size={14}
+            aria-hidden="true"
             className={
               star <= property.rating
                 ? "fill-cta text-cta"
@@ -85,8 +94,9 @@ export function PropertyCard({ property, onClick }: PropertyCardProps) {
           onClick={(e) => e.stopPropagation()}
           className="inline-flex items-center gap-1 text-xs text-primary hover:underline mt-2"
         >
-          <ExternalLink size={12} />
+          <ExternalLink size={12} aria-hidden="true" />
           View Listing
+          <span className="sr-only">(opens in new tab)</span>
         </a>
       )}
       {property.notes && (

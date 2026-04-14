@@ -24,8 +24,9 @@ export function AuthGuard({ children, requireAgent = false }: AuthGuardProps) {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full" />
+      <div className="flex items-center justify-center min-h-screen" role="status" aria-label="Loading">
+        <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full" aria-hidden="true" />
+        <span className="sr-only">Loading...</span>
       </div>
     );
   }

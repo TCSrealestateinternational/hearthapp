@@ -29,10 +29,17 @@ function ClientShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-lg"
+      >
+        Skip to main content
+      </a>
+
       {/* Sticky glass header */}
       <header className="sticky top-0 z-30 flex items-center justify-between px-4 sm:px-8 py-3 bg-[var(--glass-bg)] backdrop-blur-xl border-b border-[var(--glass-border)]">
         <div className="flex items-center gap-4">
-          <h1 className="text-lg font-bold text-primary">Hearth</h1>
+          <span className="text-lg font-bold text-primary">Hearth</span>
           <ClientNav role={activeRole} unreadCount={0} />
         </div>
         <div className="flex items-center gap-3">
@@ -45,9 +52,9 @@ function ClientShell({ children }: { children: ReactNode }) {
           <button
             onClick={signOut}
             className="p-2 rounded-xl text-text-secondary hover:bg-primary-light transition-colors"
-            title="Sign out"
+            aria-label="Sign out"
           >
-            <LogOut size={18} />
+            <LogOut size={18} aria-hidden="true" />
           </button>
         </div>
       </header>
@@ -55,7 +62,7 @@ function ClientShell({ children }: { children: ReactNode }) {
       <InstallPrompt />
 
       {/* Main content */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-8 py-6 sm:py-8 pb-24 md:pb-8">
+      <main id="main-content" className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-8 py-6 sm:py-8 pb-24 md:pb-8">
         {children}
       </main>
 

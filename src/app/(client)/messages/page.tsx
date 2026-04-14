@@ -28,8 +28,9 @@ export default function MessagesPage() {
 
       <Card padding={false} className="flex-1 flex flex-col overflow-hidden">
         {depsLoading ? (
-          <div className="flex-1 flex items-center justify-center">
-            <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full" />
+          <div className="flex-1 flex items-center justify-center" role="status" aria-label="Loading messages">
+            <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full" aria-hidden="true" />
+            <span className="sr-only">Loading messages...</span>
           </div>
         ) : missingSetup ? (
           <div className="flex-1 flex items-center justify-center">
@@ -82,7 +83,7 @@ export default function MessagesPage() {
         )}
 
         {sendError && (
-          <div className="px-4 py-2 bg-red-50 border-t border-red-200">
+          <div role="alert" className="px-4 py-2 bg-red-50 border-t border-red-200">
             <p className="text-sm text-red-600 font-medium">
               Message not sent: {sendError}
             </p>

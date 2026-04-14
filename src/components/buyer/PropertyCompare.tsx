@@ -36,11 +36,12 @@ export function PropertyCompare({ properties }: PropertyCompareProps) {
       {
         label: "Rating",
         render: (p) => (
-          <div className="flex items-center gap-0.5">
+          <div className="flex items-center gap-0.5" aria-label={`${p.rating} out of 5 stars`}>
             {[1, 2, 3, 4, 5].map((s) => (
               <Star
                 key={s}
                 size={12}
+                aria-hidden="true"
                 className={
                   s <= p.rating ? "fill-cta text-cta" : "text-border"
                 }
@@ -90,6 +91,7 @@ export function PropertyCompare({ properties }: PropertyCompareProps) {
   return (
     <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
       <table className="w-full text-sm">
+        <caption className="sr-only">Property comparison table</caption>
         <thead>
           <tr>
             <th className="text-left py-2 pr-4 text-text-secondary font-medium sticky left-0 bg-background">

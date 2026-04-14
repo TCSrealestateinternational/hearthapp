@@ -69,6 +69,7 @@ export default function FinancePage() {
                   <Button
                     variant="ghost"
                     size="sm"
+                    aria-label={`Remove scenario ${s.name}`}
                     onClick={() => removeScenario(s.id)}
                   >
                     <Trash2 size={14} />

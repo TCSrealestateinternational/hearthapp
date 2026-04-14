@@ -23,9 +23,10 @@ export function InputField({
   suffix,
   slider,
 }: InputFieldProps) {
+  const inputId = `field-${label.toLowerCase().replace(/\s+/g, '-')}`;
   return (
     <div>
-      <label className="block text-sm font-medium text-text-primary mb-1">
+      <label htmlFor={inputId} className="block text-sm font-medium text-text-primary mb-1">
         {label}
       </label>
       {slider && min !== undefined && max !== undefined && (
@@ -46,6 +47,7 @@ export function InputField({
           </span>
         )}
         <input
+          id={inputId}
           type="number"
           value={value}
           onChange={(e) => onChange(Number(e.target.value))}
@@ -77,12 +79,14 @@ export function SelectField({
   onChange: (v: string) => void;
   options: { value: string; label: string }[];
 }) {
+  const inputId = `field-${label.toLowerCase().replace(/\s+/g, '-')}`;
   return (
     <div>
-      <label className="block text-sm font-medium text-text-primary mb-1">
+      <label htmlFor={inputId} className="block text-sm font-medium text-text-primary mb-1">
         {label}
       </label>
       <select
+        id={inputId}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="w-full px-3 py-2 rounded-xl border border-border bg-surface text-text-primary"

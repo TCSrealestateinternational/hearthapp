@@ -41,6 +41,7 @@ export default function OffersPage() {
         <div className="inline-flex items-center bg-primary-light rounded-full p-0.5">
           <button
             onClick={() => setView("offers")}
+            aria-pressed={view === "offers"}
             className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
               view === "offers"
                 ? "bg-primary text-white"
@@ -51,6 +52,7 @@ export default function OffersPage() {
           </button>
           <button
             onClick={() => setView("calculator")}
+            aria-pressed={view === "calculator"}
             className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
               view === "calculator"
                 ? "bg-primary text-white"

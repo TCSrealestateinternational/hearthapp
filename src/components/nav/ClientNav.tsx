@@ -27,47 +27,47 @@ export function ClientNav({ role, unreadCount }: ClientNavProps) {
   const pathname = usePathname();
 
   const buyerItems: NavItem[] = [
-    { href: "/dashboard", label: "Home", icon: <LayoutDashboard size={20} /> },
-    { href: "/buyer/properties", label: "Properties", icon: <Home size={20} /> },
+    { href: "/dashboard", label: "Home", icon: <LayoutDashboard size={20} aria-hidden="true" /> },
+    { href: "/buyer/properties", label: "Properties", icon: <Home size={20} aria-hidden="true" /> },
     {
       href: "/finance",
       label: "Finance",
-      icon: <Calculator size={20} />,
+      icon: <Calculator size={20} aria-hidden="true" />,
     },
     {
       href: "/buyer/checklist",
       label: "Checklist",
-      icon: <CheckSquare size={20} />,
+      icon: <CheckSquare size={20} aria-hidden="true" />,
     },
     {
       href: "/glossary",
       label: "Glossary",
-      icon: <BookOpen size={20} />,
+      icon: <BookOpen size={20} aria-hidden="true" />,
     },
   ];
 
   const sellerItems: NavItem[] = [
-    { href: "/dashboard", label: "Home", icon: <LayoutDashboard size={20} /> },
-    { href: "/seller/listing", label: "Listing", icon: <Home size={20} /> },
+    { href: "/dashboard", label: "Home", icon: <LayoutDashboard size={20} aria-hidden="true" /> },
+    { href: "/seller/listing", label: "Listing", icon: <Home size={20} aria-hidden="true" /> },
     {
       href: "/seller/offers",
       label: "Offers",
-      icon: <Calculator size={20} />,
+      icon: <Calculator size={20} aria-hidden="true" />,
     },
     {
       href: "/finance",
       label: "Finance",
-      icon: <Calculator size={20} />,
+      icon: <Calculator size={20} aria-hidden="true" />,
     },
     {
       href: "/seller/checklist",
       label: "Checklist",
-      icon: <CheckSquare size={20} />,
+      icon: <CheckSquare size={20} aria-hidden="true" />,
     },
     {
       href: "/glossary",
       label: "Glossary",
-      icon: <BookOpen size={20} />,
+      icon: <BookOpen size={20} aria-hidden="true" />,
     },
   ];
 
@@ -77,9 +77,9 @@ export function ClientNav({ role, unreadCount }: ClientNavProps) {
     {
       href: "/messages",
       label: "Messages",
-      icon: <MessageCircle size={20} />,
+      icon: <MessageCircle size={20} aria-hidden="true" />,
     },
-    { href: "/profile", label: "Profile", icon: <UserCircle size={20} /> },
+    { href: "/profile", label: "Profile", icon: <UserCircle size={20} aria-hidden="true" /> },
   ];
 
   // Mobile: 4 items — Dashboard, Properties/Listing, Messages, Profile
@@ -93,7 +93,7 @@ export function ClientNav({ role, unreadCount }: ClientNavProps) {
   return (
     <>
       {/* Desktop horizontal nav — embedded in header */}
-      <nav className="hidden md:flex items-center gap-1">
+      <nav aria-label="Main navigation" className="hidden md:flex items-center gap-1">
         {items.map((item) => (
           <DesktopNavLink key={item.href} item={item} active={pathname === item.href} />
         ))}
@@ -108,7 +108,7 @@ export function ClientNav({ role, unreadCount }: ClientNavProps) {
       </nav>
 
       {/* Mobile bottom tabs — 4 items, glass effect */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--glass-bg)] backdrop-blur-xl border-t border-[var(--glass-border)] rounded-t-2xl z-40 safe-area-bottom">
+      <nav aria-label="Mobile navigation" className="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--glass-bg)] backdrop-blur-xl border-t border-[var(--glass-border)] rounded-t-2xl z-40 safe-area-bottom">
         <div className="flex items-center justify-around px-2 py-2">
           {mobileItems.map((item) => {
             const active = pathname === item.href;
@@ -116,6 +116,8 @@ export function ClientNav({ role, unreadCount }: ClientNavProps) {
               <Link
                 key={item.href}
                 href={item.href}
+                aria-current={active ? "page" : undefined}
+                aria-label={item.href === "/messages" && unreadCount > 0 ? `${item.label}, ${unreadCount} unread` : item.label}
                 className={`flex flex-col items-center gap-0.5 min-w-0 px-3 py-1.5 text-[11px] relative rounded-xl transition-colors ${
                   active
                     ? "text-primary bg-primary-light"
@@ -125,7 +127,7 @@ export function ClientNav({ role, unreadCount }: ClientNavProps) {
                 {item.icon}
                 <span className="truncate max-w-[56px]">{item.label}</span>
                 {item.href === "/messages" && unreadCount > 0 && (
-                  <span className="absolute -top-0.5 right-0 bg-error text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
+                  <span className="absolute -top-0.5 right-0 bg-error text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center" aria-hidden="true">
                     {unreadCount}
                   </span>
                 )}
@@ -150,6 +152,8 @@ function DesktopNavLink({
   return (
     <Link
       href={item.href}
+      aria-current={active ? "page" : undefined}
+      aria-label={badge && badge > 0 ? `${item.label}, ${badge} unread` : undefined}
       className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-colors relative ${
         active
           ? "bg-primary-light text-primary"
@@ -159,7 +163,7 @@ function DesktopNavLink({
       {item.icon}
       {item.label}
       {badge && badge > 0 ? (
-        <span className="bg-error text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+        <span className="bg-error text-white text-xs rounded-full w-5 h-5 flex items-center justify-center" aria-hidden="true">
           {badge}
         </span>
       ) : null}

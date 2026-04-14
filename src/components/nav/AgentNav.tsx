@@ -13,18 +13,18 @@ const items = [
   {
     href: "/agent/dashboard",
     label: "Dashboard",
-    icon: <LayoutDashboard size={20} />,
+    icon: <LayoutDashboard size={20} aria-hidden="true" />,
   },
-  { href: "/agent/clients", label: "Clients", icon: <Users size={20} /> },
+  { href: "/agent/clients", label: "Clients", icon: <Users size={20} aria-hidden="true" /> },
   {
     href: "/agent/messages",
     label: "Messages",
-    icon: <MessageCircle size={20} />,
+    icon: <MessageCircle size={20} aria-hidden="true" />,
   },
   {
     href: "/agent/profile",
     label: "Profile",
-    icon: <UserCircle size={20} />,
+    icon: <UserCircle size={20} aria-hidden="true" />,
   },
 ];
 
@@ -34,13 +34,14 @@ export function AgentNav() {
   return (
     <>
       {/* Desktop horizontal nav — embedded in header */}
-      <nav className="hidden md:flex items-center gap-1">
+      <nav aria-label="Main navigation" className="hidden md:flex items-center gap-1">
         {items.map((item) => {
           const active = pathname.startsWith(item.href);
           return (
             <Link
               key={item.href}
               href={item.href}
+              aria-current={active ? "page" : undefined}
               className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
                 active
                   ? "bg-primary-light text-primary"
@@ -55,7 +56,7 @@ export function AgentNav() {
       </nav>
 
       {/* Mobile bottom tabs — glass effect */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--glass-bg)] backdrop-blur-xl border-t border-[var(--glass-border)] rounded-t-2xl z-40">
+      <nav aria-label="Mobile navigation" className="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--glass-bg)] backdrop-blur-xl border-t border-[var(--glass-border)] rounded-t-2xl z-40">
         <div className="flex items-center justify-around px-2 py-2">
           {items.map((item) => {
             const active = pathname.startsWith(item.href);
@@ -63,6 +64,7 @@ export function AgentNav() {
               <Link
                 key={item.href}
                 href={item.href}
+                aria-current={active ? "page" : undefined}
                 className={`flex flex-col items-center gap-0.5 px-3 py-1.5 text-xs rounded-xl transition-colors ${
                   active
                     ? "text-primary bg-primary-light"

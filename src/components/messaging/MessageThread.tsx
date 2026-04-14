@@ -37,9 +37,9 @@ export function MessageThread({ messages, currentUserId }: MessageThreadProps) {
       {grouped.map((group) => (
         <div key={group.date}>
           <div className="flex items-center gap-3 my-3">
-            <div className="flex-1 h-px bg-border/60" />
+            <div className="flex-1 h-px bg-border/60" aria-hidden="true" />
             <span className="text-[10px] text-text-secondary/70 uppercase tracking-wider">{group.date}</span>
-            <div className="flex-1 h-px bg-border/60" />
+            <div className="flex-1 h-px bg-border/60" aria-hidden="true" />
           </div>
           <div className="space-y-2">
             {group.messages.map((msg) => (

@@ -42,6 +42,7 @@ export default function ComparePage() {
           <button
             key={p.id}
             onClick={() => toggleSelect(p.id)}
+            aria-pressed={selected.has(p.id)}
             className={`px-4 py-2 rounded-full text-sm border transition-colors ${
               selected.has(p.id)
                 ? "bg-primary text-white border-primary"

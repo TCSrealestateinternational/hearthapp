@@ -99,7 +99,7 @@ export default function AgentMessagesPage() {
                 />
               )}
               {sendError && (
-                <div className="px-4 py-2 bg-red-50 border-t border-red-200">
+                <div role="alert" className="px-4 py-2 bg-red-50 border-t border-red-200">
                   <p className="text-sm text-red-600 font-medium">
                     Message not sent: {sendError}
                   </p>

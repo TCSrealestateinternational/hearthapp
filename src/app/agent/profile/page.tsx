@@ -44,12 +44,12 @@ export default function AgentProfilePage() {
               {user?.displayName}
             </p>
             <div className="flex items-center gap-1 text-sm text-text-secondary">
-              <Mail size={14} />
+              <Mail size={14} aria-hidden="true" />
               <span>{user?.email}</span>
             </div>
             {user?.phone && (
               <div className="flex items-center gap-1 text-sm text-text-secondary">
-                <Phone size={14} />
+                <Phone size={14} aria-hidden="true" />
                 <span>{user.phone}</span>
               </div>
             )}
@@ -105,7 +105,7 @@ export default function AgentProfilePage() {
           href={`mailto:${SUPPORT_EMAIL}?subject=Hearth Support Request`}
           className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold hover:opacity-90 transition-opacity"
         >
-          <Mail size={16} />
+          <Mail size={16} aria-hidden="true" />
           Contact Support
         </a>
       </Card>
