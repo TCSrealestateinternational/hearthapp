@@ -13,9 +13,18 @@ import {
   type CalcEntry,
 } from "@/components/calculators/calculatorRegistry";
 import * as LucideIcons from "lucide-react";
+import { useBrokerage } from "@/hooks/useBrokerage";
+import { useTransactions } from "@/hooks/useTransaction";
+import { PermissionGate } from "@/components/shared/PermissionGate";
 
 export default function FinanceHubPage() {
   const { user } = useAuth();
+  const { brokerage } = useBrokerage();
+  const { transactions } = useTransactions(
+    brokerage?.id || "",
+    user?.id || ""
+  );
+  const activeTx = transactions[0];
   const { activeRole } = useRole(user);
   const [activeTab, setActiveTab] = useState<CalcTab | null>(null);
   const [activeCalcId, setActiveCalcId] = useState<string | null>(null);
@@ -61,6 +70,7 @@ export default function FinanceHubPage() {
   }, []);
 
   return (
+    <PermissionGate transactionId={activeTx?.id} permission="finance">
     <div className="max-w-6xl mx-auto space-y-6">
       <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">
         Finance Calculators
@@ -115,6 +125,7 @@ export default function FinanceHubPage() {
         </div>
       )}
     </div>
+    </PermissionGate>
   );
 }
 

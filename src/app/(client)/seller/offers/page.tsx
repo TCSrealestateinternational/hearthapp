@@ -10,6 +10,7 @@ import { getOffers, getListing } from "@/lib/firestore";
 import type { Offer, Listing } from "@/types";
 import { DollarSign } from "lucide-react";
 import { Card } from "@/components/ui/Card";
+import { PermissionGate } from "@/components/shared/PermissionGate";
 
 export default function OffersPage() {
   const { user } = useAuth();
@@ -35,9 +36,10 @@ export default function OffersPage() {
   );
 
   return (
-    <div className="max-w-4xl mx-auto space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">Offers</h1>
+    <PermissionGate transactionId={sellingTx?.id} permission="offers">
+      <div className="max-w-4xl mx-auto space-y-4">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">Offers</h1>
         <div className="inline-flex items-center bg-primary-light rounded-full p-0.5">
           <button
             onClick={() => setView("offers")}
@@ -100,6 +102,7 @@ export default function OffersPage() {
           listPrice={listing?.listPrice || 0}
         />
       )}
-    </div>
+      </div>
+    </PermissionGate>
   );
 }

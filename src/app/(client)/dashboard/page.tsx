@@ -4,9 +4,11 @@ import { useAuth } from "@/hooks/useAuth";
 import { useRole } from "@/hooks/useRole";
 import { useBrokerage } from "@/hooks/useBrokerage";
 import { useTransactions } from "@/hooks/useTransaction";
+import { usePermissions } from "@/hooks/usePermissions";
 import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { MilestoneTimeline } from "@/components/shared/MilestoneTimeline";
+import { PauseBanner } from "@/components/shared/PermissionGate";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import {
@@ -33,9 +35,14 @@ export default function DashboardPage() {
   const activeTxs = transactions.filter(
     (t) => t.type === (activeRole === "buyer" ? "buying" : "selling")
   );
+  const primaryTxId = activeTxs[0]?.id;
+  const { hasPermission, isPaused } = usePermissions(primaryTxId);
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
+      {/* Pause banner */}
+      <PauseBanner transactionId={primaryTxId} />
+
       {/* Welcome */}
       <div>
         <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-text-primary">
@@ -61,7 +68,9 @@ export default function DashboardPage() {
                     {tx.status}
                   </Badge>
                 </CardHeader>
+                {hasPermission("milestones") && (
                 <MilestoneTimeline transactionId={tx.id} />
+              )}
               </Card>
             ))
           ) : (
@@ -101,7 +110,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Quick menu — Wayfair-style vertical list */}
-      <QuickMenu activeRole={activeRole} />
+      <QuickMenu activeRole={activeRole} hasPermission={hasPermission} />
     </div>
   );
 }
@@ -120,25 +129,27 @@ type MenuGroup = {
 
 function QuickMenu({
   activeRole,
+  hasPermission,
 }: {
   activeRole: "buyer" | "seller" | undefined;
+  hasPermission: (key: string) => boolean;
 }) {
   const isBuyer = activeRole === "buyer" || !activeRole;
 
-  const groups: MenuGroup[] = isBuyer
+  const allGroups: MenuGroup[] = isBuyer
     ? [
         {
           label: "Explore",
           items: [
-            { href: "/buyer/properties", icon: <Home size={20} />, label: "Properties" },
-            { href: "/buyer/compare", icon: <Search size={20} />, label: "Compare Homes" },
-            { href: "/buyer/checklist", icon: <CheckSquare size={20} />, label: "Buying Checklist" },
+            ...(hasPermission("property") ? [{ href: "/buyer/properties", icon: <Home size={20} />, label: "Properties" }] : []),
+            ...(hasPermission("property") ? [{ href: "/buyer/compare", icon: <Search size={20} />, label: "Compare Homes" }] : []),
+            ...(hasPermission("checklist") ? [{ href: "/buyer/checklist", icon: <CheckSquare size={20} />, label: "Buying Checklist" }] : []),
           ],
         },
         {
           label: "Tools",
           items: [
-            { href: "/finance", icon: <Calculator size={20} />, label: "Calculators" },
+            ...(hasPermission("finance") ? [{ href: "/finance", icon: <Calculator size={20} />, label: "Calculators" }] : []),
             { href: "/glossary", icon: <BookOpen size={20} />, label: "Glossary" },
           ],
         },
@@ -147,19 +158,22 @@ function QuickMenu({
         {
           label: "My Sale",
           items: [
-            { href: "/seller/listing", icon: <Home size={20} />, label: "My Listing" },
-            { href: "/seller/offers", icon: <FileText size={20} />, label: "Offers" },
-            { href: "/seller/checklist", icon: <CheckSquare size={20} />, label: "Selling Checklist" },
+            ...(hasPermission("property") ? [{ href: "/seller/listing", icon: <Home size={20} />, label: "My Listing" }] : []),
+            ...(hasPermission("offers") ? [{ href: "/seller/offers", icon: <FileText size={20} />, label: "Offers" }] : []),
+            ...(hasPermission("checklist") ? [{ href: "/seller/checklist", icon: <CheckSquare size={20} />, label: "Selling Checklist" }] : []),
           ],
         },
         {
           label: "Tools",
           items: [
-            { href: "/finance", icon: <Calculator size={20} />, label: "Calculators" },
+            ...(hasPermission("finance") ? [{ href: "/finance", icon: <Calculator size={20} />, label: "Calculators" }] : []),
             { href: "/glossary", icon: <BookOpen size={20} />, label: "Glossary" },
           ],
         },
       ];
+
+  // Filter out empty groups
+  const groups = allGroups.filter((g) => g.items.length > 0);
 
   return (
     <div className="bg-surface border border-border rounded-2xl shadow-sm overflow-hidden">

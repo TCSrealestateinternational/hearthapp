@@ -6,11 +6,18 @@ import { useMessages } from "@/hooks/useMessages";
 import { MessageThread } from "@/components/messaging/MessageThread";
 import { MessageInput } from "@/components/messaging/MessageInput";
 import { Card } from "@/components/ui/Card";
+import { useTransactions } from "@/hooks/useTransaction";
 import { AlertTriangle, MessageCircle, WifiOff } from "lucide-react";
+import { PermissionGate } from "@/components/shared/PermissionGate";
 
 export default function MessagesPage() {
   const { user, loading: authLoading } = useAuth();
   const { brokerage, loading: brokerageLoading } = useBrokerage();
+  const { transactions } = useTransactions(
+    brokerage?.id || "",
+    user?.id || ""
+  );
+  const activeTx = transactions[0];
   const { messages, loading, ready, connected, error, sendError, send } = useMessages({
     brokerageId: brokerage?.id || "",
     clientId: user?.id || "",
@@ -23,6 +30,7 @@ export default function MessagesPage() {
   const missingSetup = !depsLoading && (!brokerage?.id || !user?.id);
 
   return (
+    <PermissionGate transactionId={activeTx?.id} permission="messages">
     <div className="max-w-2xl mx-auto flex flex-col h-[calc(100vh-5rem)] md:h-[calc(100vh-6rem)] pb-16 md:pb-0">
       <h1 className="text-2xl font-extrabold tracking-tight text-text-primary mb-4">Messages</h1>
 
@@ -97,5 +105,6 @@ export default function MessagesPage() {
         )}
       </Card>
     </div>
+    </PermissionGate>
   );
 }

@@ -9,6 +9,7 @@ import { Card } from "@/components/ui/Card";
 import { getListing } from "@/lib/firestore";
 import type { Listing } from "@/types";
 import { Home } from "lucide-react";
+import { PermissionGate } from "@/components/shared/PermissionGate";
 
 export default function ListingPage() {
   const { user } = useAuth();
@@ -27,32 +28,36 @@ export default function ListingPage() {
 
   if (!listing) {
     return (
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-2xl font-extrabold tracking-tight text-text-primary mb-4">
-          My Listing
-        </h1>
-        <Card>
-          <div className="text-center py-8">
-            <Home
-              size={40}
-              className="mx-auto mb-3 text-text-secondary opacity-50"
-            />
-            <p className="text-text-secondary">
-              Your listing has not been set up yet.
-            </p>
-            <p className="text-sm text-text-secondary mt-1">
-              Your agent will add your listing details when ready.
-            </p>
-          </div>
-        </Card>
-      </div>
+      <PermissionGate transactionId={sellingTx?.id} permission="property">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-2xl font-extrabold tracking-tight text-text-primary mb-4">
+            My Listing
+          </h1>
+          <Card>
+            <div className="text-center py-8">
+              <Home
+                size={40}
+                className="mx-auto mb-3 text-text-secondary opacity-50"
+              />
+              <p className="text-text-secondary">
+                Your listing has not been set up yet.
+              </p>
+              <p className="text-sm text-text-secondary mt-1">
+                Your agent will add your listing details when ready.
+              </p>
+            </div>
+          </Card>
+        </div>
+      </PermissionGate>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <h1 className="text-2xl font-extrabold tracking-tight text-text-primary mb-4">My Listing</h1>
-      <ListingDetail listing={listing} />
-    </div>
+    <PermissionGate transactionId={sellingTx?.id} permission="property">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-2xl font-extrabold tracking-tight text-text-primary mb-4">My Listing</h1>
+        <ListingDetail listing={listing} />
+      </div>
+    </PermissionGate>
   );
 }

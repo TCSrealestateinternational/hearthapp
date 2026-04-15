@@ -57,6 +57,7 @@ export interface User {
   activeRole?: "buyer" | "seller";
   avatarUrl?: string;
   driveFolderUrl?: string;
+  portalViewPreference?: "toggle" | "unified";
   createdAt: Date;
   lastLoginAt: Date;
 }
@@ -70,13 +71,35 @@ export type TransactionStatus =
   | "closed"
   | "withdrawn";
 
+// ── Sync Permissions ──
+export type SyncPermissionKey = "status" | "milestones" | "documents" | "property" | "messages" | "checklist" | "finance" | "offers";
+
+export type SyncPermissions = Record<SyncPermissionKey, boolean>;
+
+export interface PermissionChangeEntry {
+  action: "invite_sent" | "invite_accepted" | "permission_updated" | "sync_paused" | "sync_resumed";
+  timestamp: number;
+  changedBy: string;
+  field?: SyncPermissionKey;
+  oldValue?: boolean;
+  newValue?: boolean;
+}
+
 export interface Transaction {
   id: string;
   brokerageId: string;
   clientId: string;
+  agentId?: string;
   type: TransactionType;
   status: TransactionStatus;
   label: string;
+  hearthPortalActive?: boolean;
+  reTrackerDealId?: string;
+  reTrackerClientId?: string;
+  syncPermissions?: SyncPermissions;
+  permissionHistory?: PermissionChangeEntry[];
+  syncPausedAt?: number;
+  archivedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -8,6 +8,7 @@ import { BuyerChecklist } from "@/components/buyer/BuyerChecklist";
 import { BUYER_CHECKLIST_TEMPLATE } from "@/constants/checklist-buyer";
 import { getChecklist, saveChecklist } from "@/lib/firestore";
 import type { ChecklistItem } from "@/types";
+import { PermissionGate } from "@/components/shared/PermissionGate";
 
 export default function BuyerChecklistPage() {
   const { user } = useAuth();
@@ -67,9 +68,11 @@ export default function BuyerChecklistPage() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto space-y-4">
-      <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">Buyer Checklist</h1>
-      <BuyerChecklist items={items} onToggle={handleToggle} />
-    </div>
+    <PermissionGate transactionId={buyingTx?.id} permission="checklist">
+      <div className="max-w-5xl mx-auto space-y-4">
+        <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">Buyer Checklist</h1>
+        <BuyerChecklist items={items} onToggle={handleToggle} />
+      </div>
+    </PermissionGate>
   );
 }

@@ -13,6 +13,7 @@ import type { Property, PropertyStatus } from "@/types";
 import { parseListingUrl } from "@/lib/parseListingUrl";
 import type { ParsedAddress } from "@/lib/parseListingUrl";
 import { Link2, Plus, Search, SlidersHorizontal } from "lucide-react";
+import { PermissionGate } from "@/components/shared/PermissionGate";
 
 export default function PropertiesPage() {
   const { user } = useAuth();
@@ -103,6 +104,7 @@ export default function PropertiesPage() {
     });
 
   return (
+    <PermissionGate transactionId={buyingTx?.id} permission="property">
     <div className="max-w-6xl mx-auto space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">My Properties</h1>
@@ -239,6 +241,7 @@ export default function PropertiesPage() {
         }}
       />
     </div>
+    </PermissionGate>
   );
 }
 
