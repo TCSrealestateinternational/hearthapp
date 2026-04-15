@@ -11,33 +11,39 @@ import {
   UserCircle,
   BookOpen,
 } from "lucide-react";
+import { usePermissions } from "@/hooks/usePermissions";
 
 interface NavItem {
   href: string;
   label: string;
   icon: React.ReactNode;
+  permissionKey?: string;
 }
 
 interface ClientNavProps {
   role: "buyer" | "seller";
   unreadCount: number;
+  transactionId?: string;
 }
 
-export function ClientNav({ role, unreadCount }: ClientNavProps) {
+export function ClientNav({ role, unreadCount, transactionId }: ClientNavProps) {
   const pathname = usePathname();
+  const { hasPermission } = usePermissions(transactionId);
 
   const buyerItems: NavItem[] = [
     { href: "/dashboard", label: "Home", icon: <LayoutDashboard size={20} aria-hidden="true" /> },
-    { href: "/buyer/properties", label: "Properties", icon: <Home size={20} aria-hidden="true" /> },
+    { href: "/buyer/properties", label: "Properties", icon: <Home size={20} aria-hidden="true" />, permissionKey: "property" },
     {
       href: "/finance",
       label: "Finance",
       icon: <Calculator size={20} aria-hidden="true" />,
+      permissionKey: "finance",
     },
     {
       href: "/buyer/checklist",
       label: "Checklist",
       icon: <CheckSquare size={20} aria-hidden="true" />,
+      permissionKey: "checklist",
     },
     {
       href: "/glossary",
@@ -48,21 +54,24 @@ export function ClientNav({ role, unreadCount }: ClientNavProps) {
 
   const sellerItems: NavItem[] = [
     { href: "/dashboard", label: "Home", icon: <LayoutDashboard size={20} aria-hidden="true" /> },
-    { href: "/seller/listing", label: "Listing", icon: <Home size={20} aria-hidden="true" /> },
+    { href: "/seller/listing", label: "Listing", icon: <Home size={20} aria-hidden="true" />, permissionKey: "property" },
     {
       href: "/seller/offers",
       label: "Offers",
       icon: <Calculator size={20} aria-hidden="true" />,
+      permissionKey: "offers",
     },
     {
       href: "/finance",
       label: "Finance",
       icon: <Calculator size={20} aria-hidden="true" />,
+      permissionKey: "finance",
     },
     {
       href: "/seller/checklist",
       label: "Checklist",
       icon: <CheckSquare size={20} aria-hidden="true" />,
+      permissionKey: "checklist",
     },
     {
       href: "/glossary",
@@ -71,24 +80,31 @@ export function ClientNav({ role, unreadCount }: ClientNavProps) {
     },
   ];
 
-  const items = role === "buyer" ? buyerItems : sellerItems;
+  const allItems = role === "buyer" ? buyerItems : sellerItems;
+  // Filter by permission
+  const items = allItems.filter(
+    (item) => !item.permissionKey || hasPermission(item.permissionKey as never),
+  );
 
-  const bottomItems: NavItem[] = [
+  const allBottomItems: NavItem[] = [
     {
       href: "/messages",
       label: "Messages",
       icon: <MessageCircle size={20} aria-hidden="true" />,
+      permissionKey: "messages",
     },
     { href: "/profile", label: "Profile", icon: <UserCircle size={20} aria-hidden="true" /> },
   ];
+  const bottomItems = allBottomItems.filter(
+    (item) => !item.permissionKey || hasPermission(item.permissionKey as never),
+  );
 
-  // Mobile: 4 items — Dashboard, Properties/Listing, Messages, Profile
+  // Mobile: 4 items — Dashboard, first role-specific, Messages (if allowed), Profile
   const mobileItems: NavItem[] = [
     items[0], // Dashboard
-    items[1], // Properties (buyer) or Listing (seller)
-    bottomItems[0], // Messages
-    bottomItems[1], // Profile
-  ];
+    items[1] || items[0], // Properties (buyer) or Listing (seller), fallback to dashboard
+    ...bottomItems,
+  ].filter(Boolean).slice(0, 4);
 
   return (
     <>

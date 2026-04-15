@@ -5,10 +5,12 @@ import { useRole } from "@/hooks/useRole";
 import { useBrokerage } from "@/hooks/useBrokerage";
 import { useTransactions } from "@/hooks/useTransaction";
 import { usePermissions } from "@/hooks/usePermissions";
+import type { SyncPermissionKey } from "@/types";
 import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { MilestoneTimeline } from "@/components/shared/MilestoneTimeline";
 import { PauseBanner } from "@/components/shared/PermissionGate";
+import { UnifiedDashboard } from "@/components/shared/UnifiedDashboard";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import {
@@ -37,6 +39,26 @@ export default function DashboardPage() {
   );
   const primaryTxId = activeTxs[0]?.id;
   const { hasPermission, isPaused } = usePermissions(primaryTxId);
+  const isUnified = user?.portalViewPreference === "unified";
+
+  // Unified view: show all transactions at once
+  if (isUnified) {
+    return (
+      <div className="max-w-6xl mx-auto space-y-6">
+        <PauseBanner transactionId={primaryTxId} />
+        <div>
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-text-primary">
+            Welcome back, {user?.displayName?.split(" ")[0] || "there"}
+          </h1>
+          <p className="text-text-secondary mt-1">All your transactions in one place.</p>
+        </div>
+        <UnifiedDashboard
+          transactions={transactions}
+          agentName={brokerage?.agentName}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
@@ -132,7 +154,7 @@ function QuickMenu({
   hasPermission,
 }: {
   activeRole: "buyer" | "seller" | undefined;
-  hasPermission: (key: string) => boolean;
+  hasPermission: (key: SyncPermissionKey) => boolean;
 }) {
   const isBuyer = activeRole === "buyer" || !activeRole;
 

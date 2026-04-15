@@ -8,12 +8,14 @@ import { exportClientPDF } from "@/lib/exportPdf";
 import { Card, CardTitle } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { DriveLink } from "@/components/shared/DriveLink";
-import { UserCircle, Mail, Phone, Download, LogOut } from "lucide-react";
+import { UserCircle, Mail, Phone, Download, LogOut, LayoutGrid, ToggleLeft } from "lucide-react";
+import { updateUser } from "@/lib/firestore";
 
 export default function ProfilePage() {
-  const { user, signOut } = useAuth();
+  const { user, signOut, refreshUser } = useAuth();
   const { brokerage } = useBrokerage();
   const [downloading, setDownloading] = useState(false);
+  const viewPref = user?.portalViewPreference || "toggle";
 
   const hasDriveLink = user?.driveFolderUrl || brokerage?.driveFolderUrl;
 
@@ -108,6 +110,53 @@ export default function ProfilePage() {
               </div>
             )}
           </div>
+        </div>
+      )}
+
+      {/* Dashboard view preference */}
+      {user?.roles?.some((r) => r === "dual" || r === "buyer" || r === "seller") && (
+        <div>
+          <h2 className="text-lg font-semibold text-text-primary mb-3">
+            Preferences
+          </h2>
+          <Card>
+            <p className="text-sm font-medium text-text-primary mb-2">Dashboard View</p>
+            <p className="text-xs text-text-secondary mb-3">
+              Choose how your dashboard shows transactions.
+            </p>
+            <div className="flex gap-2">
+              <button
+                onClick={async () => {
+                  if (!user) return;
+                  await updateUser(user.id, { portalViewPreference: "toggle" } as never);
+                  refreshUser();
+                }}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors border ${
+                  viewPref === "toggle"
+                    ? "bg-primary-light text-primary border-primary/20"
+                    : "bg-surface text-text-secondary border-border hover:bg-primary-light/50"
+                }`}
+              >
+                <ToggleLeft size={16} />
+                Toggle (Buyer/Seller)
+              </button>
+              <button
+                onClick={async () => {
+                  if (!user) return;
+                  await updateUser(user.id, { portalViewPreference: "unified" } as never);
+                  refreshUser();
+                }}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors border ${
+                  viewPref === "unified"
+                    ? "bg-primary-light text-primary border-primary/20"
+                    : "bg-surface text-text-secondary border-border hover:bg-primary-light/50"
+                }`}
+              >
+                <LayoutGrid size={16} />
+                Unified (All in one)
+              </button>
+            </div>
+          </Card>
         </div>
       )}
 

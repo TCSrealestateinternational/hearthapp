@@ -7,7 +7,8 @@ import {
   signOut as fbSignOut,
   type User as FirebaseUser,
 } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { auth, db } from "@/lib/firebase";
+import { collection, query, where, getDocs, updateDoc, doc, arrayUnion } from "firebase/firestore";
 import { getUser, updateUser, getBrokerage } from "@/lib/firestore";
 import type { User, Brokerage } from "@/types";
 
@@ -94,6 +95,29 @@ export function useAuth() {
     if (userData && userData.status === "pending") {
       await updateUser(cred.user.uid, { status: "active" });
       userData.status = "active";
+
+      // Append "invite_accepted" audit entry to linked transaction(s)
+      try {
+        const txQ = query(
+          collection(db, "transactions"),
+          where("clientId", "==", cred.user.uid),
+        );
+        const txSnap = await getDocs(txQ);
+        const auditEntry = {
+          action: "invite_accepted",
+          timestamp: Date.now(),
+          changedBy: cred.user.uid,
+        };
+        await Promise.all(
+          txSnap.docs.map((txDoc) =>
+            updateDoc(doc(db, "transactions", txDoc.id), {
+              permissionHistory: arrayUnion(auditEntry),
+            }),
+          ),
+        );
+      } catch (err) {
+        console.warn("Failed to write invite_accepted audit entry:", err);
+      }
     }
     setState({
       firebaseUser: cred.user,

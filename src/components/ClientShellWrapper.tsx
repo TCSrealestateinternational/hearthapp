@@ -9,6 +9,7 @@ import { GlossaryProvider } from "@/contexts/GlossaryContext";
 import { useAuth } from "@/hooks/useAuth";
 import { useRole } from "@/hooks/useRole";
 import { useBrokerage } from "@/hooks/useBrokerage";
+import { useTransactions } from "@/hooks/useTransaction";
 import { LogOut } from "lucide-react";
 import { InstallPrompt } from "@/components/shared/InstallPrompt";
 
@@ -26,6 +27,10 @@ function ClientShell({ children }: { children: ReactNode }) {
   const { user, signOut } = useAuth();
   const { activeRole, toggleRole, isDual } = useRole(user);
   const { brokerage } = useBrokerage();
+  const { transactions } = useTransactions(brokerage?.id || "", user?.id || "");
+  const activeTx = transactions.find(
+    (tx) => tx.type === (activeRole === "buyer" ? "buying" : "selling"),
+  );
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -40,10 +45,10 @@ function ClientShell({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-30 flex items-center justify-between px-4 sm:px-8 py-3 bg-[var(--glass-bg)] backdrop-blur-xl border-b border-[var(--glass-border)]">
         <div className="flex items-center gap-4">
           <span className="text-lg font-bold text-primary">Hearth Real Estate<sup className="text-[0.6em] align-super">&copy;</sup></span>
-          <ClientNav role={activeRole} unreadCount={0} />
+          <ClientNav role={activeRole} unreadCount={0} transactionId={activeTx?.id} />
         </div>
         <div className="flex items-center gap-3">
-          {isDual && (
+          {isDual && user?.portalViewPreference !== "unified" && (
             <RoleToggle activeRole={activeRole} onToggle={toggleRole} />
           )}
           <span className="text-sm text-text-secondary hidden sm:inline">
