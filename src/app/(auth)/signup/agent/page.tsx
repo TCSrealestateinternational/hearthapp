@@ -15,6 +15,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { defaultTokens } from "@/lib/brand";
 import { slugify } from "@/lib/slugify";
 import { Button } from "@/components/ui/Button";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function AgentSignupPage() {
   const router = useRouter();
@@ -32,6 +33,8 @@ export default function AgentSignupPage() {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   function update(field: string, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -189,15 +192,25 @@ export default function AgentSignupPage() {
               >
                 Password
               </label>
-              <input
-                id="password"
-                type="password"
-                required
-                value={form.password}
-                onChange={(e) => update("password", e.target.value)}
-                className={inputClass}
-                placeholder="6+ characters"
-              />
+              <div className="relative">
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  required
+                  value={form.password}
+                  onChange={(e) => update("password", e.target.value)}
+                  className={`${inputClass} pr-10`}
+                  placeholder="6+ characters"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-text-secondary hover:text-text-primary transition-colors"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
             </div>
             <div>
               <label
@@ -206,15 +219,25 @@ export default function AgentSignupPage() {
               >
                 Confirm
               </label>
-              <input
-                id="confirmPassword"
-                type="password"
-                required
-                value={form.confirmPassword}
-                onChange={(e) => update("confirmPassword", e.target.value)}
-                className={inputClass}
-                placeholder="Repeat password"
-              />
+              <div className="relative">
+                <input
+                  id="confirmPassword"
+                  type={showConfirm ? "text" : "password"}
+                  required
+                  value={form.confirmPassword}
+                  onChange={(e) => update("confirmPassword", e.target.value)}
+                  className={`${inputClass} pr-10`}
+                  placeholder="Repeat password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirm(!showConfirm)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-text-secondary hover:text-text-primary transition-colors"
+                  aria-label={showConfirm ? "Hide password" : "Show password"}
+                >
+                  {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
             </div>
           </div>
 
