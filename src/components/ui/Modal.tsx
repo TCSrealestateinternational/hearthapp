@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useId, type ReactNode } from "react";
-import { X } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
 interface ModalProps {
   open: boolean;
@@ -90,16 +90,16 @@ export function Modal({
         aria-modal="true"
         aria-labelledby={titleId}
         tabIndex={-1}
-        className={`relative bg-surface rounded-2xl shadow-2xl w-full ${maxWidth} max-h-[90vh] overflow-y-auto focus:outline-none`}
+        className={`relative bg-surface-container-low rounded-[28px] shadow-2xl w-full ${maxWidth} max-h-[90vh] overflow-y-auto focus:outline-none`}
       >
-        <div className="sticky top-0 bg-surface flex items-center justify-between p-4 border-b border-border rounded-t-2xl">
-          <h2 id={titleId} className="text-lg font-semibold text-text-primary">{title}</h2>
+        <div className="sticky top-0 bg-surface-container-low flex items-center justify-between p-4 border-b border-outline-variant rounded-t-[28px]">
+          <h2 id={titleId} className="text-lg font-semibold text-on-surface font-serif">{title}</h2>
           <button
             onClick={onClose}
             aria-label="Close dialog"
-            className="p-1 rounded-lg text-text-secondary hover:bg-primary-light transition-colors"
+            className="p-1 rounded-full text-on-surface-variant hover:bg-primary-container transition-colors"
           >
-            <X size={20} aria-hidden="true" />
+            <MaterialIcon name="close" size={20} />
           </button>
         </div>
         <div className="p-4 sm:p-6">{children}</div>

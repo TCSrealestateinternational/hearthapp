@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, type ChangeEvent } from "react";
-import { Upload } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
 interface FileUploadProps {
   onFileSelect: (file: File) => void;
@@ -61,12 +61,12 @@ export function FileUpload({
         className={`flex flex-col items-center justify-center gap-2 p-6 border-2 border-dashed rounded-xl cursor-pointer transition-colors ${
           dragOver
             ? "border-primary bg-primary-light"
-            : "border-border hover:border-primary/50"
+            : "border-outline-variant hover:border-primary/50"
         }`}
       >
-        <Upload size={24} className="text-text-secondary" aria-hidden="true" />
-        <span className="text-sm text-text-secondary">{label}</span>
-        <span className="text-xs text-text-secondary">
+        <MaterialIcon name="upload" size={24} className="text-on-surface-variant" />
+        <span className="text-sm text-on-surface-variant">{label}</span>
+        <span className="text-xs text-on-surface-variant">
           Max {maxSizeMB}MB
         </span>
       </div>

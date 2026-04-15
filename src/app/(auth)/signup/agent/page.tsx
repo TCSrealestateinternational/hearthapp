@@ -15,7 +15,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { defaultTokens } from "@/lib/brand";
 import { slugify } from "@/lib/slugify";
 import { Button } from "@/components/ui/Button";
-import { Eye, EyeOff } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
 export default function AgentSignupPage() {
   const router = useRouter();
@@ -123,7 +123,7 @@ export default function AgentSignupPage() {
   }
 
   const inputClass =
-    "w-full px-4 py-3 rounded-xl border border-border bg-surface text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/50";
+    "w-full px-4 py-3 rounded-xl border border-outline-variant bg-surface text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/50";
 
   return (
     <div
@@ -136,10 +136,10 @@ export default function AgentSignupPage() {
       {/* Frosted glass card */}
       <div className="w-full max-w-md bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl p-8 sm:p-10">
         <div className="text-center mb-6">
-          <h1 className="text-3xl font-extrabold tracking-tight text-text-primary">
+          <h1 className="text-3xl font-extrabold tracking-tight text-on-surface">
             Agent Sign Up
           </h1>
-          <p className="text-text-secondary mt-2">
+          <p className="text-on-surface-variant mt-2">
             Create your brokerage account
           </p>
         </div>
@@ -149,7 +149,7 @@ export default function AgentSignupPage() {
           <div>
             <label
               htmlFor="displayName"
-              className="block text-xs font-bold uppercase tracking-wider text-text-secondary mb-1.5"
+              className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1.5"
             >
               Full Name
             </label>
@@ -168,7 +168,7 @@ export default function AgentSignupPage() {
           <div>
             <label
               htmlFor="email"
-              className="block text-xs font-bold uppercase tracking-wider text-text-secondary mb-1.5"
+              className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1.5"
             >
               Email Address
             </label>
@@ -188,7 +188,7 @@ export default function AgentSignupPage() {
             <div>
               <label
                 htmlFor="password"
-                className="block text-xs font-bold uppercase tracking-wider text-text-secondary mb-1.5"
+                className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1.5"
               >
                 Password
               </label>
@@ -205,17 +205,17 @@ export default function AgentSignupPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-text-secondary hover:text-text-primary transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-on-surface-variant hover:text-on-surface transition-colors"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
-                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  {showPassword ? <MaterialIcon name="visibility_off" size={16} /> : <MaterialIcon name="visibility" size={16} />}
                 </button>
               </div>
             </div>
             <div>
               <label
                 htmlFor="confirmPassword"
-                className="block text-xs font-bold uppercase tracking-wider text-text-secondary mb-1.5"
+                className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1.5"
               >
                 Confirm
               </label>
@@ -232,10 +232,10 @@ export default function AgentSignupPage() {
                 <button
                   type="button"
                   onClick={() => setShowConfirm(!showConfirm)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-text-secondary hover:text-text-primary transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-on-surface-variant hover:text-on-surface transition-colors"
                   aria-label={showConfirm ? "Hide password" : "Show password"}
                 >
-                  {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
+                  {showConfirm ? <MaterialIcon name="visibility_off" size={16} /> : <MaterialIcon name="visibility" size={16} />}
                 </button>
               </div>
             </div>
@@ -245,7 +245,7 @@ export default function AgentSignupPage() {
           <div>
             <label
               htmlFor="phone"
-              className="block text-xs font-bold uppercase tracking-wider text-text-secondary mb-1.5"
+              className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1.5"
             >
               Phone
             </label>
@@ -263,7 +263,7 @@ export default function AgentSignupPage() {
           <div>
             <label
               htmlFor="brokerageName"
-              className="block text-xs font-bold uppercase tracking-wider text-text-secondary mb-1.5"
+              className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1.5"
             >
               Brokerage Name
             </label>
@@ -283,7 +283,7 @@ export default function AgentSignupPage() {
             <div>
               <label
                 htmlFor="agentTitle"
-                className="block text-xs font-bold uppercase tracking-wider text-text-secondary mb-1.5"
+                className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1.5"
               >
                 Title
               </label>
@@ -299,7 +299,7 @@ export default function AgentSignupPage() {
             <div>
               <label
                 htmlFor="licenseNumber"
-                className="block text-xs font-bold uppercase tracking-wider text-text-secondary mb-1.5"
+                className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1.5"
               >
                 License #
               </label>
@@ -331,7 +331,7 @@ export default function AgentSignupPage() {
           </Button>
         </form>
 
-        <p className="text-center text-sm text-text-secondary mt-6">
+        <p className="text-center text-sm text-on-surface-variant mt-6">
           Already have an account?{" "}
           <Link
             href="/login"

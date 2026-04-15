@@ -1,6 +1,6 @@
 "use client";
 
-import { ExternalLink } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
 interface DriveLinkProps {
   url: string;
@@ -12,7 +12,7 @@ export function DriveLink({ url }: DriveLinkProps) {
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl border border-border bg-surface text-text-primary hover:bg-primary-light transition-colors w-full font-medium shadow-sm hover:shadow-md"
+      className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl border border-outline-variant bg-surface text-on-surface hover:bg-primary-container transition-colors w-full font-medium shadow-sm hover:shadow-md"
     >
       <svg viewBox="0 0 87.3 78" className="w-5 h-5" aria-hidden="true">
         <path d="M6.6 66.85L29 29.4h28.9l-22.3 37.45z" fill="#0066DA" />
@@ -23,7 +23,7 @@ export function DriveLink({ url }: DriveLinkProps) {
         <path d="M6.6 66.85h28.9L57.8 29.4H29z" fill="#FFBA00" />
       </svg>
       Open Google Drive Folder
-      <ExternalLink size={14} aria-hidden="true" />
+      <MaterialIcon name="open_in_new" size={14} />
       <span className="sr-only">(opens in new tab)</span>
     </a>
   );

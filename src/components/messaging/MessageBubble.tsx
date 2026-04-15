@@ -1,7 +1,7 @@
 "use client";
 
 import type { Message } from "@/types";
-import { FileText, Check, CheckCheck, Clock } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
 interface MessageBubbleProps {
   message: Message;
@@ -33,7 +33,7 @@ export function MessageBubble({ message, isOwn }: MessageBubbleProps) {
             rel="noopener noreferrer"
             className="flex items-center gap-1 mt-1 text-xs underline opacity-80"
           >
-            <FileText size={12} />
+            <MaterialIcon name="description" size={12} />
             {message.fileName || "Attachment"}
           </a>
         )}
@@ -50,11 +50,11 @@ export function MessageBubble({ message, isOwn }: MessageBubbleProps) {
           </p>
           {isOwn && (
             isPending ? (
-              <Clock size={12} className="text-white/60" aria-label="Sending" />
+              <MaterialIcon name="schedule" size={12} className="text-white/60" aria-label="Sending" />
             ) : message.readAt ? (
-              <CheckCheck size={14} className="text-white" aria-label="Read" />
+              <MaterialIcon name="done_all" size={14} className="text-white" aria-label="Read" />
             ) : (
-              <Check size={14} className="text-white/80" aria-label="Sent" />
+              <MaterialIcon name="check" size={14} className="text-white/80" aria-label="Sent" />
             )
           )}
         </div>

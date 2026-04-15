@@ -6,7 +6,7 @@ import { exportClientPDF } from "@/lib/exportPdf";
 import { getTransactions } from "@/lib/firestore";
 import type { PendingSwitch } from "@/hooks/useAuth";
 import type { User } from "@/types";
-import { Download, ArrowRight } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
 interface BrokerageSwitchProps {
   user: User;
@@ -73,10 +73,10 @@ export function BrokerageSwitch({
               className="h-14 mx-auto mb-4"
             />
           )}
-          <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">
+          <h1 className="text-2xl font-extrabold tracking-tight text-on-surface">
             Switch to {newBrokerage.name}?
           </h1>
-          <p className="text-text-secondary mt-2">
+          <p className="text-on-surface-variant mt-2">
             You&apos;ve been added to{" "}
             <strong>{newBrokerage.name}</strong> by{" "}
             <strong>{newBrokerage.agentName}</strong>.
@@ -84,7 +84,7 @@ export function BrokerageSwitch({
         </div>
 
         <div className="bg-warning/10 border border-warning/30 rounded-xl p-4 mb-6">
-          <p className="text-sm text-text-primary">
+          <p className="text-sm text-on-surface">
             Before switching, you can download your current profile from{" "}
             <strong>{currentBrokerage.name}</strong>. After switching, your
             current account will no longer be accessible.
@@ -98,7 +98,7 @@ export function BrokerageSwitch({
             loading={downloading}
             className="w-full flex items-center justify-center gap-2"
           >
-            <Download size={16} />
+            <MaterialIcon name="download" size={16} />
             Download Current Profile
           </Button>
 
@@ -108,7 +108,7 @@ export function BrokerageSwitch({
             loading={loading}
             className="w-full flex items-center justify-center gap-2"
           >
-            <ArrowRight size={16} />
+            <MaterialIcon name="arrow_forward" size={16} />
             Switch to {newBrokerage.name}
           </Button>
         </div>
@@ -116,7 +116,7 @@ export function BrokerageSwitch({
         <button
           onClick={handleStay}
           disabled={loading}
-          className="w-full text-center text-sm text-text-secondary hover:text-primary mt-4 py-2 transition-colors"
+          className="w-full text-center text-sm text-on-surface-variant hover:text-primary mt-4 py-2 transition-colors"
         >
           Stay with {currentBrokerage.name}
         </button>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { CheckCircle, Circle, PartyPopper } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 import { subscribeToMilestones } from "@/lib/firestore";
 import { GlossaryHighlight } from "@/components/ui/GlossaryTooltip";
 import { useGlossaryTerms } from "@/contexts/GlossaryContext";
@@ -60,26 +60,26 @@ export function MilestoneTimeline({ transactionId }: MilestoneTimelineProps) {
   if (milestones.length === 0) {
     return (
       <div
-        className="rounded-xl border border-border bg-surface p-8 text-center"
+        className="rounded-xl border border-outline-variant bg-surface p-8 text-center"
         role="status"
         aria-label="No milestones yet"
       >
-        <p className="text-sm text-text-secondary">No milestones to show yet.</p>
+        <p className="text-sm text-on-surface-variant">No milestones to show yet.</p>
       </div>
     );
   }
 
   return (
     <div
-      className="rounded-xl border border-border bg-surface p-6"
+      className="rounded-xl border border-outline-variant bg-surface p-6"
       role="region"
       aria-label="Transaction milestone timeline"
     >
       <span role="status" aria-live="polite" className="sr-only">{celebrating ? "Milestone completed!" : ""}</span>
       {/* Progress header */}
       <div className="mb-6 flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-text-primary">Your Progress</h3>
-        <span className="text-sm font-medium text-text-secondary" aria-label={`${pct} percent complete`}>
+        <h3 className="text-lg font-semibold text-on-surface">Your Progress</h3>
+        <span className="text-sm font-medium text-on-surface-variant" aria-label={`${pct} percent complete`}>
           {completedCount}/{totalCount} ({pct}%)
         </span>
       </div>
@@ -107,7 +107,7 @@ export function MilestoneTimeline({ transactionId }: MilestoneTimelineProps) {
             <div key={stage} role="listitem">
               <h4
                 className={`mb-3 text-xs font-bold uppercase tracking-wider ${
-                  stageCompleted ? "text-success" : "text-text-secondary"
+                  stageCompleted ? "text-success" : "text-on-surface-variant"
                 }`}
               >
                 <GlossaryHighlight text={stage} terms={terms} />
@@ -119,38 +119,38 @@ export function MilestoneTimeline({ transactionId }: MilestoneTimelineProps) {
                     <div
                       key={milestone.id}
                       className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-colors ${
-                        milestone.completed ? "bg-primary-light" : "bg-surface-container"
+                        milestone.completed ? "bg-primary-container" : "bg-surface-container"
                       } ${isCelebrating ? "animate-pulse ring-2 ring-success" : ""}`}
                       role="listitem"
                       aria-label={`${milestone.label}: ${milestone.completed ? "completed" : "pending"}`}
                     >
                       {milestone.completed ? (
-                        <CheckCircle
+                        <MaterialIcon
+                          name="check_circle"
                           size={18}
                           className="shrink-0 text-success"
-                          aria-hidden="true"
                         />
                       ) : (
-                        <Circle
+                        <MaterialIcon
+                          name="radio_button_unchecked"
                           size={18}
                           className="shrink-0 text-border"
-                          aria-hidden="true"
                         />
                       )}
                       <span
                         className={`text-sm ${
                           milestone.completed
                             ? "font-medium text-primary"
-                            : "text-text-secondary"
+                            : "text-on-surface-variant"
                         }`}
                       >
                         <GlossaryHighlight text={milestone.label} terms={terms} />
                       </span>
                       {isCelebrating && (
-                        <PartyPopper
+                        <MaterialIcon
+                          name="celebration"
                           size={16}
                           className="ml-auto shrink-0 text-cta"
-                          aria-hidden="true"
                         />
                       )}
                     </div>

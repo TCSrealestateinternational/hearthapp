@@ -8,7 +8,7 @@ import { OfferCard } from "@/components/seller/OfferCard";
 import { OfferNetCalculator } from "@/components/seller/OfferNetCalculator";
 import { getOffers, getListing } from "@/lib/firestore";
 import type { Offer, Listing } from "@/types";
-import { DollarSign } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 import { Card } from "@/components/ui/Card";
 import { PermissionGate } from "@/components/shared/PermissionGate";
 
@@ -39,15 +39,15 @@ export default function OffersPage() {
     <PermissionGate transactionId={sellingTx?.id} permission="offers">
       <div className="max-w-4xl mx-auto space-y-4">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">Offers</h1>
-        <div className="inline-flex items-center bg-primary-light rounded-full p-0.5">
+          <h1 className="text-2xl font-extrabold tracking-tight text-on-surface font-serif">Offers</h1>
+        <div className="inline-flex items-center bg-primary-container rounded-full p-0.5">
           <button
             onClick={() => setView("offers")}
             aria-pressed={view === "offers"}
             className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
               view === "offers"
                 ? "bg-primary text-white"
-                : "text-text-secondary"
+                : "text-on-surface-variant"
             }`}
           >
             Offers
@@ -58,7 +58,7 @@ export default function OffersPage() {
             className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
               view === "calculator"
                 ? "bg-primary text-white"
-                : "text-text-secondary"
+                : "text-on-surface-variant"
             }`}
           >
             Net Calculator
@@ -80,12 +80,13 @@ export default function OffersPage() {
         ) : (
           <Card>
             <div className="text-center py-8">
-              <DollarSign
+              <MaterialIcon
+                name="attach_money"
                 size={40}
-                className="mx-auto mb-3 text-text-secondary opacity-50"
+                className="mx-auto mb-3 text-on-surface-variant opacity-50"
               />
-              <p className="text-text-secondary">No offers received yet.</p>
-              <p className="text-sm text-text-secondary mt-1">
+              <p className="text-on-surface-variant">No offers received yet.</p>
+              <p className="text-sm text-on-surface-variant mt-1">
                 Offers will appear here as they come in.
               </p>
             </div>

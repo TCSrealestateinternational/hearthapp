@@ -6,7 +6,7 @@ import { BUYER_STAGES } from "@/constants/checklist-buyer";
 import { ProgressBar } from "@/components/shared/ProgressBar";
 import { ChecklistItemRow } from "@/components/shared/ChecklistItem";
 import { Card, CardTitle } from "@/components/ui/Card";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
 interface BuyerChecklistProps {
   items: ChecklistItem[];
@@ -67,13 +67,13 @@ export function BuyerChecklist({ items, onToggle }: BuyerChecklistProps) {
             >
               <div className="flex items-center gap-2">
                 {isExpanded ? (
-                  <ChevronDown size={16} className="text-text-secondary" aria-hidden="true" />
+                  <MaterialIcon name="expand_more" size={16} className="text-on-surface-variant" />
                 ) : (
-                  <ChevronRight size={16} className="text-text-secondary" aria-hidden="true" />
+                  <MaterialIcon name="chevron_right" size={16} className="text-on-surface-variant" />
                 )}
                 <CardTitle>{stage}</CardTitle>
               </div>
-              <span className="text-sm text-text-secondary">
+              <span className="text-sm text-on-surface-variant">
                 {stageCompleted}/{stageItems.length}
               </span>
             </button>

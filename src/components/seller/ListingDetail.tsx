@@ -6,7 +6,7 @@ import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
 import { GlossaryHighlight } from "@/components/ui/GlossaryTooltip";
 import { AddressLink } from "@/components/shared/AddressLink";
 import { useGlossaryTerms } from "@/contexts/GlossaryContext";
-import { Calendar } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
 interface ListingDetailProps {
   listing: Listing;
@@ -57,7 +57,7 @@ export function ListingDetail({ listing }: ListingDetailProps) {
                 {listing.status.replace("-", " ")}
               </Badge>
             </div>
-            <div className="text-sm text-text-secondary">
+            <div className="text-sm text-on-surface-variant">
               <AddressLink
                 address={listing.address}
                 city={listing.city}
@@ -67,13 +67,13 @@ export function ListingDetail({ listing }: ListingDetailProps) {
             </div>
           </div>
         </CardHeader>
-        <div className="flex gap-4 text-sm text-text-secondary">
+        <div className="flex gap-4 text-sm text-on-surface-variant">
           <span>{listing.beds} bed</span>
           <span>{listing.baths} bath</span>
           <span>{listing.sqft.toLocaleString()} sqft</span>
         </div>
         {listing.description && (
-          <p className="text-sm text-text-primary mt-3">
+          <p className="text-sm text-on-surface mt-3">
             <GlossaryHighlight text={listing.description} terms={terms} />
           </p>
         )}
@@ -87,15 +87,15 @@ export function ListingDetail({ listing }: ListingDetailProps) {
             {listing.showingLog.map((showing, i) => (
               <div
                 key={i}
-                className="flex items-start gap-3 py-2 border-b border-border last:border-0"
+                className="flex items-start gap-3 py-2 border-b border-outline-variant last:border-0"
               >
-                <Calendar size={16} className="text-text-secondary mt-0.5" />
+                <MaterialIcon name="calendar_today" size={16} className="text-on-surface-variant mt-0.5" />
                 <div>
-                  <p className="text-sm font-medium text-text-primary">
+                  <p className="text-sm font-medium text-on-surface">
                     {showing.date} at {showing.time}
                   </p>
                   {showing.feedback && (
-                    <p className="text-sm text-text-secondary mt-0.5">
+                    <p className="text-sm text-on-surface-variant mt-0.5">
                       <GlossaryHighlight text={showing.feedback} terms={terms} />
                     </p>
                   )}
@@ -114,10 +114,10 @@ export function ListingDetail({ listing }: ListingDetailProps) {
             {listing.timeline.map((entry, i) => (
               <div key={i} className="flex items-center gap-3 py-1">
                 <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
-                <span className="text-sm text-text-secondary w-24">
+                <span className="text-sm text-on-surface-variant w-24">
                   {entry.date}
                 </span>
-                <span className="text-sm text-text-primary">
+                <span className="text-sm text-on-surface">
                   <GlossaryHighlight text={entry.event} terms={terms} />
                 </span>
               </div>

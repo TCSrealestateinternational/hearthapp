@@ -5,14 +5,13 @@ import { useAuth } from "@/hooks/useAuth";
 import { useRole } from "@/hooks/useRole";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { ArrowLeft } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 import {
   calculators,
   TAB_META,
   type CalcTab,
   type CalcEntry,
 } from "@/components/calculators/calculatorRegistry";
-import * as LucideIcons from "lucide-react";
 import { useBrokerage } from "@/hooks/useBrokerage";
 import { useTransactions } from "@/hooks/useTransaction";
 import { PermissionGate } from "@/components/shared/PermissionGate";
@@ -72,7 +71,7 @@ export default function FinanceHubPage() {
   return (
     <PermissionGate transactionId={activeTx?.id} permission="finance">
     <div className="max-w-6xl mx-auto space-y-6">
-      <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">
+      <h1 className="text-2xl font-extrabold tracking-tight text-on-surface font-serif">
         Finance Calculators
       </h1>
 
@@ -87,8 +86,8 @@ export default function FinanceHubPage() {
             }}
             className={`shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
               currentTab === tab
-                ? "bg-primary text-white shadow-sm"
-                : "bg-surface-container text-text-secondary hover:bg-surface-container-high"
+                ? "bg-primary text-on-primary shadow-sm"
+                : "bg-surface-container text-on-surface-variant hover:bg-surface-container-high"
             }`}
           >
             {meta.label}
@@ -100,12 +99,12 @@ export default function FinanceHubPage() {
       {activeCalcId && LoadedComponent ? (
         <div className="space-y-4">
           <Button variant="ghost" size="sm" onClick={closeCalculator}>
-            <ArrowLeft size={16} />
+            <MaterialIcon name="arrow_back" size={16} />
             Back to calculators
           </Button>
           <Suspense
             fallback={
-              <div className="text-center py-12 text-text-secondary">
+              <div className="text-center py-12 text-on-surface-variant">
                 Loading calculator...
               </div>
             }
@@ -136,23 +135,19 @@ function CalcCard({
   calc: CalcEntry;
   onClick: () => void;
 }) {
-  const IconComp = (LucideIcons as unknown as Record<string, LucideIcons.LucideIcon>)[
-    calc.icon
-  ];
-
   return (
     <button onClick={onClick} className="text-left w-full">
       <Card
         variant="container"
-        className="h-full flex flex-col gap-2 hover:border-primary/30 hover:shadow-md transition-all cursor-pointer group"
+        className="h-full flex flex-col gap-2 hover:shadow-md transition-all cursor-pointer group"
       >
-        <span className="p-2 rounded-xl bg-primary-light text-primary w-fit transition-colors group-hover:bg-primary group-hover:text-white">
-          {IconComp ? <IconComp size={20} /> : <LucideIcons.Calculator size={20} />}
+        <span className="p-2 rounded-xl bg-primary-container text-on-primary-container w-fit transition-colors group-hover:bg-primary group-hover:text-on-primary">
+          <MaterialIcon name={calc.icon} size={20} />
         </span>
-        <p className="text-sm font-semibold text-text-primary leading-tight">
+        <p className="text-sm font-semibold text-on-surface leading-tight">
           {calc.name}
         </p>
-        <p className="text-xs text-text-secondary leading-snug">
+        <p className="text-xs text-on-surface-variant leading-snug">
           {calc.description}
         </p>
       </Card>

@@ -8,7 +8,7 @@ import { exportClientPDF } from "@/lib/exportPdf";
 import { Card, CardTitle } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { DriveLink } from "@/components/shared/DriveLink";
-import { UserCircle, Mail, Phone, Download, LogOut, LayoutGrid, ToggleLeft, MessageCircle, ArrowRight } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 import Link from "next/link";
 import { updateUser } from "@/lib/firestore";
 
@@ -42,12 +42,12 @@ export default function ProfilePage() {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
-      <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">Profile</h1>
+      <h1 className="text-2xl font-extrabold tracking-tight text-on-surface font-serif">Profile</h1>
 
       {/* Profile info */}
       <Card>
         <div className="flex items-center gap-4">
-          <div className="w-20 h-20 rounded-full bg-primary-light flex items-center justify-center">
+          <div className="w-20 h-20 rounded-full bg-primary-container flex items-center justify-center">
             {user?.avatarUrl ? (
               <img
                 src={user.avatarUrl}
@@ -55,20 +55,20 @@ export default function ProfilePage() {
                 className="w-20 h-20 rounded-full object-cover"
               />
             ) : (
-              <UserCircle size={32} className="text-primary" />
+              <MaterialIcon name="account_circle" size={32} className="text-primary" />
             )}
           </div>
           <div>
-            <p className="text-xl font-bold text-text-primary">
+            <p className="text-xl font-bold text-on-surface">
               {user?.displayName}
             </p>
-            <div className="flex items-center gap-1 text-sm text-text-secondary">
-              <Mail size={14} aria-hidden="true" />
+            <div className="flex items-center gap-1 text-sm text-on-surface-variant">
+              <MaterialIcon name="mail" size={14} />
               <span>{user?.email}</span>
             </div>
             {user?.phone && (
-              <div className="flex items-center gap-1 text-sm text-text-secondary">
-                <Phone size={14} aria-hidden="true" />
+              <div className="flex items-center gap-1 text-sm text-on-surface-variant">
+                <MaterialIcon name="phone" size={14} />
                 <span>{user.phone}</span>
               </div>
             )}
@@ -79,29 +79,29 @@ export default function ProfilePage() {
       {/* Your Agent */}
       {brokerage && (
         <div>
-          <h2 className="text-lg font-semibold text-text-primary mb-3">Your Agent</h2>
+          <h2 className="text-lg font-semibold text-on-surface mb-3 font-serif">Your Agent</h2>
           <Card>
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-full bg-primary-light flex items-center justify-center text-primary font-bold text-lg shrink-0">
+              <div className="w-14 h-14 rounded-full bg-primary-container flex items-center justify-center text-primary font-bold text-lg shrink-0">
                 {brokerage.agentName
                   .split(" ")
                   .map((n) => n[0])
                   .join("")}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-semibold text-text-primary">{brokerage.agentName}</p>
-                <p className="text-sm text-text-secondary">{brokerage.agentTitle}</p>
+                <p className="font-semibold text-on-surface">{brokerage.agentName}</p>
+                <p className="text-sm text-on-surface-variant">{brokerage.agentTitle}</p>
                 {brokerage.agentPhone && (
-                  <div className="flex items-center gap-1 text-sm text-text-secondary mt-1">
-                    <Phone size={14} aria-hidden="true" />
+                  <div className="flex items-center gap-1 text-sm text-on-surface-variant mt-1">
+                    <MaterialIcon name="phone" size={14} />
                     <a href={`tel:${brokerage.agentPhone}`} className="hover:underline">
                       {brokerage.agentPhone}
                     </a>
                   </div>
                 )}
                 {brokerage.agentEmail && (
-                  <div className="flex items-center gap-1 text-sm text-text-secondary">
-                    <Mail size={14} aria-hidden="true" />
+                  <div className="flex items-center gap-1 text-sm text-on-surface-variant">
+                    <MaterialIcon name="mail" size={14} />
                     <a href={`mailto:${brokerage.agentEmail}`} className="hover:underline">
                       {brokerage.agentEmail}
                     </a>
@@ -110,7 +110,7 @@ export default function ProfilePage() {
               </div>
               <Link href="/messages" className="shrink-0">
                 <Button variant="secondary" size="sm">
-                  <MessageCircle size={16} />
+                  <MaterialIcon name="chat_bubble" size={16} />
                   Message
                 </Button>
               </Link>
@@ -126,20 +126,20 @@ export default function ProfilePage() {
         disabled={downloading}
         className="flex items-center gap-2"
       >
-        <Download size={16} />
+        <MaterialIcon name="download" size={16} />
         {downloading ? "Preparing..." : "Download My Data (PDF)"}
       </Button>
 
       {/* Documents & Drive links */}
       {hasDriveLink && (
         <div>
-          <h2 className="text-lg font-semibold text-text-primary mb-3">
+          <h2 className="text-lg font-semibold text-on-surface mb-3 font-serif">
             Documents
           </h2>
           <div className="space-y-3">
             {user?.driveFolderUrl && (
               <div>
-                <p className="text-sm text-text-secondary mb-1.5">
+                <p className="text-sm text-on-surface-variant mb-1.5">
                   Your shared folder from {brokerage?.agentName || "your agent"}
                 </p>
                 <DriveLink url={user.driveFolderUrl} />
@@ -147,7 +147,7 @@ export default function ProfilePage() {
             )}
             {brokerage?.driveFolderUrl && (
               <div>
-                <p className="text-sm text-text-secondary mb-1.5">
+                <p className="text-sm text-on-surface-variant mb-1.5">
                   {brokerage.name} shared resources
                 </p>
                 <DriveLink url={brokerage.driveFolderUrl} />
@@ -160,12 +160,12 @@ export default function ProfilePage() {
       {/* Dashboard view preference */}
       {user?.roles?.some((r) => r === "dual" || r === "buyer" || r === "seller") && (
         <div>
-          <h2 className="text-lg font-semibold text-text-primary mb-3">
+          <h2 className="text-lg font-semibold text-on-surface mb-3 font-serif">
             Preferences
           </h2>
           <Card>
-            <p className="text-sm font-medium text-text-primary mb-2">Dashboard View</p>
-            <p className="text-xs text-text-secondary mb-3">
+            <p className="text-sm font-medium text-on-surface mb-2">Dashboard View</p>
+            <p className="text-xs text-on-surface-variant mb-3">
               Choose how your dashboard shows transactions.
             </p>
             <div className="flex gap-2">
@@ -177,11 +177,11 @@ export default function ProfilePage() {
                 }}
                 className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors border ${
                   viewPref === "toggle"
-                    ? "bg-primary-light text-primary border-primary/20"
-                    : "bg-surface text-text-secondary border-border hover:bg-primary-light/50"
+                    ? "bg-primary-container text-primary border-primary/20"
+                    : "bg-surface text-on-surface-variant border-outline-variant hover:bg-primary-container/50"
                 }`}
               >
-                <ToggleLeft size={16} />
+                <MaterialIcon name="toggle_on" size={16} />
                 Toggle (Buyer/Seller)
               </button>
               <button
@@ -192,11 +192,11 @@ export default function ProfilePage() {
                 }}
                 className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors border ${
                   viewPref === "unified"
-                    ? "bg-primary-light text-primary border-primary/20"
-                    : "bg-surface text-text-secondary border-border hover:bg-primary-light/50"
+                    ? "bg-primary-container text-primary border-primary/20"
+                    : "bg-surface text-on-surface-variant border-outline-variant hover:bg-primary-container/50"
                 }`}
               >
-                <LayoutGrid size={16} />
+                <MaterialIcon name="grid_view" size={16} />
                 Unified (All in one)
               </button>
             </div>
@@ -210,7 +210,7 @@ export default function ProfilePage() {
         onClick={signOut}
         className="flex items-center gap-2 text-red-600 border-red-200 hover:bg-red-50"
       >
-        <LogOut size={16} />
+        <MaterialIcon name="logout" size={16} />
         Sign Out
       </Button>
     </div>

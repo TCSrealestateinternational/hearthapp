@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Send, Paperclip } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
 interface MessageInputProps {
   onSend: (text: string, fileUrl?: string, fileName?: string) => void;
@@ -43,7 +43,7 @@ export function MessageInput({
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex items-end gap-2 p-4 border-t border-border bg-surface-container"
+      className="flex items-end gap-2 p-4 border-t border-outline-variant bg-surface-container"
     >
       {onFileSelect && (
         <>
@@ -52,9 +52,9 @@ export function MessageInput({
             aria-label="Attach file"
             onClick={() => fileRef.current?.click()}
             disabled={disabled || uploading}
-            className="p-2 rounded-lg text-text-secondary hover:bg-primary-light transition-colors disabled:opacity-50"
+            className="p-2 rounded-lg text-on-surface-variant hover:bg-primary-container transition-colors disabled:opacity-50"
           >
-            <Paperclip size={20} aria-hidden="true" />
+            <MaterialIcon name="attach_file" size={20} />
           </button>
           <input
             ref={fileRef}
@@ -73,7 +73,7 @@ export function MessageInput({
         placeholder="Type a message..."
         aria-label="Message text"
         disabled={disabled}
-        className="flex-1 px-4 py-2 rounded-full border border-border bg-background text-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+        className="flex-1 px-4 py-2 rounded-full border border-outline-variant bg-background text-on-surface text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
         onKeyDown={(e) => {
           if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
@@ -87,7 +87,7 @@ export function MessageInput({
         disabled={disabled || (!text.trim() && !uploading)}
         className="p-2 rounded-full bg-cta text-white hover:bg-cta-hover transition-colors disabled:opacity-50"
       >
-        <Send size={18} aria-hidden="true" />
+        <MaterialIcon name="send" size={18} />
       </button>
     </form>
   );

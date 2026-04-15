@@ -9,7 +9,7 @@ import { MessageThread } from "@/components/messaging/MessageThread";
 import { MessageInput } from "@/components/messaging/MessageInput";
 import { Card } from "@/components/ui/Card";
 import type { User } from "@/types";
-import { MessageCircle, WifiOff } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
 export default function AgentMessagesPage() {
   const { user: agentUser } = useAuth();
@@ -34,7 +34,7 @@ export default function AgentMessagesPage() {
 
   return (
     <div className="max-w-5xl mx-auto">
-      <h1 className="text-2xl font-extrabold tracking-tight text-text-primary mb-4">Messages</h1>
+      <h1 className="text-2xl font-extrabold tracking-tight text-on-surface font-serif mb-4">Messages</h1>
 
       <div className="flex gap-4 h-[calc(100vh-8rem)]">
         {/* Thread list */}
@@ -42,8 +42,8 @@ export default function AgentMessagesPage() {
           padding={false}
           className="w-64 flex-shrink-0 overflow-y-auto hidden sm:block"
         >
-          <div className="p-3 border-b border-border">
-            <p className="text-sm font-medium text-text-secondary">
+          <div className="p-3 border-b border-outline-variant">
+            <p className="text-sm font-medium text-on-surface-variant">
               Conversations
             </p>
           </div>
@@ -51,25 +51,25 @@ export default function AgentMessagesPage() {
             <button
               key={client.id}
               onClick={() => setSelectedClientId(client.id)}
-              className={`w-full flex items-center gap-3 p-3 text-left hover:bg-primary-light/50 transition-colors ${
-                selectedClientId === client.id ? "bg-primary-light" : ""
+              className={`w-full flex items-center gap-3 p-3 text-left hover:bg-primary-container/50 transition-colors ${
+                selectedClientId === client.id ? "bg-primary-container" : ""
               }`}
             >
-              <div className="w-8 h-8 rounded-full bg-primary-light flex items-center justify-center text-primary text-xs font-semibold">
+              <div className="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-primary text-xs font-semibold">
                 {client.displayName
                   .split(" ")
                   .map((n) => n[0])
                   .join("")}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-text-primary truncate">
+                <p className="text-sm font-medium text-on-surface truncate">
                   {client.displayName}
                 </p>
               </div>
             </button>
           ))}
           {clients.length === 0 && (
-            <p className="p-4 text-sm text-text-secondary text-center">
+            <p className="p-4 text-sm text-on-surface-variant text-center">
               No clients yet.
             </p>
           )}
@@ -82,12 +82,12 @@ export default function AgentMessagesPage() {
               {error ? (
                 <div className="flex-1 flex items-center justify-center">
                   <div className="text-center p-4">
-                    <WifiOff size={40} className="mx-auto mb-3 text-red-400" />
+                    <MaterialIcon name="wifi_off" size={40} className="mx-auto mb-3 text-red-400" />
                     <p className="text-red-600 font-medium">Unable to load messages</p>
-                    <p className="text-sm text-text-secondary mt-1">
+                    <p className="text-sm text-on-surface-variant mt-1">
                       Please check your connection and try refreshing.
                     </p>
-                    <p className="text-xs text-text-secondary mt-2 font-mono bg-red-50 p-2 rounded">
+                    <p className="text-xs text-on-surface-variant mt-2 font-mono bg-red-50 p-2 rounded">
                       {error}
                     </p>
                   </div>
@@ -114,11 +114,12 @@ export default function AgentMessagesPage() {
           ) : (
             <div className="flex-1 flex items-center justify-center">
               <div className="text-center">
-                <MessageCircle
+                <MaterialIcon
+                  name="chat_bubble"
                   size={40}
-                  className="mx-auto mb-3 text-text-secondary opacity-50"
+                  className="mx-auto mb-3 text-on-surface-variant opacity-50"
                 />
-                <p className="text-text-secondary">
+                <p className="text-on-surface-variant">
                   Select a conversation to start messaging.
                 </p>
               </div>

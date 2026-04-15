@@ -8,7 +8,7 @@ import { useTransactions, useTransaction } from "@/hooks/useTransaction";
 import { FinanceCalculator } from "@/components/buyer/FinanceCalculator";
 import { Card, CardTitle } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { Trash2 } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 import { PermissionGate } from "@/components/shared/PermissionGate";
 
 export default function FinancePage() {
@@ -29,7 +29,7 @@ export default function FinancePage() {
   return (
     <PermissionGate transactionId={buyingTx?.id} permission="finance">
       <div className="max-w-4xl mx-auto space-y-6">
-        <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">
+        <h1 className="text-2xl font-extrabold tracking-tight text-on-surface font-serif">
           Finance Calculator
         </h1>
 
@@ -46,7 +46,7 @@ export default function FinancePage() {
         {/* Saved scenarios */}
         {scenarios.length > 0 && (
           <div>
-            <h2 className="text-lg font-semibold text-text-primary mb-3">
+            <h2 className="text-lg font-semibold text-on-surface font-serif mb-3">
               Saved Scenarios
             </h2>
             <div className="space-y-3">
@@ -54,8 +54,8 @@ export default function FinancePage() {
                 <Card key={s.id}>
                   <div className="flex items-start justify-between">
                     <div>
-                      <p className="font-semibold text-text-primary">{s.name}</p>
-                      <p className="text-sm text-text-secondary">
+                      <p className="font-semibold text-on-surface">{s.name}</p>
+                      <p className="text-sm text-on-surface-variant">
                         ${s.offerPrice.toLocaleString()} - {s.downPaymentPct}%
                         down - {s.interestRate}% rate
                       </p>
@@ -74,7 +74,7 @@ export default function FinancePage() {
                       aria-label={`Remove scenario ${s.name}`}
                       onClick={() => removeScenario(s.id)}
                     >
-                      <Trash2 size={14} />
+                      <MaterialIcon name="delete" size={14} />
                     </Button>
                   </div>
                 </Card>

@@ -6,7 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useBrokerage } from "@/hooks/useBrokerage";
 import { Button } from "@/components/ui/Button";
 import { BrokerageSwitch } from "@/components/BrokerageSwitch";
-import { Eye, EyeOff } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -105,10 +105,10 @@ export default function LoginPage() {
               className="h-16 mx-auto mb-4"
             />
           )}
-          <h1 className="text-3xl font-extrabold tracking-tight text-text-primary">
+          <h1 className="text-3xl font-extrabold tracking-tight text-on-surface font-serif">
             Welcome Back
           </h1>
-          <p className="text-text-secondary mt-2">
+          <p className="text-on-surface-variant mt-2">
             {brokerage?.name || "Your Real Estate Portal"}
           </p>
         </div>
@@ -117,7 +117,7 @@ export default function LoginPage() {
           <div>
             <label
               htmlFor="email"
-              className="block text-xs font-bold uppercase tracking-wider text-text-secondary mb-1.5"
+              className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1.5"
             >
               Email Address
             </label>
@@ -127,7 +127,7 @@ export default function LoginPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-border bg-surface text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="w-full px-4 py-3 rounded-xl border border-outline-variant bg-surface text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/50"
               placeholder="you@example.com"
             />
           </div>
@@ -135,7 +135,7 @@ export default function LoginPage() {
           <div>
             <label
               htmlFor="password"
-              className="block text-xs font-bold uppercase tracking-wider text-text-secondary mb-1.5"
+              className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1.5"
             >
               Password
             </label>
@@ -146,16 +146,16 @@ export default function LoginPage() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 pr-12 rounded-xl border border-border bg-surface text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="w-full px-4 py-3 pr-12 rounded-xl border border-outline-variant bg-surface text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/50"
                 placeholder="Your password"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-text-secondary hover:text-text-primary transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-on-surface-variant hover:text-on-surface transition-colors"
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                {showPassword ? <MaterialIcon name="visibility_off" size={18} /> : <MaterialIcon name="visibility" size={18} />}
               </button>
             </div>
           </div>
@@ -180,7 +180,7 @@ export default function LoginPage() {
           </Button>
         </form>
 
-        <p className="text-center text-sm text-text-secondary mt-8">
+        <p className="text-center text-sm text-on-surface-variant mt-8">
           Are you an agent?{" "}
           <a
             href="/signup/agent"
@@ -190,7 +190,7 @@ export default function LoginPage() {
           </a>
         </p>
 
-        <p className="text-center text-xs text-text-secondary mt-3">
+        <p className="text-center text-xs text-on-surface-variant mt-3">
           Clients: your agent will set up your account.
           <br />
           Contact them if you need access.

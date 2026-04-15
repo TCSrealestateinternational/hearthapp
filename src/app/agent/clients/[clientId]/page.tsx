@@ -14,7 +14,7 @@ import { Card, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import type { User, Transaction, ChecklistItem, Property } from "@/types";
-import { ArrowLeft, Mail, Phone, Home, CheckSquare, FolderOpen, Download } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 import { exportClientPDF } from "@/lib/exportPdf";
 import Link from "next/link";
 
@@ -82,33 +82,33 @@ export default function AgentClientDetailPage() {
     <div className="max-w-4xl mx-auto space-y-4">
       <Link
         href="/agent/dashboard"
-        className="inline-flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
+        className="inline-flex items-center gap-1 text-sm text-on-surface-variant hover:text-on-surface"
       >
-        <ArrowLeft size={16} aria-hidden="true" />
+        <MaterialIcon name="arrow_back" size={16} />
         Back to Dashboard
       </Link>
 
       {/* Client header */}
       <Card>
         <div className="flex items-center gap-3 sm:gap-4">
-          <div className="w-12 h-12 sm:w-14 sm:h-14 shrink-0 rounded-xl bg-primary-light flex items-center justify-center text-primary font-bold text-base sm:text-lg">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 shrink-0 rounded-xl bg-primary-container flex items-center justify-center text-primary font-bold text-base sm:text-lg">
             {client.displayName
               .split(" ")
               .map((n) => n[0])
               .join("")}
           </div>
           <div className="min-w-0 flex-1">
-            <h1 className="text-lg sm:text-xl font-extrabold tracking-tight text-text-primary truncate">
+            <h1 className="text-lg sm:text-xl font-extrabold tracking-tight text-on-surface font-serif truncate">
               {client.displayName}
             </h1>
-            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-sm text-text-secondary">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-sm text-on-surface-variant">
               <span className="flex items-center gap-1 truncate">
-                <Mail size={14} className="shrink-0" />
+                <MaterialIcon name="mail" size={14} className="shrink-0" />
                 <span className="truncate">{client.email}</span>
               </span>
               {client.phone && (
                 <span className="flex items-center gap-1">
-                  <Phone size={14} className="shrink-0" />
+                  <MaterialIcon name="phone" size={14} className="shrink-0" />
                   {client.phone}
                 </span>
               )}
@@ -130,7 +130,7 @@ export default function AgentClientDetailPage() {
             onClick={() => exportClientPDF({ user: client, transactions, checklistItems, properties })}
             className="shrink-0 flex items-center gap-1.5"
           >
-            <Download size={14} />
+            <MaterialIcon name="download" size={14} />
             PDF
           </Button>
         </div>
@@ -158,10 +158,10 @@ export default function AgentClientDetailPage() {
           {/* Google Drive link */}
           <Card>
             <CardTitle>
-              <FolderOpen size={18} className="inline mr-2" />
+              <MaterialIcon name="folder_open" size={18} className="inline mr-2" />
               Shared Drive Folder
             </CardTitle>
-            <p className="text-xs text-text-secondary mt-1 mb-3">
+            <p className="text-xs text-on-surface-variant mt-1 mb-3">
               Add a Google Drive link so {client.displayName.split(" ")[0]} can access shared photos, videos, or documents.
             </p>
             <div className="flex gap-2">
@@ -176,14 +176,14 @@ export default function AgentClientDetailPage() {
                     setClient({ ...client, driveFolderUrl: val || undefined });
                   }
                 }}
-                className="flex-1 px-3 py-2 rounded-xl border border-border bg-surface text-text-primary text-sm"
+                className="flex-1 px-3 py-2 rounded-xl border border-outline-variant bg-surface text-on-surface text-sm"
               />
               {client.driveFolderUrl && (
                 <a
                   href={client.driveFolderUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-3 py-2 rounded-lg bg-primary-light text-primary text-sm font-medium hover:bg-primary-light/80 transition-colors"
+                  className="px-3 py-2 rounded-lg bg-primary-container text-primary text-sm font-medium hover:bg-primary-container/80 transition-colors"
                 >
                   Open
                 </a>
@@ -198,13 +198,13 @@ export default function AgentClientDetailPage() {
                 {transactions.map((tx) => (
                   <div
                     key={tx.id}
-                    className="flex items-center justify-between p-3 rounded-lg bg-primary-light/30"
+                    className="flex items-center justify-between p-3 rounded-lg bg-primary-container/30"
                   >
                     <div className="min-w-0 flex-1">
-                      <p className="font-medium text-text-primary truncate">
+                      <p className="font-medium text-on-surface truncate">
                         {tx.label}
                       </p>
-                      <p className="text-xs text-text-secondary capitalize">
+                      <p className="text-xs text-on-surface-variant capitalize">
                         {tx.type}
                       </p>
                     </div>
@@ -219,7 +219,7 @@ export default function AgentClientDetailPage() {
                 ))}
               </div>
             ) : (
-              <p className="text-sm text-text-secondary mt-2">
+              <p className="text-sm text-on-surface-variant mt-2">
                 No transactions yet.
               </p>
             )}
@@ -234,7 +234,7 @@ export default function AgentClientDetailPage() {
             <MilestoneTimeline transactionId={activeTx.id} />
           ) : (
             <Card>
-              <p className="text-sm text-text-secondary text-center py-6">
+              <p className="text-sm text-on-surface-variant text-center py-6">
                 No active transaction. Milestones will appear once a transaction is created
                 and checklist items are synced from RE Tracker.
               </p>
@@ -250,7 +250,7 @@ export default function AgentClientDetailPage() {
             <p className="text-xs font-medium text-primary uppercase tracking-wider mb-1">
               Client View Preview
             </p>
-            <p className="text-sm text-text-secondary">
+            <p className="text-sm text-on-surface-variant">
               This is what {client.displayName.split(" ")[0]} sees when they log in to Hearth.
             </p>
           </Card>
@@ -280,10 +280,10 @@ export default function AgentClientDetailPage() {
           ) : (
             <Card>
               <div className="text-center py-6">
-                <p className="text-text-secondary">
+                <p className="text-on-surface-variant">
                   No active transaction yet.
                 </p>
-                <p className="text-sm text-text-secondary mt-1">
+                <p className="text-sm text-on-surface-variant mt-1">
                   Create a transaction for this client to see their view.
                 </p>
               </div>
@@ -294,17 +294,17 @@ export default function AgentClientDetailPage() {
           {clientRoles.includes("buyer") && properties.length > 0 && (
             <Card>
               <CardTitle>
-                <Home size={18} className="inline mr-2" />
+                <MaterialIcon name="home" size={18} className="inline mr-2" />
                 Saved Properties ({properties.length})
               </CardTitle>
               <div className="mt-3 space-y-2">
                 {properties.slice(0, 5).map((p) => (
                   <div key={p.id} className="flex items-center justify-between p-2 rounded-lg bg-background">
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-text-primary truncate">
+                      <p className="text-sm font-medium text-on-surface truncate">
                         {p.address}
                       </p>
-                      <p className="text-xs text-text-secondary">
+                      <p className="text-xs text-on-surface-variant">
                         {p.city}, {p.state} {p.zip} &middot; ${p.price.toLocaleString()}
                       </p>
                     </div>
@@ -314,7 +314,7 @@ export default function AgentClientDetailPage() {
                   </div>
                 ))}
                 {properties.length > 5 && (
-                  <p className="text-xs text-text-secondary text-center">
+                  <p className="text-xs text-on-surface-variant text-center">
                     +{properties.length - 5} more properties
                   </p>
                 )}
@@ -326,7 +326,7 @@ export default function AgentClientDetailPage() {
           {checklistItems.length > 0 && (
             <Card>
               <CardTitle>
-                <CheckSquare size={18} className="inline mr-2" />
+                <MaterialIcon name="check_box" size={18} className="inline mr-2" />
                 Checklist
               </CardTitle>
               <div className="mt-3 space-y-1">
@@ -335,15 +335,15 @@ export default function AgentClientDetailPage() {
                     key={item.id}
                     className={`flex items-center gap-2 p-2 rounded text-sm ${
                       item.completed
-                        ? "text-text-secondary line-through"
-                        : "text-text-primary"
+                        ? "text-on-surface-variant line-through"
+                        : "text-on-surface"
                     }`}
                   >
                     <span
                       className={`w-4 h-4 shrink-0 rounded border flex items-center justify-center text-xs ${
                         item.completed
                           ? "bg-primary text-white border-primary"
-                          : "border-border"
+                          : "border-outline-variant"
                       }`}
                     >
                       {item.completed && "✓"}
@@ -358,7 +358,7 @@ export default function AgentClientDetailPage() {
           {/* Milestones in client view */}
           {activeTx && (
             <div>
-              <p className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-2">
+              <p className="text-xs font-medium text-on-surface-variant uppercase tracking-wider mb-2">
                 Milestone Timeline (visible to client)
               </p>
               <MilestoneTimeline transactionId={activeTx.id} />

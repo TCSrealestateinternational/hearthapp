@@ -9,7 +9,7 @@ import { useRole } from "@/hooks/useRole";
 import { CATEGORY_ORDER } from "@/data/defaultGlossaryTerms";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
-import { Search, ChevronDown, ChevronUp, BookOpen, Layers } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 import type { GlossaryTerm, GlossaryCategory } from "@/types";
 
 type GroupMode = "category" | "alpha";
@@ -111,7 +111,7 @@ export default function GlossaryPage() {
   return (
     <div className="max-w-3xl mx-auto">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">
+        <h1 className="text-2xl font-extrabold tracking-tight text-on-surface font-serif">
           Real Estate Glossary
         </h1>
 
@@ -120,38 +120,34 @@ export default function GlossaryPage() {
           onClick={() =>
             setGroupMode((m) => (m === "category" ? "alpha" : "category"))
           }
-          className="flex items-center gap-1.5 text-xs font-medium text-text-secondary hover:text-primary transition-colors px-3 py-1.5 rounded-lg border border-border hover:border-primary/30"
+          className="flex items-center gap-1.5 text-xs font-medium text-on-surface-variant hover:text-primary transition-colors px-3 py-1.5 rounded-lg border border-outline-variant hover:border-primary/30"
           aria-label={`Group by ${groupMode === "category" ? "alphabet" : "category"}`}
         >
-          <Layers size={14} />
+          <MaterialIcon name="layers" size={14} />
           {groupMode === "category" ? "A-Z" : "By Topic"}
         </button>
       </div>
 
-      <p className="text-sm text-text-secondary mb-6">
+      <p className="text-sm text-on-surface-variant mb-6">
         Real estate transaction terms defined for average buyers &amp; sellers.
         Tap any term to learn more.
       </p>
 
       {/* Search */}
       <div className="relative mb-6">
-        <Search
-          size={18}
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary"
-          aria-hidden="true"
-        />
+        <MaterialIcon name="search" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" />
         <input
           type="search"
           placeholder="Search terms..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-surface text-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+          className="w-full pl-10 pr-4 py-3 rounded-xl border border-outline-variant bg-surface text-on-surface text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
           aria-label="Search glossary terms"
         />
       </div>
 
       {/* Term count */}
-      <p className="text-xs text-text-secondary mb-4">
+      <p className="text-xs text-on-surface-variant mb-4">
         {filtered.length} term{filtered.length !== 1 ? "s" : ""}
         {searchQuery.trim() ? ` matching "${searchQuery}"` : ""}
       </p>
@@ -159,19 +155,16 @@ export default function GlossaryPage() {
       {filtered.length === 0 ? (
         <Card>
           <div className="text-center py-8">
-            <BookOpen
-              size={40}
-              className="mx-auto mb-3 text-text-secondary opacity-50"
-            />
+            <MaterialIcon name="menu_book" size={40} className="mx-auto mb-3 text-on-surface-variant opacity-50" />
             {terms.length === 0 ? (
               <>
-                <p className="text-text-secondary">No glossary terms yet.</p>
-                <p className="text-sm text-text-secondary mt-1">
+                <p className="text-on-surface-variant">No glossary terms yet.</p>
+                <p className="text-sm text-on-surface-variant mt-1">
                   Your agent will add terms as your transaction progresses.
                 </p>
               </>
             ) : (
-              <p className="text-text-secondary">
+              <p className="text-on-surface-variant">
                 No terms match &ldquo;{searchQuery}&rdquo;
               </p>
             )}
@@ -181,9 +174,9 @@ export default function GlossaryPage() {
         <div className="space-y-8" aria-label="Glossary terms">
           {Array.from(grouped.entries()).map(([group, groupTerms]) => (
             <div key={group}>
-              <h2 className="text-xs font-bold uppercase tracking-wider text-text-secondary mb-2 sticky top-0 bg-background py-1 z-10 border-l-2 border-primary pl-2">
+              <h2 className="text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-2 sticky top-0 bg-background py-1 z-10 border-l-2 border-primary pl-2">
                 {group}
-                <span className="ml-2 font-normal text-text-secondary/60">
+                <span className="ml-2 font-normal text-on-surface-variant/60">
                   ({groupTerms.length})
                 </span>
               </h2>
@@ -203,13 +196,13 @@ export default function GlossaryPage() {
                         aria-expanded={isExpanded}
                         aria-controls={`glossary-${term.id}`}
                       >
-                        <span className="font-medium text-text-primary">
+                        <span className="font-medium text-on-surface">
                           {term.term}
                         </span>
                         {isExpanded ? (
-                          <ChevronUp size={18} className="text-text-secondary shrink-0" aria-hidden="true" />
+                          <MaterialIcon name="expand_less" size={18} className="text-on-surface-variant shrink-0" />
                         ) : (
-                          <ChevronDown size={18} className="text-text-secondary shrink-0" aria-hidden="true" />
+                          <MaterialIcon name="expand_more" size={18} className="text-on-surface-variant shrink-0" />
                         )}
                       </button>
 
@@ -218,18 +211,18 @@ export default function GlossaryPage() {
                           id={`glossary-${term.id}`}
                           className="px-4 pb-4 space-y-3"
                         >
-                          <p className="text-sm text-text-secondary">
+                          <p className="text-sm text-on-surface-variant">
                             {term.plainDefinition}
                           </p>
 
                           {roleContext && (
-                            <div className="rounded-lg bg-primary-light/30 p-3">
+                            <div className="rounded-lg bg-primary-container/30 p-3">
                               <p className="text-xs font-semibold text-primary mb-1">
                                 {activeRole === "buyer"
                                   ? "For Buyers"
                                   : "For Sellers"}
                               </p>
-                              <p className="text-sm text-text-primary">
+                              <p className="text-sm text-on-surface">
                                 {roleContext}
                               </p>
                             </div>
@@ -237,7 +230,7 @@ export default function GlossaryPage() {
 
                           {term.aslVideoUrl && (
                             <div>
-                              <p className="text-xs font-semibold text-text-secondary mb-1">
+                              <p className="text-xs font-semibold text-on-surface-variant mb-1">
                                 ASL Video
                               </p>
                               <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-black">

@@ -7,7 +7,7 @@ import { uploadFile } from "@/lib/storage";
 import { Card, CardTitle } from "@/components/ui/Card";
 import { FileUpload } from "@/components/ui/FileUpload";
 import { DriveLink } from "./DriveLink";
-import { FileText, Download } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
 interface DocumentVaultProps {
   brokerageId: string;
@@ -83,18 +83,18 @@ export function DocumentVault({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${doc.fileName} (${formatSize(doc.fileSize)}), opens in new tab`}
-                className="flex items-center gap-3 p-2 rounded-lg hover:bg-primary-light/50 transition-colors"
+                className="flex items-center gap-3 p-2 rounded-lg hover:bg-primary-container/50 transition-colors"
               >
-                <FileText size={20} className="text-primary flex-shrink-0" aria-hidden="true" />
+                <MaterialIcon name="description" size={20} className="text-primary flex-shrink-0" />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-text-primary truncate">
+                  <p className="text-sm font-medium text-on-surface truncate">
                     {doc.fileName}
                   </p>
-                  <p className="text-xs text-text-secondary">
+                  <p className="text-xs text-on-surface-variant">
                     {formatSize(doc.fileSize)}
                   </p>
                 </div>
-                <Download size={16} className="text-text-secondary" aria-hidden="true" />
+                <MaterialIcon name="download" size={16} className="text-on-surface-variant" />
               </a>
             ))}
           </div>

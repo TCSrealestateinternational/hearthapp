@@ -8,7 +8,7 @@ interface FooterProps {
 
 export function Footer({ brokerage }: FooterProps) {
   return (
-    <footer className="py-4 px-4 text-center text-xs text-text-secondary border-t border-border bg-surface-container">
+    <footer className="py-4 px-4 text-center text-xs text-on-surface-variant border-t border-outline-variant bg-surface-container">
       <div className="max-w-7xl mx-auto">
       {brokerage ? (
         <>

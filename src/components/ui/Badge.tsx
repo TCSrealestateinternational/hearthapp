@@ -17,12 +17,12 @@ interface BadgeProps {
 }
 
 const variantClasses: Record<BadgeVariant, string> = {
-  default: "bg-gray-100 text-text-secondary",
-  primary: "bg-primary-light text-primary",
-  success: "bg-green-50 text-success",
-  warning: "bg-yellow-50 text-warning",
-  error: "bg-red-50 text-error",
-  cta: "bg-cta/10 text-cta",
+  default: "bg-surface-container-high text-on-surface-variant",
+  primary: "bg-primary-container text-on-primary-container",
+  success: "bg-success-container text-success",
+  warning: "bg-warning-container text-warning",
+  error: "bg-error-container text-on-error-container",
+  cta: "bg-tertiary-container text-on-tertiary-container",
 };
 
 export function Badge({

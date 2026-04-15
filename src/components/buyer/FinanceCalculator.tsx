@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import type { LoanType, FinanceScenario } from "@/types";
 import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { ChevronDown, ChevronUp, Save } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
 interface FinanceCalculatorProps {
   onSave: (scenario: Omit<FinanceScenario, "id" | "createdAt">) => void;
@@ -147,7 +147,7 @@ export function FinanceCalculator({
         <div className="space-y-4">
           {/* Offer price with slider */}
           <div>
-            <label className="block text-sm font-medium text-text-primary mb-1">
+            <label className="block text-sm font-medium text-on-surface mb-1">
               Offer Price: {formatDollars(offerPrice)}
             </label>
             <input
@@ -163,7 +163,7 @@ export function FinanceCalculator({
               type="number"
               value={offerPrice}
               onChange={(e) => setOfferPrice(Number(e.target.value))}
-              className="w-full mt-1 px-3 py-2 rounded-lg border border-border bg-surface text-text-primary"
+              className="w-full mt-1 px-3 py-2 rounded-lg border border-outline-variant bg-surface text-on-surface"
             />
           </div>
 
@@ -192,13 +192,13 @@ export function FinanceCalculator({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-text-primary mb-1">
+              <label className="block text-sm font-medium text-on-surface mb-1">
                 Loan Type
               </label>
               <select
                 value={loanType}
                 onChange={(e) => setLoanType(e.target.value as LoanType)}
-                className="w-full px-3 py-2 rounded-xl border border-border bg-surface text-text-primary"
+                className="w-full px-3 py-2 rounded-xl border border-outline-variant bg-surface text-on-surface"
               >
                 <option value="conventional">Conventional</option>
                 <option value="fha">FHA</option>
@@ -207,13 +207,13 @@ export function FinanceCalculator({
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-text-primary mb-1">
+              <label className="block text-sm font-medium text-on-surface mb-1">
                 Term
               </label>
               <select
                 value={loanTermYears}
                 onChange={(e) => setLoanTermYears(Number(e.target.value))}
-                className="w-full px-3 py-2 rounded-xl border border-border bg-surface text-text-primary"
+                className="w-full px-3 py-2 rounded-xl border border-outline-variant bg-surface text-on-surface"
               >
                 <option value={30}>30 years</option>
                 <option value={20}>20 years</option>
@@ -236,12 +236,12 @@ export function FinanceCalculator({
             aria-controls="detailed-breakdown"
             className="flex items-center gap-2 text-sm font-medium text-primary"
           >
-            {expanded ? <ChevronUp size={16} aria-hidden="true" /> : <ChevronDown size={16} aria-hidden="true" />}
+            {expanded ? <MaterialIcon name="expand_less" size={16} /> : <MaterialIcon name="expand_more" size={16} />}
             {expanded ? "Hide" : "Show"} detailed breakdown
           </button>
 
           {expanded && (
-            <div id="detailed-breakdown" className="space-y-4 pt-2 border-t border-border">
+            <div id="detailed-breakdown" className="space-y-4 pt-2 border-t border-outline-variant">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <InputField
                   label="Property Tax Rate"
@@ -294,36 +294,36 @@ export function FinanceCalculator({
               </div>
 
               {/* Monthly breakdown */}
-              <div className="bg-primary-light rounded-xl p-4 space-y-2 text-sm">
+              <div className="bg-primary-container rounded-xl p-4 space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-text-secondary">Principal & Interest</span>
+                  <span className="text-on-surface-variant">Principal & Interest</span>
                   <span className="font-medium">{formatDollars(calc.monthlyPI)}</span>
                 </div>
                 {calc.monthlyPMI > 0 && (
                   <div className="flex justify-between">
-                    <span className="text-text-secondary">PMI</span>
+                    <span className="text-on-surface-variant">PMI</span>
                     <span className="font-medium">
                       {formatDollars(calc.monthlyPMI)}
                     </span>
                   </div>
                 )}
                 <div className="flex justify-between">
-                  <span className="text-text-secondary">Property Tax</span>
+                  <span className="text-on-surface-variant">Property Tax</span>
                   <span className="font-medium">
                     {formatDollars(calc.monthlyTax)}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-text-secondary">Insurance</span>
+                  <span className="text-on-surface-variant">Insurance</span>
                   <span className="font-medium">{formatDollars(homeInsurance)}</span>
                 </div>
                 {hoa > 0 && (
                   <div className="flex justify-between">
-                    <span className="text-text-secondary">HOA</span>
+                    <span className="text-on-surface-variant">HOA</span>
                     <span className="font-medium">{formatDollars(hoa)}</span>
                   </div>
                 )}
-                <div className="flex justify-between pt-2 border-t border-border font-semibold">
+                <div className="flex justify-between pt-2 border-t border-outline-variant font-semibold">
                   <span>Total Monthly</span>
                   <span>{formatDollars(calc.monthlyTotal)}</span>
                 </div>
@@ -337,7 +337,7 @@ export function FinanceCalculator({
       <Card>
         <div className="flex items-end gap-3">
           <div className="flex-1">
-            <label className="block text-sm font-medium text-text-primary mb-1">
+            <label className="block text-sm font-medium text-on-surface mb-1">
               Scenario Name
             </label>
             <input
@@ -345,7 +345,7 @@ export function FinanceCalculator({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder='e.g. "123 Main St - 20% down"'
-              className="w-full px-3 py-2 rounded-xl border border-border bg-surface text-text-primary"
+              className="w-full px-3 py-2 rounded-xl border border-outline-variant bg-surface text-on-surface"
             />
           </div>
           <Button
@@ -354,14 +354,14 @@ export function FinanceCalculator({
             disabled={!name.trim()}
             loading={saving}
           >
-            <Save size={16} />
+            <MaterialIcon name="save" size={16} />
             Save
           </Button>
         </div>
       </Card>
 
       {/* Disclaimer */}
-      <p className="text-xs text-text-secondary">
+      <p className="text-xs text-on-surface-variant">
         These estimates are for informational purposes only and are not a loan
         commitment or guarantee. Actual rates, payments, and closing costs may
         vary. Consult with your lender for accurate figures.
@@ -393,12 +393,12 @@ function InputField({
 }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-text-primary mb-1">
+      <label className="block text-sm font-medium text-on-surface mb-1">
         {label}
       </label>
       <div className="relative">
         {prefix && (
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-sm">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">
             {prefix}
           </span>
         )}
@@ -409,12 +409,12 @@ function InputField({
           min={min}
           max={max}
           step={step}
-          className={`w-full px-3 py-2 rounded-xl border border-border bg-surface text-text-primary ${
+          className={`w-full px-3 py-2 rounded-xl border border-outline-variant bg-surface text-on-surface ${
             prefix ? "pl-7" : ""
           } ${suffix ? "pr-7" : ""}`}
         />
         {suffix && (
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary text-sm">
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">
             {suffix}
           </span>
         )}

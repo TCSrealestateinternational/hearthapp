@@ -13,18 +13,7 @@ import { PauseBanner } from "@/components/shared/PermissionGate";
 import { UnifiedDashboard } from "@/components/shared/UnifiedDashboard";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
-import {
-  Home,
-  Calculator,
-  CheckSquare,
-  MessageCircle,
-  ArrowRight,
-  BookOpen,
-  Clock,
-  FileText,
-  Search,
-  CircleDot,
-} from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -47,10 +36,10 @@ export default function DashboardPage() {
       <div className="max-w-6xl mx-auto space-y-6">
         <PauseBanner transactionId={primaryTxId} />
         <div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-text-primary">
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-on-surface font-serif">
             Welcome back, {user?.displayName?.split(" ")[0] || "there"}
           </h1>
-          <p className="text-text-secondary mt-1">All your transactions in one place.</p>
+          <p className="text-on-surface-variant mt-1">All your transactions in one place.</p>
         </div>
         <UnifiedDashboard
           transactions={transactions}
@@ -67,10 +56,10 @@ export default function DashboardPage() {
 
       {/* Welcome */}
       <div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-text-primary">
+        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-on-surface font-serif">
           Welcome back, {user?.displayName?.split(" ")[0] || "there"}
         </h1>
-        <p className="text-text-secondary mt-1">
+        <p className="text-on-surface-variant mt-1">
           Here is your {activeRole === "buyer" ? "buying" : "selling"} overview.
         </p>
       </div>
@@ -130,16 +119,16 @@ function QuickMenu({
         {
           label: "Explore",
           items: [
-            ...(hasPermission("property") ? [{ href: "/buyer/properties", icon: <Home size={20} />, label: "Properties" }] : []),
-            ...(hasPermission("property") ? [{ href: "/buyer/compare", icon: <Search size={20} />, label: "Compare Homes" }] : []),
-            ...(hasPermission("checklist") ? [{ href: "/buyer/checklist", icon: <CheckSquare size={20} />, label: "Buying Checklist" }] : []),
+            ...(hasPermission("property") ? [{ href: "/buyer/properties", icon: <MaterialIcon name="home" size={20} />, label: "Properties" }] : []),
+            ...(hasPermission("property") ? [{ href: "/buyer/compare", icon: <MaterialIcon name="search" size={20} />, label: "Compare Homes" }] : []),
+            ...(hasPermission("checklist") ? [{ href: "/buyer/checklist", icon: <MaterialIcon name="checklist" size={20} />, label: "Buying Checklist" }] : []),
           ],
         },
         {
           label: "Tools",
           items: [
-            ...(hasPermission("finance") ? [{ href: "/finance", icon: <Calculator size={20} />, label: "Calculators" }] : []),
-            { href: "/glossary", icon: <BookOpen size={20} />, label: "Glossary" },
+            ...(hasPermission("finance") ? [{ href: "/finance", icon: <MaterialIcon name="calculate" size={20} />, label: "Calculators" }] : []),
+            { href: "/glossary", icon: <MaterialIcon name="menu_book" size={20} />, label: "Glossary" },
           ],
         },
       ]
@@ -147,16 +136,16 @@ function QuickMenu({
         {
           label: "My Sale",
           items: [
-            ...(hasPermission("property") ? [{ href: "/seller/listing", icon: <Home size={20} />, label: "My Listing" }] : []),
-            ...(hasPermission("offers") ? [{ href: "/seller/offers", icon: <FileText size={20} />, label: "Offers" }] : []),
-            ...(hasPermission("checklist") ? [{ href: "/seller/checklist", icon: <CheckSquare size={20} />, label: "Selling Checklist" }] : []),
+            ...(hasPermission("property") ? [{ href: "/seller/listing", icon: <MaterialIcon name="home" size={20} />, label: "My Listing" }] : []),
+            ...(hasPermission("offers") ? [{ href: "/seller/offers", icon: <MaterialIcon name="description" size={20} />, label: "Offers" }] : []),
+            ...(hasPermission("checklist") ? [{ href: "/seller/checklist", icon: <MaterialIcon name="checklist" size={20} />, label: "Selling Checklist" }] : []),
           ],
         },
         {
           label: "Tools",
           items: [
-            ...(hasPermission("finance") ? [{ href: "/finance", icon: <Calculator size={20} />, label: "Calculators" }] : []),
-            { href: "/glossary", icon: <BookOpen size={20} />, label: "Glossary" },
+            ...(hasPermission("finance") ? [{ href: "/finance", icon: <MaterialIcon name="calculate" size={20} />, label: "Calculators" }] : []),
+            { href: "/glossary", icon: <MaterialIcon name="menu_book" size={20} />, label: "Glossary" },
           ],
         },
       ];
@@ -165,15 +154,15 @@ function QuickMenu({
   const groups = allGroups.filter((g) => g.items.length > 0);
 
   return (
-    <div className="bg-surface border border-border rounded-2xl shadow-sm overflow-hidden">
+    <div className="bg-surface border border-outline-variant rounded-2xl shadow-sm overflow-hidden">
       <div className="px-5 sm:px-6 pt-5 pb-3">
-        <h2 className="text-lg font-semibold text-text-primary">Quick Menu</h2>
-        <p className="text-sm text-text-secondary mt-0.5">Jump to any section</p>
+        <h2 className="text-lg font-semibold text-on-surface font-serif">Quick Menu</h2>
+        <p className="text-sm text-on-surface-variant mt-0.5">Jump to any section</p>
       </div>
 
       {groups.map((group) => (
-        <div key={group.label} className="border-t border-border">
-          <p className="px-5 sm:px-6 pt-4 pb-1 text-xs font-bold uppercase tracking-wider text-text-secondary">
+        <div key={group.label} className="border-t border-outline-variant">
+          <p className="px-5 sm:px-6 pt-4 pb-1 text-xs font-bold uppercase tracking-wider text-on-surface-variant">
             {group.label}
           </p>
           <div className="pb-2">
@@ -191,21 +180,21 @@ function MenuRow({ href, icon, label, badge }: MenuItem) {
   return (
     <Link
       href={href}
-      className="flex items-center gap-4 px-5 sm:px-6 py-3 hover:bg-primary-light transition-colors group"
+      className="flex items-center gap-4 px-5 sm:px-6 py-3 hover:bg-primary-container transition-colors group"
     >
-      <span className="w-11 h-11 rounded-xl bg-primary-light text-primary flex items-center justify-center shrink-0 transition-colors group-hover:bg-primary group-hover:text-white" aria-hidden="true">
+      <span className="w-11 h-11 rounded-xl bg-primary-container text-primary flex items-center justify-center shrink-0 transition-colors group-hover:bg-primary group-hover:text-white" aria-hidden="true">
         {icon}
       </span>
-      <span className="flex-1 text-text-primary font-medium">{label}</span>
+      <span className="flex-1 text-on-surface font-medium">{label}</span>
       {badge !== undefined && (
         <span className="min-w-[22px] h-[22px] flex items-center justify-center rounded-full bg-error text-white text-xs font-bold px-1.5" aria-hidden="true">
           {badge}
         </span>
       )}
-      <ArrowRight
+      <MaterialIcon
+        name="arrow_forward"
         size={16}
-        aria-hidden="true"
-        className="text-text-secondary transition-colors group-hover:text-primary"
+        className="text-on-surface-variant transition-colors group-hover:text-primary"
       />
     </Link>
   );
@@ -223,24 +212,24 @@ function GettingStarted({
 
   const buyerSteps = [
     {
-      icon: <FileText size={18} />,
+      icon: <MaterialIcon name="description" size={18} />,
       title: "Get pre-approved",
       detail: `${agent} may ask for your pre-approval letter so you're ready to make offers.`,
     },
     {
-      icon: <Search size={18} />,
+      icon: <MaterialIcon name="search" size={18} />,
       title: "Share your preferences",
       detail:
         "Let your agent know your price range, must-haves, and preferred neighborhoods.",
     },
     {
-      icon: <Home size={18} />,
+      icon: <MaterialIcon name="home" size={18} />,
       title: "Browse properties",
       detail:
         "Start tracking homes you like. You can save and compare them here once your search begins.",
     },
     {
-      icon: <BookOpen size={18} />,
+      icon: <MaterialIcon name="menu_book" size={18} />,
       title: "Learn the lingo",
       detail:
         "Check out the Glossary to get comfortable with real estate terms before showings start.",
@@ -249,24 +238,24 @@ function GettingStarted({
 
   const sellerSteps = [
     {
-      icon: <FileText size={18} />,
+      icon: <MaterialIcon name="description" size={18} />,
       title: "Gather your documents",
       detail: `${agent} may need your deed, survey, or HOA docs to prepare your listing.`,
     },
     {
-      icon: <Home size={18} />,
+      icon: <MaterialIcon name="home" size={18} />,
       title: "Prep your home",
       detail:
         "Small repairs and decluttering go a long way. Your agent can advise on what matters most.",
     },
     {
-      icon: <Calculator size={18} />,
+      icon: <MaterialIcon name="calculate" size={18} />,
       title: "Understand your numbers",
       detail:
         "Use the calculators to estimate your net proceeds and closing costs.",
     },
     {
-      icon: <BookOpen size={18} />,
+      icon: <MaterialIcon name="menu_book" size={18} />,
       title: "Learn the lingo",
       detail:
         "Check out the Glossary so you feel confident reviewing offers and contracts.",
@@ -279,12 +268,12 @@ function GettingStarted({
     <div className="space-y-4">
       <Card variant="elevated">
         <div className="flex items-center gap-3 mb-1">
-          <Clock size={20} className="text-cta" />
-          <p className="text-lg font-bold text-text-primary">
+          <MaterialIcon name="schedule" size={20} className="text-cta" />
+          <p className="text-lg font-bold text-on-surface">
             Waiting on your transaction
           </p>
         </div>
-        <p className="text-sm text-text-secondary">
+        <p className="text-sm text-on-surface-variant">
           {agent} hasn&apos;t started your {isBuyer ? "buying" : "selling"}{" "}
           transaction yet. In the meantime, here&apos;s how to get ready:
         </p>
@@ -292,26 +281,26 @@ function GettingStarted({
 
       {steps.map((step, i) => (
         <Card key={i} variant="container" className="flex items-start gap-4">
-          <span className="mt-0.5 p-2 rounded-xl bg-primary-light text-primary shrink-0">
+          <span className="mt-0.5 p-2 rounded-xl bg-primary-container text-primary shrink-0">
             {step.icon}
           </span>
           <div>
             <div className="flex items-center gap-2">
-              <CircleDot size={14} className="text-text-secondary" />
-              <p className="font-semibold text-text-primary">{step.title}</p>
+              <MaterialIcon name="radio_button_checked" size={14} className="text-on-surface-variant" />
+              <p className="font-semibold text-on-surface">{step.title}</p>
             </div>
-            <p className="text-sm text-text-secondary mt-0.5">{step.detail}</p>
+            <p className="text-sm text-on-surface-variant mt-0.5">{step.detail}</p>
           </div>
         </Card>
       ))}
 
       <Card variant="container" className="text-center py-6">
-        <p className="text-sm text-text-secondary">
+        <p className="text-sm text-on-surface-variant">
           Have questions? Send {agent} a message anytime.
         </p>
         <Link href="/messages" className="inline-block mt-3">
           <Button variant="cta" size="sm">
-            <MessageCircle size={16} />
+            <MaterialIcon name="chat_bubble" size={16} />
             Message {agent}
           </Button>
         </Link>

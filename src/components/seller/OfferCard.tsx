@@ -31,12 +31,12 @@ export function OfferCard({ offer, isHighest = false }: OfferCardProps) {
       <div className="flex items-start justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <p className="text-lg font-bold text-text-primary">
+            <p className="text-lg font-bold text-on-surface">
               ${offer.offerPrice.toLocaleString()}
             </p>
             {isHighest && <Badge variant="cta">Highest</Badge>}
           </div>
-          <p className="text-sm text-text-secondary">{offer.buyerName}</p>
+          <p className="text-sm text-on-surface-variant">{offer.buyerName}</p>
         </div>
         <Badge variant={statusVariant[offer.status] || "default"}>
           {offer.status}
@@ -44,27 +44,27 @@ export function OfferCard({ offer, isHighest = false }: OfferCardProps) {
       </div>
       <div className="grid grid-cols-2 gap-2 mt-3 text-sm">
         <div>
-          <span className="text-text-secondary">Down Payment: </span>
-          <span className="text-text-primary">{offer.downPaymentPct}%</span>
+          <span className="text-on-surface-variant">Down Payment: </span>
+          <span className="text-on-surface">{offer.downPaymentPct}%</span>
         </div>
         <div>
-          <span className="text-text-secondary">Loan: </span>
-          <span className="text-text-primary uppercase">{offer.loanType}</span>
+          <span className="text-on-surface-variant">Loan: </span>
+          <span className="text-on-surface uppercase">{offer.loanType}</span>
         </div>
         <div>
-          <span className="text-text-secondary">Closing: </span>
-          <span className="text-text-primary">{offer.closingDate}</span>
+          <span className="text-on-surface-variant">Closing: </span>
+          <span className="text-on-surface">{offer.closingDate}</span>
         </div>
         <div>
-          <span className="text-text-secondary">Concessions: </span>
-          <span className="text-text-primary">
+          <span className="text-on-surface-variant">Concessions: </span>
+          <span className="text-on-surface">
             ${offer.sellerConcessions.toLocaleString()}
           </span>
         </div>
       </div>
       {offer.contingencies.length > 0 && (
         <div className="mt-2">
-          <span className="text-xs text-text-secondary">Contingencies: </span>
+          <span className="text-xs text-on-surface-variant">Contingencies: </span>
           <div className="flex flex-wrap gap-1 mt-0.5">
             {offer.contingencies.map((c, i) => (
               <Badge key={i} variant="default">
@@ -75,7 +75,7 @@ export function OfferCard({ offer, isHighest = false }: OfferCardProps) {
         </div>
       )}
       {offer.notes && (
-        <p className="text-sm text-text-secondary mt-2">
+        <p className="text-sm text-on-surface-variant mt-2">
           <GlossaryHighlight text={offer.notes} terms={terms} />
         </p>
       )}

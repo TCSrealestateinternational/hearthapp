@@ -12,12 +12,12 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantClasses: Record<Variant, string> = {
-  primary: "bg-primary text-white hover:bg-primary/90",
+  primary: "bg-primary text-on-primary hover:bg-primary/90",
   secondary:
-    "bg-surface text-text-primary border border-border hover:bg-primary-light",
-  cta: "bg-cta text-white hover:bg-cta-hover",
-  ghost: "bg-transparent text-text-secondary hover:bg-primary-light",
-  danger: "bg-error text-white hover:bg-error/90",
+    "bg-surface-container-low text-on-surface hover:bg-primary-container",
+  cta: "bg-tertiary text-on-tertiary hover:bg-cta-hover",
+  ghost: "bg-transparent text-on-surface-variant hover:bg-primary-container",
+  danger: "bg-error text-on-error hover:bg-error/90",
 };
 
 const sizeClasses: Record<Size, string> = {
@@ -43,7 +43,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         disabled={disabled || loading}
-        className={`inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-50 disabled:cursor-not-allowed ${variant !== "ghost" ? "shadow-sm hover:shadow-md" : ""} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
+        className={`inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-50 disabled:cursor-not-allowed ${variant !== "ghost" ? "shadow-sm hover:shadow-md" : ""} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
         {...props}
       >
         {loading && (

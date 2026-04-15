@@ -2,21 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  LayoutDashboard,
-  Home,
-  Calculator,
-  CheckSquare,
-  MessageCircle,
-  UserCircle,
-  BookOpen,
-} from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 import { usePermissions } from "@/hooks/usePermissions";
 
 interface NavItem {
   href: string;
   label: string;
-  icon: React.ReactNode;
+  icon: string;
   permissionKey?: string;
 }
 
@@ -31,52 +23,52 @@ export function ClientNav({ role, unreadCount, transactionId }: ClientNavProps) 
   const { hasPermission } = usePermissions(transactionId);
 
   const buyerItems: NavItem[] = [
-    { href: "/dashboard", label: "Home", icon: <LayoutDashboard size={20} aria-hidden="true" /> },
-    { href: "/buyer/properties", label: "Properties", icon: <Home size={20} aria-hidden="true" />, permissionKey: "property" },
+    { href: "/dashboard", label: "Home", icon: "space_dashboard" },
+    { href: "/buyer/properties", label: "Properties", icon: "home", permissionKey: "property" },
     {
       href: "/finance",
       label: "Finance",
-      icon: <Calculator size={20} aria-hidden="true" />,
+      icon: "calculate",
       permissionKey: "finance",
     },
     {
       href: "/buyer/checklist",
       label: "Checklist",
-      icon: <CheckSquare size={20} aria-hidden="true" />,
+      icon: "checklist",
       permissionKey: "checklist",
     },
     {
       href: "/glossary",
       label: "Glossary",
-      icon: <BookOpen size={20} aria-hidden="true" />,
+      icon: "menu_book",
     },
   ];
 
   const sellerItems: NavItem[] = [
-    { href: "/dashboard", label: "Home", icon: <LayoutDashboard size={20} aria-hidden="true" /> },
-    { href: "/seller/listing", label: "Listing", icon: <Home size={20} aria-hidden="true" />, permissionKey: "property" },
+    { href: "/dashboard", label: "Home", icon: "space_dashboard" },
+    { href: "/seller/listing", label: "Listing", icon: "home", permissionKey: "property" },
     {
       href: "/seller/offers",
       label: "Offers",
-      icon: <Calculator size={20} aria-hidden="true" />,
+      icon: "local_offer",
       permissionKey: "offers",
     },
     {
       href: "/finance",
       label: "Finance",
-      icon: <Calculator size={20} aria-hidden="true" />,
+      icon: "calculate",
       permissionKey: "finance",
     },
     {
       href: "/seller/checklist",
       label: "Checklist",
-      icon: <CheckSquare size={20} aria-hidden="true" />,
+      icon: "checklist",
       permissionKey: "checklist",
     },
     {
       href: "/glossary",
       label: "Glossary",
-      icon: <BookOpen size={20} aria-hidden="true" />,
+      icon: "menu_book",
     },
   ];
 
@@ -90,10 +82,10 @@ export function ClientNav({ role, unreadCount, transactionId }: ClientNavProps) 
     {
       href: "/messages",
       label: "Messages",
-      icon: <MessageCircle size={20} aria-hidden="true" />,
+      icon: "chat_bubble",
       permissionKey: "messages",
     },
-    { href: "/profile", label: "Profile", icon: <UserCircle size={20} aria-hidden="true" /> },
+    { href: "/profile", label: "Profile", icon: "account_circle" },
   ];
   const bottomItems = allBottomItems.filter(
     (item) => !item.permissionKey || hasPermission(item.permissionKey as never),
@@ -123,8 +115,8 @@ export function ClientNav({ role, unreadCount, transactionId }: ClientNavProps) 
         ))}
       </nav>
 
-      {/* Mobile bottom tabs — 4 items, glass effect */}
-      <nav aria-label="Mobile navigation" className="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--glass-bg)] backdrop-blur-xl border-t border-[var(--glass-border)] rounded-t-2xl z-40 safe-area-bottom">
+      {/* Mobile bottom tabs — 4 items, pill-shaped */}
+      <nav aria-label="Mobile navigation" className="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--glass-bg)] backdrop-blur-[var(--glass-blur)] border-t border-[var(--glass-border)] rounded-t-[3rem] z-40 safe-area-bottom">
         <div className="flex items-center justify-around px-2 py-2">
           {mobileItems.map((item) => {
             const active = pathname === item.href;
@@ -134,16 +126,16 @@ export function ClientNav({ role, unreadCount, transactionId }: ClientNavProps) 
                 href={item.href}
                 aria-current={active ? "page" : undefined}
                 aria-label={item.href === "/messages" && unreadCount > 0 ? `${item.label}, ${unreadCount} unread` : item.label}
-                className={`flex flex-col items-center gap-0.5 min-w-0 px-3 py-1.5 text-[11px] relative rounded-xl transition-colors ${
+                className={`flex flex-col items-center gap-0.5 min-w-0 px-4 py-1.5 text-[11px] relative transition-all ${
                   active
-                    ? "text-primary bg-primary-light"
-                    : "text-text-secondary"
+                    ? "text-on-primary-container bg-primary-container rounded-full scale-100"
+                    : "text-on-surface-variant scale-90"
                 }`}
               >
-                {item.icon}
+                <MaterialIcon name={item.icon} size={20} filled={active} />
                 <span className="truncate max-w-[56px]">{item.label}</span>
                 {item.href === "/messages" && unreadCount > 0 && (
-                  <span className="absolute -top-0.5 right-0 bg-error text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center" aria-hidden="true">
+                  <span className="absolute -top-0.5 right-0 bg-error text-on-error text-[10px] rounded-full w-4 h-4 flex items-center justify-center" aria-hidden="true">
                     {unreadCount}
                   </span>
                 )}
@@ -170,16 +162,16 @@ function DesktopNavLink({
       href={item.href}
       aria-current={active ? "page" : undefined}
       aria-label={badge && badge > 0 ? `${item.label}, ${badge} unread` : undefined}
-      className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-colors relative ${
+      className={`flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium transition-colors relative ${
         active
-          ? "bg-primary-light text-primary"
-          : "text-text-secondary hover:bg-primary-light/50 hover:text-text-primary"
+          ? "bg-primary-container text-on-primary-container"
+          : "text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface"
       }`}
     >
-      {item.icon}
+      <MaterialIcon name={item.icon} size={20} filled={active} />
       {item.label}
       {badge && badge > 0 ? (
-        <span className="bg-error text-white text-xs rounded-full w-5 h-5 flex items-center justify-center" aria-hidden="true">
+        <span className="bg-error text-on-error text-xs rounded-full w-5 h-5 flex items-center justify-center" aria-hidden="true">
           {badge}
         </span>
       ) : null}

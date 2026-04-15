@@ -8,17 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { usePermissions } from "@/hooks/usePermissions";
 import Link from "next/link";
 import type { Transaction } from "@/types";
-import {
-  Home,
-  FileText,
-  CheckSquare,
-  Calculator,
-  MessageCircle,
-  ArrowRight,
-  ShoppingBag,
-  ChevronDown,
-  ChevronUp,
-} from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
 interface UnifiedDashboardProps {
   transactions: Transaction[];
@@ -33,12 +23,12 @@ export function UnifiedDashboard({ transactions, agentName }: UnifiedDashboardPr
   if (transactions.length === 0) {
     return (
       <Card className="text-center py-12">
-        <p className="text-text-secondary">
+        <p className="text-on-surface-variant">
           No active transactions yet. {agentName || "Your agent"} will set things up when you&apos;re ready.
         </p>
         <Link href="/messages" className="inline-block mt-3">
           <Button variant="cta" size="sm">
-            <MessageCircle size={16} />
+            <MaterialIcon name="chat_bubble" size={16} />
             Message {agentName?.split(" ")[0] || "Agent"}
           </Button>
         </Link>
@@ -48,7 +38,7 @@ export function UnifiedDashboard({ transactions, agentName }: UnifiedDashboardPr
 
   return (
     <div className="space-y-4">
-      <h2 className="text-lg font-semibold text-text-primary">
+      <h2 className="text-lg font-semibold text-on-surface">
         All Transactions
       </h2>
       {transactions.map((tx) => (
@@ -76,19 +66,19 @@ function TransactionCard({
 }) {
   const { hasPermission } = usePermissions(tx.id);
   const isBuying = tx.type === "buying";
-  const TypeIcon = isBuying ? ShoppingBag : Home;
+  const typeIcon = isBuying ? "shopping_bag" : "home";
 
   const quickLinks = [
     ...(isBuying
       ? [
-          hasPermission("property") && { href: "/buyer/properties", label: "Properties", icon: <Home size={16} /> },
-          hasPermission("checklist") && { href: "/buyer/checklist", label: "Checklist", icon: <CheckSquare size={16} /> },
-          hasPermission("finance") && { href: "/finance", label: "Calculators", icon: <Calculator size={16} /> },
+          hasPermission("property") && { href: "/buyer/properties", label: "Properties", icon: <MaterialIcon name="home" size={16} /> },
+          hasPermission("checklist") && { href: "/buyer/checklist", label: "Checklist", icon: <MaterialIcon name="checklist" size={16} /> },
+          hasPermission("finance") && { href: "/finance", label: "Calculators", icon: <MaterialIcon name="calculate" size={16} /> },
         ]
       : [
-          hasPermission("property") && { href: "/seller/listing", label: "Listing", icon: <Home size={16} /> },
-          hasPermission("offers") && { href: "/seller/offers", label: "Offers", icon: <FileText size={16} /> },
-          hasPermission("checklist") && { href: "/seller/checklist", label: "Checklist", icon: <CheckSquare size={16} /> },
+          hasPermission("property") && { href: "/seller/listing", label: "Listing", icon: <MaterialIcon name="home" size={16} /> },
+          hasPermission("offers") && { href: "/seller/offers", label: "Offers", icon: <MaterialIcon name="description" size={16} /> },
+          hasPermission("checklist") && { href: "/seller/checklist", label: "Checklist", icon: <MaterialIcon name="checklist" size={16} /> },
         ]
     ).filter(Boolean) as { href: string; label: string; icon: React.ReactNode }[],
   ];
@@ -100,8 +90,8 @@ function TransactionCard({
         className="w-full flex items-center justify-between text-left"
       >
         <div className="flex items-center gap-3">
-          <span className="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center shrink-0">
-            <TypeIcon size={20} />
+          <span className="w-10 h-10 rounded-xl bg-primary-container text-primary flex items-center justify-center shrink-0">
+            <MaterialIcon name={typeIcon} size={20} />
           </span>
           <div>
             <CardTitle className="text-base">{tx.label}</CardTitle>
@@ -111,16 +101,16 @@ function TransactionCard({
               >
                 {tx.status}
               </Badge>
-              <span className="text-xs text-text-secondary capitalize">
+              <span className="text-xs text-on-surface-variant capitalize">
                 {tx.type}
               </span>
             </div>
           </div>
         </div>
         {expanded ? (
-          <ChevronUp size={18} className="text-text-secondary" />
+          <MaterialIcon name="expand_less" size={18} className="text-on-surface-variant" />
         ) : (
-          <ChevronDown size={18} className="text-text-secondary" />
+          <MaterialIcon name="expand_more" size={18} className="text-on-surface-variant" />
         )}
       </button>
 
@@ -137,7 +127,7 @@ function TransactionCard({
                   <Button variant="secondary" size="sm" className="flex items-center gap-1.5">
                     {link.icon}
                     {link.label}
-                    <ArrowRight size={12} />
+                    <MaterialIcon name="arrow_forward" size={12} />
                   </Button>
                 </Link>
               ))}

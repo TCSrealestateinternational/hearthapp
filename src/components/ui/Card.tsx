@@ -11,12 +11,12 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const variantClasses: Record<CardVariant, string> = {
-  default: "bg-surface border border-border shadow-sm",
-  container: "bg-surface-container border border-border shadow-sm",
-  "container-high": "bg-surface-container-high border border-border shadow-sm",
-  elevated: "bg-surface border border-border shadow-md",
+  default: "bg-surface-container-low",
+  container: "bg-surface-container",
+  "container-high": "bg-surface-container-high",
+  elevated: "bg-surface-container-low shadow-md",
   glass:
-    "bg-[var(--glass-bg)] backdrop-blur-[var(--glass-blur)] border border-[var(--glass-border)] shadow-sm",
+    "bg-[var(--glass-bg)] backdrop-blur-[var(--glass-blur)] shadow-sm",
 };
 
 export function Card({
@@ -60,7 +60,7 @@ export function CardTitle({
   className?: string;
 }) {
   return (
-    <h3 className={`text-lg font-semibold text-text-primary ${className}`}>
+    <h3 className={`text-lg font-semibold text-on-surface font-serif ${className}`}>
       {children}
     </h3>
   );

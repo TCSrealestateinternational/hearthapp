@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { CreateClientModal } from "@/components/agent/CreateClientModal";
 import Link from "next/link";
 import type { User, Transaction } from "@/types";
-import { Search, Users, ArrowRight, Plus } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
 export default function AgentDashboardPage() {
   const { user } = useAuth();
@@ -45,10 +45,10 @@ export default function AgentDashboardPage() {
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">
+        <h1 className="text-2xl font-extrabold tracking-tight text-on-surface font-serif">
           Welcome back, {user?.displayName?.split(" ")[0]}
         </h1>
-        <p className="text-text-secondary mt-1">
+        <p className="text-on-surface-variant mt-1">
           {brokerage?.name} - Agent Dashboard
         </p>
       </div>
@@ -56,24 +56,24 @@ export default function AgentDashboardPage() {
       {/* Summary cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <Card>
-          <p className="text-sm text-text-secondary">Total Clients</p>
-          <p className="text-2xl font-bold text-text-primary">
+          <p className="text-sm text-on-surface-variant">Total Clients</p>
+          <p className="text-2xl font-bold text-on-surface">
             {clients.length}
           </p>
         </Card>
         <Card>
-          <p className="text-sm text-text-secondary">Active Transactions</p>
+          <p className="text-sm text-on-surface-variant">Active Transactions</p>
           <p className="text-2xl font-bold text-primary">{activeCount}</p>
         </Card>
         <Card>
-          <p className="text-sm text-text-secondary">Buyers</p>
-          <p className="text-2xl font-bold text-text-primary">
+          <p className="text-sm text-on-surface-variant">Buyers</p>
+          <p className="text-2xl font-bold text-on-surface">
             {clients.filter((c) => c.roles.includes("buyer")).length}
           </p>
         </Card>
         <Card>
-          <p className="text-sm text-text-secondary">Sellers</p>
-          <p className="text-2xl font-bold text-text-primary">
+          <p className="text-sm text-on-surface-variant">Sellers</p>
+          <p className="text-2xl font-bold text-on-surface">
             {clients.filter((c) => c.roles.includes("seller")).length}
           </p>
         </Card>
@@ -85,7 +85,7 @@ export default function AgentDashboardPage() {
           <div className="flex flex-col sm:flex-row sm:items-center gap-3">
             <div className="flex items-center gap-3">
               <CardTitle>
-                <Users size={20} className="inline mr-2" />
+                <MaterialIcon name="group" size={20} className="inline mr-2" />
                 Clients
               </CardTitle>
               <Button
@@ -93,22 +93,19 @@ export default function AgentDashboardPage() {
                 size="sm"
                 onClick={() => setShowCreate(true)}
               >
-                <Plus size={16} />
+                <MaterialIcon name="add" size={16} />
                 Add Client
               </Button>
             </div>
             <div className="relative sm:ml-auto">
-              <Search
-                size={16}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary"
-              />
+              <MaterialIcon name="search" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" />
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search clients..."
                 aria-label="Search clients by name or email"
-                className="pl-9 pr-3 py-1.5 rounded-xl border border-border bg-background text-text-primary text-sm w-full sm:w-48"
+                className="pl-9 pr-3 py-1.5 rounded-xl border border-outline-variant bg-background text-on-surface text-sm w-full sm:w-48"
               />
             </div>
           </div>
@@ -123,19 +120,19 @@ export default function AgentDashboardPage() {
               <Link
                 key={client.id}
                 href={`/agent/clients/${client.id}`}
-                className="flex items-center gap-3 p-3 rounded-lg hover:bg-primary-light/50 transition-colors"
+                className="flex items-center gap-3 p-3 rounded-lg hover:bg-primary-container/50 transition-colors"
               >
-                <div className="w-10 h-10 shrink-0 rounded-xl bg-primary-light flex items-center justify-center text-primary font-semibold text-sm">
+                <div className="w-10 h-10 shrink-0 rounded-xl bg-primary-container flex items-center justify-center text-primary font-semibold text-sm">
                   {client.displayName
                     .split(" ")
                     .map((n) => n[0])
                     .join("")}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium text-text-primary truncate">
+                  <p className="font-medium text-on-surface truncate">
                     {client.displayName}
                   </p>
-                  <p className="text-xs text-text-secondary truncate">
+                  <p className="text-xs text-on-surface-variant truncate">
                     {client.email}
                   </p>
                   <div className="flex items-center gap-1.5 mt-1 sm:hidden">
@@ -170,16 +167,16 @@ export default function AgentDashboardPage() {
                         {role}
                       </Badge>
                     ))}
-                  <span className="text-xs text-text-secondary">
+                  <span className="text-xs text-on-surface-variant">
                     {clientTxs.length} tx
                   </span>
                 </div>
-                <ArrowRight size={16} className="text-text-secondary shrink-0" />
+                <MaterialIcon name="arrow_forward" size={16} className="text-on-surface-variant shrink-0" />
               </Link>
             );
           })}
           {filteredClients.length === 0 && (
-            <p className="text-center text-text-secondary py-4">
+            <p className="text-center text-on-surface-variant py-4">
               {search ? "No clients match your search." : "No clients yet."}
             </p>
           )}

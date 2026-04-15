@@ -18,7 +18,7 @@ import {
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import type { User, UserRole } from "@/types";
-import { Mail, CheckCircle, AlertTriangle } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
 interface CreateClientModalProps {
   open: boolean;
@@ -250,11 +250,12 @@ export function CreateClientModal({
         <div className="space-y-4">
           <div className="bg-warning/10 border border-warning/30 rounded-lg p-4">
             <div className="flex items-start gap-3">
-              <AlertTriangle
+              <MaterialIcon
+                name="warning"
                 size={20}
                 className="text-warning mt-0.5 shrink-0"
               />
-              <p className="text-sm text-text-primary font-medium">
+              <p className="text-sm text-on-surface font-medium">
                 This client is already attached to an agent in our system.
                 Please confirm with the client that they do not have a current
                 contract with them before continuing.
@@ -286,20 +287,20 @@ export function CreateClientModal({
         </div>
       ) : success ? (
         <div className="space-y-4">
-          <div className="bg-primary-light rounded-lg p-4 text-center">
-            <CheckCircle size={40} className="mx-auto mb-3 text-success" />
-            <p className="text-lg font-semibold text-text-primary mb-1">
+          <div className="bg-primary-container rounded-lg p-4 text-center">
+            <MaterialIcon name="check_circle" size={40} className="mx-auto mb-3 text-success" />
+            <p className="text-lg font-semibold text-on-surface mb-1">
               {isDuplicate ? "Client Added!" : "Invite Sent!"}
             </p>
             {isDuplicate ? (
-              <p className="text-sm text-text-secondary">
+              <p className="text-sm text-on-surface-variant">
                 This client already has a Hearth account. They can log in with
                 their existing credentials and will be prompted to switch to
                 your brokerage.
               </p>
             ) : (
               <>
-                <p className="text-sm text-text-secondary">
+                <p className="text-sm text-on-surface-variant">
                   A setup email has been sent to:
                 </p>
                 <p className="text-sm font-mono font-medium text-primary mt-1">
@@ -309,10 +310,10 @@ export function CreateClientModal({
             )}
           </div>
           {!isDuplicate && (
-            <div className="bg-surface rounded-lg p-3 border border-border">
+            <div className="bg-surface rounded-lg p-3 border border-outline-variant">
               <div className="flex items-start gap-2">
-                <Mail size={16} className="text-text-secondary mt-0.5" />
-                <div className="text-sm text-text-secondary">
+                <MaterialIcon name="mail" size={16} className="text-on-surface-variant mt-0.5" />
+                <div className="text-sm text-on-surface-variant">
                   <p>
                     Your client will receive an email to set up their password.
                   </p>
@@ -332,7 +333,7 @@ export function CreateClientModal({
           <div>
             <label
               htmlFor="client-name"
-              className="block text-sm font-medium text-text-primary mb-1"
+              className="block text-sm font-medium text-on-surface mb-1"
             >
               Full Name
             </label>
@@ -343,14 +344,14 @@ export function CreateClientModal({
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
               placeholder="Jane Smith"
-              className="w-full px-3 py-2 rounded-lg border border-border bg-surface text-text-primary"
+              className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface text-on-surface"
             />
           </div>
 
           <div>
             <label
               htmlFor="client-email"
-              className="block text-sm font-medium text-text-primary mb-1"
+              className="block text-sm font-medium text-on-surface mb-1"
             >
               Email
             </label>
@@ -361,14 +362,14 @@ export function CreateClientModal({
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="jane@example.com"
-              className="w-full px-3 py-2 rounded-lg border border-border bg-surface text-text-primary"
+              className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface text-on-surface"
             />
           </div>
 
           <div>
             <label
               htmlFor="client-phone"
-              className="block text-sm font-medium text-text-primary mb-1"
+              className="block text-sm font-medium text-on-surface mb-1"
             >
               Phone (optional)
             </label>
@@ -378,14 +379,14 @@ export function CreateClientModal({
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               placeholder="(555) 123-4567"
-              className="w-full px-3 py-2 rounded-lg border border-border bg-surface text-text-primary"
+              className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface text-on-surface"
             />
           </div>
 
           <div>
             <label
               htmlFor="client-role"
-              className="block text-sm font-medium text-text-primary mb-1"
+              className="block text-sm font-medium text-on-surface mb-1"
             >
               Role
             </label>
@@ -395,7 +396,7 @@ export function CreateClientModal({
               onChange={(e) =>
                 setRole(e.target.value as "buyer" | "seller" | "dual")
               }
-              className="w-full px-3 py-2 rounded-lg border border-border bg-surface text-text-primary"
+              className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface text-on-surface"
             >
               <option value="buyer">Buyer</option>
               <option value="seller">Seller</option>
@@ -403,10 +404,10 @@ export function CreateClientModal({
             </select>
           </div>
 
-          <div className="bg-primary-light/50 rounded-lg p-3">
+          <div className="bg-primary-container/50 rounded-lg p-3">
             <div className="flex items-start gap-2">
-              <Mail size={16} className="text-primary mt-0.5" />
-              <p className="text-sm text-text-secondary">
+              <MaterialIcon name="mail" size={16} className="text-primary mt-0.5" />
+              <p className="text-sm text-on-surface-variant">
                 Your client will receive an email invitation to set up their
                 password and access the portal.
               </p>

@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/Card";
 import { GlossaryHighlight } from "@/components/ui/GlossaryTooltip";
 import { AddressLink } from "@/components/shared/AddressLink";
 import { useGlossaryTerms } from "@/contexts/GlossaryContext";
-import { ExternalLink, Star } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
 interface PropertyCardProps {
   property: Property;
@@ -51,10 +51,10 @@ export function PropertyCard({ property, onClick }: PropertyCardProps) {
       )}
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1 min-w-0">
-          <p className="font-bold text-text-primary text-xl">
+          <p className="font-bold text-on-surface text-xl">
             ${property.price.toLocaleString()}
           </p>
-          <div className="text-sm text-text-secondary mt-0.5">
+          <div className="text-sm text-on-surface-variant mt-0.5">
             <AddressLink
               address={property.address}
               city={property.city}
@@ -67,21 +67,21 @@ export function PropertyCard({ property, onClick }: PropertyCardProps) {
           {property.status.replace("-", " ")}
         </Badge>
       </div>
-      <div className="flex items-center gap-4 mt-3 text-sm text-text-secondary">
+      <div className="flex items-center gap-4 mt-3 text-sm text-on-surface-variant">
         <span>{property.beds} bed</span>
         <span>{property.baths} bath</span>
         <span>{property.sqft.toLocaleString()} sqft</span>
       </div>
       <div className="flex items-center gap-1 mt-2" aria-label={`Rating: ${property.rating} out of 5 stars`}>
-        {[1, 2, 3, 4, 5].map((star) => (
-          <Star
-            key={star}
+        {[1, 2, 3, 4, 5].map((s) => (
+          <MaterialIcon
+            key={s}
+            name="star"
             size={14}
-            aria-hidden="true"
             className={
-              star <= property.rating
+              s <= property.rating
                 ? "fill-cta text-cta"
-                : "text-border"
+                : "text-outline-variant"
             }
           />
         ))}
@@ -94,13 +94,13 @@ export function PropertyCard({ property, onClick }: PropertyCardProps) {
           onClick={(e) => e.stopPropagation()}
           className="inline-flex items-center gap-1 text-xs text-primary hover:underline mt-2"
         >
-          <ExternalLink size={12} aria-hidden="true" />
+          <MaterialIcon name="open_in_new" size={12} />
           View Listing
           <span className="sr-only">(opens in new tab)</span>
         </a>
       )}
       {property.notes && (
-        <p className="text-sm text-text-secondary mt-2 line-clamp-2">
+        <p className="text-sm text-on-surface-variant mt-2 line-clamp-2">
           <GlossaryHighlight text={property.notes} terms={terms} />
         </p>
       )}

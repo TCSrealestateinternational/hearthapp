@@ -2,7 +2,7 @@
 
 import { Card, CardTitle } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { Download, FileText } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
 interface CMAViewerProps {
   cmaUrl?: string;
@@ -21,11 +21,11 @@ export function CMAViewer({
     return (
       <Card>
         <div className="text-center py-8">
-          <FileText size={40} className="mx-auto mb-3 text-text-secondary opacity-50" />
-          <p className="text-text-secondary">
+          <MaterialIcon name="description" size={40} className="mx-auto mb-3 text-on-surface-variant opacity-50" />
+          <p className="text-on-surface-variant">
             Your CMA has not been uploaded yet.
           </p>
-          <p className="text-sm text-text-secondary mt-1">
+          <p className="text-sm text-on-surface-variant mt-1">
             Your agent will upload it when ready.
           </p>
         </div>
@@ -41,12 +41,12 @@ export function CMAViewer({
           <CardTitle>Suggested Price Range</CardTitle>
           <div className="mt-3 flex items-center gap-4">
             <div className="text-center">
-              <p className="text-sm text-text-secondary">Low</p>
-              <p className="text-lg font-semibold text-text-primary">
+              <p className="text-sm text-on-surface-variant">Low</p>
+              <p className="text-lg font-semibold text-on-surface">
                 ${priceRangeLow.toLocaleString()}
               </p>
             </div>
-            <div className="flex-1 h-2 bg-primary-light rounded-full relative">
+            <div className="flex-1 h-2 bg-primary-container rounded-full relative">
               {listPrice && (
                 <div
                   className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-cta rounded-full border-2 border-white shadow"
@@ -61,8 +61,8 @@ export function CMAViewer({
               )}
             </div>
             <div className="text-center">
-              <p className="text-sm text-text-secondary">High</p>
-              <p className="text-lg font-semibold text-text-primary">
+              <p className="text-sm text-on-surface-variant">High</p>
+              <p className="text-lg font-semibold text-on-surface">
                 ${priceRangeHigh.toLocaleString()}
               </p>
             </div>
@@ -82,11 +82,11 @@ export function CMAViewer({
 
       {/* PDF embed */}
       <Card padding={false}>
-        <div className="p-4 flex items-center justify-between border-b border-border">
+        <div className="p-4 flex items-center justify-between border-b border-outline-variant">
           <CardTitle>Comparative Market Analysis</CardTitle>
           <a href={cmaUrl} target="_blank" rel="noopener noreferrer">
             <Button variant="secondary" size="sm">
-              <Download size={14} aria-hidden="true" />
+              <MaterialIcon name="download" size={14} />
               Download
             </Button>
           </a>

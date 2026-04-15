@@ -6,6 +6,7 @@ import { AgentNav } from "@/components/nav/AgentNav";
 import { useAuth } from "@/hooks/useAuth";
 import { useBrokerage } from "@/hooks/useBrokerage";
 import { InstallPrompt } from "@/components/shared/InstallPrompt";
+import { ConciergeFAB } from "@/components/ConciergeFAB";
 
 export function AgentShellWrapper({ children }: { children: ReactNode }) {
   return (
@@ -29,15 +30,15 @@ function AgentShell({ children }: { children: ReactNode }) {
       </a>
 
       {/* Sticky glass header */}
-      <header className="sticky top-0 z-30 flex items-center justify-between px-4 sm:px-8 py-3 bg-[var(--glass-bg)] backdrop-blur-xl border-b border-[var(--glass-border)]">
+      <header className="sticky top-0 z-30 flex items-center justify-between px-4 sm:px-8 py-3 bg-[var(--glass-bg)] backdrop-blur-[var(--glass-blur)] border-b border-[var(--glass-border)]">
         <div className="flex items-center gap-4">
           <div>
-            <span className="text-lg font-bold text-primary">Hearth Real Estate<sup className="text-[0.6em] align-super">&copy;</sup></span>
-            <p className="text-xs text-text-secondary hidden md:block">Agent Portal</p>
+            <span className="text-lg font-bold text-primary font-serif italic">Hearth Real Estate<sup className="text-[0.6em] align-super">&copy;</sup></span>
+            <p className="text-xs text-on-surface-variant hidden md:block">Agent Portal</p>
           </div>
           <AgentNav />
         </div>
-        <span className="text-sm text-text-secondary hidden sm:inline">
+        <span className="text-sm text-on-surface-variant hidden sm:inline">
           {user?.displayName}
         </span>
       </header>
@@ -48,6 +49,9 @@ function AgentShell({ children }: { children: ReactNode }) {
       <main id="main-content" className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-8 py-6 sm:py-8 pb-24 md:pb-8">
         {children}
       </main>
+
+      {/* Concierge FAB */}
+      <ConciergeFAB />
     </div>
   );
 }

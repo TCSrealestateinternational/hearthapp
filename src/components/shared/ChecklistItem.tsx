@@ -3,7 +3,7 @@
 import type { ChecklistItem } from "@/types";
 import { GlossaryHighlight } from "@/components/ui/GlossaryTooltip";
 import { useGlossaryTerms } from "@/contexts/GlossaryContext";
-import { Check } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
 interface ChecklistItemRowProps {
   item: ChecklistItem;
@@ -13,7 +13,7 @@ interface ChecklistItemRowProps {
 export function ChecklistItemRow({ item, onToggle }: ChecklistItemRowProps) {
   const { terms } = useGlossaryTerms();
   return (
-    <div className="flex items-center gap-3 py-2 px-2 rounded-lg hover:bg-primary-light/50 transition-colors">
+    <div className="flex items-center gap-3 py-2 px-2 rounded-lg hover:bg-primary-container/50 transition-colors">
       <button
         role="checkbox"
         aria-checked={item.completed}
@@ -22,16 +22,16 @@ export function ChecklistItemRow({ item, onToggle }: ChecklistItemRowProps) {
         className={`flex-shrink-0 w-6 h-6 rounded-md border-2 flex items-center justify-center transition-colors cursor-pointer ${
           item.completed
             ? "bg-primary border-primary"
-            : "border-border hover:border-primary"
+            : "border-outline-variant hover:border-primary"
         }`}
       >
-        {item.completed && <Check size={14} className="text-white" aria-hidden="true" />}
+        {item.completed && <MaterialIcon name="check" size={14} className="text-white" />}
       </button>
       <span
         className={`text-sm ${
           item.completed
-            ? "line-through text-text-secondary"
-            : "text-text-primary"
+            ? "line-through text-on-surface-variant"
+            : "text-on-surface"
         }`}
       >
         <GlossaryHighlight text={item.label} terms={terms} />

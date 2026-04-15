@@ -1,19 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import {
-  Footprints,
-  Bus,
-  Bike,
-  Shield,
-  Car,
-  School,
-  ExternalLink,
-  RefreshCw,
-  MapPin,
-  Star,
-  Loader2,
-} from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
 // ─── Nearby Places categories ───────────────────────────────────────────────
 
@@ -32,20 +20,20 @@ const PLACE_CATEGORIES = [
 function ScoreCard({
   label,
   score,
-  icon: Icon,
+  iconName,
   color,
 }: {
   label: string;
   score: number | null;
-  icon: React.ComponentType<{ size?: number; className?: string }>;
+  iconName: string;
   color: string;
 }) {
   if (score == null) return null;
   return (
     <div className="flex flex-col items-center p-3 bg-surface-container rounded-xl">
-      <Icon size={18} className={`${color} mb-1`} />
-      <span className="text-2xl font-bold text-text-primary">{score}</span>
-      <span className="text-xs text-text-secondary">{label}</span>
+      <MaterialIcon name={iconName} size={18} className={`${color} mb-1`} />
+      <span className="text-2xl font-bold text-on-surface">{score}</span>
+      <span className="text-xs text-on-surface-variant">{label}</span>
     </div>
   );
 }
@@ -277,7 +265,7 @@ export function NeighborhoodData({
 
   if (!address || !city || !state) {
     return (
-      <div className="text-xs text-text-secondary italic py-2">
+      <div className="text-xs text-on-surface-variant italic py-2">
         Enter an address to see neighborhood data.
       </div>
     );
@@ -289,26 +277,26 @@ export function NeighborhoodData({
     <div className="space-y-4">
       {/* Refresh button */}
       <div className="flex items-center justify-between">
-        <h4 className="text-xs font-semibold text-text-secondary uppercase tracking-wide">
+        <h4 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wide">
           Neighborhood Data
         </h4>
         <button
           onClick={fetchData}
           disabled={loading}
-          className="text-xs text-text-secondary hover:text-primary flex items-center gap-1 transition-colors disabled:opacity-40"
+          className="text-xs text-on-surface-variant hover:text-primary flex items-center gap-1 transition-colors disabled:opacity-40"
         >
-          <RefreshCw size={12} className={loading ? "animate-spin" : ""} />
+          <MaterialIcon name="refresh" size={12} className={loading ? "animate-spin" : ""} />
           {loading ? "Loading\u2026" : "Refresh"}
         </button>
       </div>
 
       {/* Walk / Transit / Bike Scores */}
       <div>
-        <h4 className="text-xs font-medium text-text-primary mb-2">
+        <h4 className="text-xs font-medium text-on-surface mb-2">
           Walkability
         </h4>
         {loading && !walkData ? (
-          <p className="text-xs text-text-secondary animate-pulse">
+          <p className="text-xs text-on-surface-variant animate-pulse">
             Loading scores\u2026
           </p>
         ) : walkData ? (
@@ -316,24 +304,24 @@ export function NeighborhoodData({
             <ScoreCard
               label="Walk"
               score={walkData.walkScore}
-              icon={Footprints}
+              iconName="directions_walk"
               color="text-emerald-500"
             />
             <ScoreCard
               label="Transit"
               score={walkData.transitScore}
-              icon={Bus}
+              iconName="directions_bus"
               color="text-blue-500"
             />
             <ScoreCard
               label="Bike"
               score={walkData.bikeScore}
-              icon={Bike}
+              iconName="directions_bike"
               color="text-amber-500"
             />
           </div>
         ) : errors.walk ? (
-          <p className="text-xs text-text-secondary">
+          <p className="text-xs text-on-surface-variant">
             Walk score data unavailable
           </p>
         ) : null}
@@ -341,20 +329,20 @@ export function NeighborhoodData({
 
       {/* Safety / Crime */}
       <div>
-        <h4 className="text-xs font-medium text-text-primary mb-2">Safety</h4>
+        <h4 className="text-xs font-medium text-on-surface mb-2">Safety</h4>
         {loading && !crimeData ? (
-          <p className="text-xs text-text-secondary animate-pulse">
+          <p className="text-xs text-on-surface-variant animate-pulse">
             Loading safety data\u2026
           </p>
         ) : crimeData?.crimeIndex != null ? (
           <div className="flex items-center gap-3">
-            <Shield size={18} className="text-text-secondary shrink-0" />
+            <MaterialIcon name="shield" size={18} className="text-on-surface-variant shrink-0" />
             <div className="flex-1 min-w-0">
               <div className="flex justify-between text-xs mb-1">
-                <span className="text-text-primary font-medium">
+                <span className="text-on-surface font-medium">
                   Crime Index
                 </span>
-                <span className="text-text-secondary">
+                <span className="text-on-surface-variant">
                   {crimeData.crimeIndex}/100 (state level
                   {crimeData.year ? `, ${crimeData.year}` : ""})
                 </span>
@@ -371,7 +359,7 @@ export function NeighborhoodData({
                   style={{ width: `${crimeData.crimeIndex}%` }}
                 />
               </div>
-              <p className="text-xs text-text-secondary mt-1">
+              <p className="text-xs text-on-surface-variant mt-1">
                 {crimeData.crimeIndex < 30
                   ? "Below average crime"
                   : crimeData.crimeIndex < 60
@@ -381,7 +369,7 @@ export function NeighborhoodData({
             </div>
           </div>
         ) : errors.crime ? (
-          <p className="text-xs text-text-secondary">
+          <p className="text-xs text-on-surface-variant">
             Safety data unavailable
           </p>
         ) : null}
@@ -392,32 +380,32 @@ export function NeighborhoodData({
         errors.commute ||
         (commuteDestination && loading)) && (
         <div>
-          <h4 className="text-xs font-medium text-text-primary mb-2">
+          <h4 className="text-xs font-medium text-on-surface mb-2">
             Commute Estimate
           </h4>
           {loading && !commuteData ? (
-            <p className="text-xs text-text-secondary animate-pulse">
+            <p className="text-xs text-on-surface-variant animate-pulse">
               Calculating commute\u2026
             </p>
           ) : commuteData?.commuteMinutes != null ? (
             <div className="flex items-center gap-3">
-              <Car size={18} className="text-text-secondary shrink-0" />
+              <MaterialIcon name="directions_car" size={18} className="text-on-surface-variant shrink-0" />
               <div>
-                <span className="text-lg font-bold text-text-primary">
+                <span className="text-lg font-bold text-on-surface">
                   {commuteData.commuteMinutes} min
                 </span>
                 {commuteData.distanceMiles != null && (
-                  <span className="text-xs text-text-secondary ml-2">
+                  <span className="text-xs text-on-surface-variant ml-2">
                     ({commuteData.distanceMiles} mi)
                   </span>
                 )}
-                <p className="text-xs text-text-secondary">
+                <p className="text-xs text-on-surface-variant">
                   Estimated drive with traffic
                 </p>
               </div>
             </div>
           ) : (
-            <p className="text-xs text-text-secondary">
+            <p className="text-xs text-on-surface-variant">
               Commute data unavailable
             </p>
           )}
@@ -426,22 +414,22 @@ export function NeighborhoodData({
 
       {/* Schools — link out to GreatSchools */}
       <div>
-        <h4 className="text-xs font-medium text-text-primary mb-2">Schools</h4>
+        <h4 className="text-xs font-medium text-on-surface mb-2">Schools</h4>
         <a
           href={`https://www.greatschools.org/search/search.page?q=${encodeURIComponent(fullAddress)}`}
           target="_blank"
           rel="noreferrer"
           className="inline-flex items-center gap-1.5 text-xs text-primary hover:text-primary/80 transition-colors"
         >
-          <School size={14} />
+          <MaterialIcon name="school" size={14} />
           View schools on GreatSchools
-          <ExternalLink size={11} />
+          <MaterialIcon name="open_in_new" size={11} />
         </a>
       </div>
 
       {/* Nearby Places */}
       <div>
-        <h4 className="text-xs font-medium text-text-primary mb-2">
+        <h4 className="text-xs font-medium text-on-surface mb-2">
           Nearby Places
         </h4>
         <div className="flex flex-wrap gap-1.5 mb-3">
@@ -456,10 +444,10 @@ export function NeighborhoodData({
                 className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium transition-colors ${
                   active
                     ? "bg-primary text-white"
-                    : "bg-surface-container text-text-secondary hover:text-text-primary"
+                    : "bg-surface-container text-on-surface-variant hover:text-on-surface"
                 } disabled:opacity-50`}
               >
-                {busy && <Loader2 size={11} className="animate-spin" />}
+                {busy && <MaterialIcon name="progress_activity" size={11} className="animate-spin" />}
                 {label}
               </button>
             );
@@ -473,37 +461,34 @@ export function NeighborhoodData({
           if (!places && !error) return null;
           return (
             <div key={type} className="mb-3">
-              <p className="text-xs font-medium text-text-secondary mb-1">
+              <p className="text-xs font-medium text-on-surface-variant mb-1">
                 {label}
               </p>
               {error ? (
-                <p className="text-xs text-text-secondary">
+                <p className="text-xs text-on-surface-variant">
                   Could not load {label.toLowerCase()} results
                 </p>
               ) : places.length === 0 ? (
-                <p className="text-xs text-text-secondary italic">
+                <p className="text-xs text-on-surface-variant italic">
                   No {label.toLowerCase()} found nearby
                 </p>
               ) : (
                 <ul className="space-y-1.5">
                   {places.map((p, i) => (
                     <li key={i} className="flex items-start gap-2 text-xs">
-                      <MapPin
-                        size={12}
-                        className="text-text-secondary shrink-0 mt-0.5"
-                      />
+                      <MaterialIcon name="location_on" size={12} className="text-on-surface-variant shrink-0 mt-0.5" />
                       <div className="min-w-0">
-                        <span className="font-medium text-text-primary">
+                        <span className="font-medium text-on-surface">
                           {p.name}
                         </span>
                         {p.rating != null && (
                           <span className="inline-flex items-center gap-0.5 ml-1.5 text-amber-500">
-                            <Star size={10} fill="currentColor" />
+                            <MaterialIcon name="star" size={10} filled />
                             {p.rating}
                           </span>
                         )}
                         {p.address && (
-                          <p className="text-text-secondary truncate">
+                          <p className="text-on-surface-variant truncate">
                             {p.address}
                           </p>
                         )}
@@ -518,13 +503,13 @@ export function NeighborhoodData({
       </div>
 
       {/* Attribution */}
-      <p className="text-xs text-text-secondary/60 leading-relaxed">
+      <p className="text-xs text-on-surface-variant/60 leading-relaxed">
         Walk Score&reg; data from{" "}
         <a
           href="https://www.walkscore.com"
           target="_blank"
           rel="noreferrer"
-          className="underline hover:text-text-secondary"
+          className="underline hover:text-on-surface-variant"
         >
           walkscore.com
         </a>

@@ -1,4 +1,4 @@
-import { MapPin } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 import { getMapUrl, getFullAddress } from "@/lib/maps";
 
 interface AddressLinkProps {
@@ -30,7 +30,7 @@ export function AddressLink({
       onClick={(e) => e.stopPropagation()}
       className={`inline-flex items-center gap-1 text-primary hover:underline ${className}`}
     >
-      <MapPin size={14} className="flex-shrink-0" aria-hidden="true" />
+      <MaterialIcon name="location_on" size={14} className="flex-shrink-0" />
       <span className="truncate">{display}</span>
     </a>
   );

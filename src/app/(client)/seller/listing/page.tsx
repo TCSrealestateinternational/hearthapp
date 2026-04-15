@@ -8,7 +8,7 @@ import { ListingDetail } from "@/components/seller/ListingDetail";
 import { Card } from "@/components/ui/Card";
 import { getListing } from "@/lib/firestore";
 import type { Listing } from "@/types";
-import { Home } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 import { PermissionGate } from "@/components/shared/PermissionGate";
 
 export default function ListingPage() {
@@ -30,19 +30,20 @@ export default function ListingPage() {
     return (
       <PermissionGate transactionId={sellingTx?.id} permission="property">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-2xl font-extrabold tracking-tight text-text-primary mb-4">
+          <h1 className="text-2xl font-extrabold tracking-tight text-on-surface font-serif mb-4">
             My Listing
           </h1>
           <Card>
             <div className="text-center py-8">
-              <Home
+              <MaterialIcon
+                name="home"
                 size={40}
-                className="mx-auto mb-3 text-text-secondary opacity-50"
+                className="mx-auto mb-3 text-on-surface-variant opacity-50"
               />
-              <p className="text-text-secondary">
+              <p className="text-on-surface-variant">
                 Your listing has not been set up yet.
               </p>
-              <p className="text-sm text-text-secondary mt-1">
+              <p className="text-sm text-on-surface-variant mt-1">
                 Your agent will add your listing details when ready.
               </p>
             </div>
@@ -55,7 +56,7 @@ export default function ListingPage() {
   return (
     <PermissionGate transactionId={sellingTx?.id} permission="property">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-2xl font-extrabold tracking-tight text-text-primary mb-4">My Listing</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight text-on-surface font-serif mb-4">My Listing</h1>
         <ListingDetail listing={listing} />
       </div>
     </PermissionGate>

@@ -10,8 +10,9 @@ import { useAuth } from "@/hooks/useAuth";
 import { useRole } from "@/hooks/useRole";
 import { useBrokerage } from "@/hooks/useBrokerage";
 import { useTransactions } from "@/hooks/useTransaction";
-import { LogOut } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 import { InstallPrompt } from "@/components/shared/InstallPrompt";
+import { ConciergeFAB } from "@/components/ConciergeFAB";
 
 export function ClientShellWrapper({ children }: { children: ReactNode }) {
   return (
@@ -42,24 +43,24 @@ function ClientShell({ children }: { children: ReactNode }) {
       </a>
 
       {/* Sticky glass header */}
-      <header className="sticky top-0 z-30 flex items-center justify-between px-4 sm:px-8 py-3 bg-[var(--glass-bg)] backdrop-blur-xl border-b border-[var(--glass-border)]">
+      <header className="sticky top-0 z-30 flex items-center justify-between px-4 sm:px-8 py-3 bg-[var(--glass-bg)] backdrop-blur-[var(--glass-blur)] border-b border-[var(--glass-border)]">
         <div className="flex items-center gap-4">
-          <span className="text-lg font-bold text-primary">Hearth Real Estate<sup className="text-[0.6em] align-super">&copy;</sup></span>
+          <span className="text-lg font-bold text-primary font-serif italic">Hearth Real Estate<sup className="text-[0.6em] align-super">&copy;</sup></span>
           <ClientNav role={activeRole} unreadCount={0} transactionId={activeTx?.id} />
         </div>
         <div className="flex items-center gap-3">
           {isDual && user?.portalViewPreference !== "unified" && (
             <RoleToggle activeRole={activeRole} onToggle={toggleRole} />
           )}
-          <span className="text-sm text-text-secondary hidden sm:inline">
+          <span className="text-sm text-on-surface-variant hidden sm:inline">
             {user?.displayName}
           </span>
           <button
             onClick={signOut}
-            className="p-2 rounded-xl text-text-secondary hover:bg-primary-light transition-colors"
+            className="p-2 rounded-full text-on-surface-variant hover:bg-primary-container transition-colors"
             aria-label="Sign out"
           >
-            <LogOut size={18} aria-hidden="true" />
+            <MaterialIcon name="logout" size={18} />
           </button>
         </div>
       </header>
@@ -70,6 +71,9 @@ function ClientShell({ children }: { children: ReactNode }) {
       <main id="main-content" className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-8 py-6 sm:py-8 pb-24 md:pb-8">
         {children}
       </main>
+
+      {/* Concierge FAB */}
+      <ConciergeFAB />
 
       {/* Footer */}
       <div className="hidden md:block">

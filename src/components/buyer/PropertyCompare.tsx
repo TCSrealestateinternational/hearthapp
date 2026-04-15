@@ -2,7 +2,7 @@
 
 import type { Property } from "@/types";
 import { AddressLink } from "@/components/shared/AddressLink";
-import { Star } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
 interface PropertyCompareProps {
   properties: Property[];
@@ -11,7 +11,7 @@ interface PropertyCompareProps {
 export function PropertyCompare({ properties }: PropertyCompareProps) {
   if (properties.length === 0) {
     return (
-      <p className="text-center text-text-secondary py-8">
+      <p className="text-center text-on-surface-variant py-8">
         Select properties to compare them side by side.
       </p>
     );
@@ -38,12 +38,12 @@ export function PropertyCompare({ properties }: PropertyCompareProps) {
         render: (p) => (
           <div className="flex items-center gap-0.5" aria-label={`${p.rating} out of 5 stars`}>
             {[1, 2, 3, 4, 5].map((s) => (
-              <Star
+              <MaterialIcon
                 key={s}
+                name="star"
                 size={12}
-                aria-hidden="true"
                 className={
-                  s <= p.rating ? "fill-cta text-cta" : "text-border"
+                  s <= p.rating ? "fill-cta text-cta" : "text-outline-variant"
                 }
               />
             ))}
