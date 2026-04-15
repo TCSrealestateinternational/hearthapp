@@ -8,7 +8,8 @@ import { exportClientPDF } from "@/lib/exportPdf";
 import { Card, CardTitle } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { DriveLink } from "@/components/shared/DriveLink";
-import { UserCircle, Mail, Phone, Download, LogOut, LayoutGrid, ToggleLeft } from "lucide-react";
+import { UserCircle, Mail, Phone, Download, LogOut, LayoutGrid, ToggleLeft, MessageCircle, ArrowRight } from "lucide-react";
+import Link from "next/link";
 import { updateUser } from "@/lib/firestore";
 
 export default function ProfilePage() {
@@ -74,6 +75,49 @@ export default function ProfilePage() {
           </div>
         </div>
       </Card>
+
+      {/* Your Agent */}
+      {brokerage && (
+        <div>
+          <h2 className="text-lg font-semibold text-text-primary mb-3">Your Agent</h2>
+          <Card>
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 rounded-full bg-primary-light flex items-center justify-center text-primary font-bold text-lg shrink-0">
+                {brokerage.agentName
+                  .split(" ")
+                  .map((n) => n[0])
+                  .join("")}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-text-primary">{brokerage.agentName}</p>
+                <p className="text-sm text-text-secondary">{brokerage.agentTitle}</p>
+                {brokerage.agentPhone && (
+                  <div className="flex items-center gap-1 text-sm text-text-secondary mt-1">
+                    <Phone size={14} aria-hidden="true" />
+                    <a href={`tel:${brokerage.agentPhone}`} className="hover:underline">
+                      {brokerage.agentPhone}
+                    </a>
+                  </div>
+                )}
+                {brokerage.agentEmail && (
+                  <div className="flex items-center gap-1 text-sm text-text-secondary">
+                    <Mail size={14} aria-hidden="true" />
+                    <a href={`mailto:${brokerage.agentEmail}`} className="hover:underline">
+                      {brokerage.agentEmail}
+                    </a>
+                  </div>
+                )}
+              </div>
+              <Link href="/messages" className="shrink-0">
+                <Button variant="secondary" size="sm">
+                  <MessageCircle size={16} />
+                  Message
+                </Button>
+              </Link>
+            </div>
+          </Card>
+        </div>
+      )}
 
       {/* Download data */}
       <Button

@@ -75,59 +75,26 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      {/* Bento grid — transaction + agent card */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-        {/* Transaction cards — span 8 cols */}
-        <div className="lg:col-span-8 space-y-4">
-          {activeTxs.length > 0 ? (
-            activeTxs.map((tx) => (
-              <Card key={tx.id} variant="elevated">
-                <CardHeader>
-                  <CardTitle>{tx.label}</CardTitle>
-                  <Badge
-                    variant={tx.status === "active" ? "success" : "primary"}
-                  >
-                    {tx.status}
-                  </Badge>
-                </CardHeader>
-                {hasPermission("milestones") && (
+      {/* Transaction cards */}
+      <div className="space-y-4">
+        {activeTxs.length > 0 ? (
+          activeTxs.map((tx) => (
+            <Card key={tx.id} variant="elevated">
+              <CardHeader>
+                <CardTitle>{tx.label}</CardTitle>
+                <Badge
+                  variant={tx.status === "active" ? "success" : "primary"}
+                >
+                  {tx.status}
+                </Badge>
+              </CardHeader>
+              {hasPermission("milestones") && (
                 <MilestoneTimeline transactionId={tx.id} />
               )}
-              </Card>
-            ))
-          ) : (
-            <GettingStarted role={activeRole} agentName={brokerage?.agentName} />
-          )}
-        </div>
-
-        {/* Agent info — span 4 cols */}
-        {brokerage && (
-          <div className="lg:col-span-4">
-            <Card variant="container">
-              <div className="flex flex-col items-center text-center gap-3 py-2">
-                <div className="w-14 h-14 rounded-full bg-primary-light flex items-center justify-center text-primary font-bold text-lg">
-                  {brokerage.agentName
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")}
-                </div>
-                <div>
-                  <p className="font-semibold text-text-primary">
-                    {brokerage.agentName}
-                  </p>
-                  <p className="text-sm text-text-secondary">
-                    {brokerage.agentTitle}
-                  </p>
-                </div>
-                <Link href="/messages" className="w-full">
-                  <Button variant="secondary" size="sm" className="w-full">
-                    Message
-                    <ArrowRight size={14} />
-                  </Button>
-                </Link>
-              </div>
             </Card>
-          </div>
+          ))
+        ) : (
+          <GettingStarted role={activeRole} agentName={brokerage?.agentName} />
         )}
       </div>
 
