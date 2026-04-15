@@ -33,7 +33,7 @@ function AgentShell({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-30 flex items-center justify-between px-4 sm:px-8 py-3 bg-[var(--glass-bg)] backdrop-blur-[var(--glass-blur)] border-b border-[var(--glass-border)]">
         <div className="flex items-center gap-4">
           <div>
-            <span className="text-lg font-bold text-primary font-serif italic">Hearth Real Estate<sup className="text-[0.6em] align-super">&copy;</sup></span>
+            <span className="text-lg font-bold text-primary font-serif italic shrink-0">Hearth Real Estate<sup className="text-[0.6em] align-super">&copy;</sup></span>
             <p className="text-xs text-on-surface-variant hidden md:block">Agent Portal</p>
           </div>
           <AgentNav />

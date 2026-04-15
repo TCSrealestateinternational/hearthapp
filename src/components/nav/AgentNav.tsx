@@ -32,7 +32,7 @@ export function AgentNav() {
               }`}
             >
               <MaterialIcon name={item.icon} size={20} filled={active} />
-              {item.label}
+              <span className="hidden lg:inline">{item.label}</span>
             </Link>
           );
         })}

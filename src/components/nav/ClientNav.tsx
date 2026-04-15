@@ -169,7 +169,7 @@ function DesktopNavLink({
       }`}
     >
       <MaterialIcon name={item.icon} size={20} filled={active} />
-      {item.label}
+      <span className="hidden lg:inline">{item.label}</span>
       {badge && badge > 0 ? (
         <span className="bg-error text-on-error text-xs rounded-full w-5 h-5 flex items-center justify-center" aria-hidden="true">
           {badge}
