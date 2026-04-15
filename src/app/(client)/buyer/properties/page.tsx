@@ -1,27 +1,54 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useBrokerage } from "@/hooks/useBrokerage";
 import { useTransactions } from "@/hooks/useTransaction";
-import { useTransaction } from "@/hooks/useTransaction";
+import { useTransaction, createTransaction } from "@/hooks/useTransaction";
 import { PropertyCard } from "@/components/buyer/PropertyCard";
 import { NeighborhoodData } from "@/components/buyer/NeighborhoodData";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import type { Property, PropertyStatus } from "@/types";
 import { parseListingUrl } from "@/lib/parseListingUrl";
+import type { ParsedAddress } from "@/lib/parseListingUrl";
 import { Link2, Plus, Search, SlidersHorizontal } from "lucide-react";
 
 export default function PropertiesPage() {
   const { user } = useAuth();
   const { brokerage } = useBrokerage();
-  const { transactions } = useTransactions(
+  const { transactions, refresh: refreshTxs } = useTransactions(
     brokerage?.id || "",
     user?.id || ""
   );
   const buyingTx = transactions.find((t) => t.type === "buying");
   const { properties, addProperty } = useTransaction(buyingTx?.id || "");
+
+  // Auto-create a buying transaction if the buyer doesn't have one yet
+  const creatingTx = useRef(false);
+  useEffect(() => {
+    if (!user?.id || !brokerage?.id) return;
+    if (buyingTx || creatingTx.current) return;
+    // Only fire once transactions have loaded (array exists but no buying tx)
+    if (transactions.length === 0 && !buyingTx) {
+      // Wait — transactions may still be loading on first render.
+      // We check: if transactions array is populated OR if we've loaded at
+      // least once. The useTransactions hook sets loading=false after fetch,
+      // so an empty array means truly no transactions.
+      return;
+    }
+    creatingTx.current = true;
+    createTransaction({
+      brokerageId: brokerage.id,
+      clientId: user.id,
+      type: "buying",
+      status: "active",
+      label: "Home Search",
+    }).then(() => {
+      refreshTxs();
+      creatingTx.current = false;
+    });
+  }, [user?.id, brokerage?.id, buyingTx, transactions, refreshTxs]);
 
   const [showAdd, setShowAdd] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
@@ -34,14 +61,14 @@ export default function PropertiesPage() {
 
   async function quickAddFromUrl() {
     const trimmed = urlInput.trim();
-    if (!trimmed) return;
+    if (!trimmed || !buyingTx) return;
     const parsed = parseListingUrl(trimmed);
     await addProperty({
-      transactionId: buyingTx?.id || "",
-      address: parsed || trimmed,
-      city: "",
-      state: "",
-      zip: "",
+      transactionId: buyingTx.id,
+      address: parsed.address || trimmed,
+      city: parsed.city,
+      state: parsed.state,
+      zip: parsed.zip,
       price: 0,
       beds: 0,
       baths: 0,
@@ -103,7 +130,7 @@ export default function PropertiesPage() {
           variant="cta"
           size="sm"
           onClick={quickAddFromUrl}
-          disabled={!urlInput.trim()}
+          disabled={!urlInput.trim() || !buyingTx}
         >
           Add
         </Button>
@@ -203,9 +230,10 @@ export default function PropertiesPage() {
         open={showAdd}
         onClose={() => setShowAdd(false)}
         onSave={async (data) => {
+          if (!buyingTx) return;
           await addProperty({
             ...data,
-            transactionId: buyingTx?.id || "",
+            transactionId: buyingTx.id,
           });
           setShowAdd(false);
         }}
@@ -235,9 +263,12 @@ function AddPropertyModal({
 
   function handleUrlPaste(value: string) {
     setMlsUrl(value);
-    if (!address) {
-      const parsed = parseListingUrl(value);
-      if (parsed) setAddress(parsed);
+    const parsed = parseListingUrl(value);
+    if (parsed.address) {
+      setAddress(parsed.address);
+      if (parsed.city) setCity(parsed.city);
+      if (parsed.state) setState(parsed.state);
+      if (parsed.zip) setZip(parsed.zip);
     }
   }
 
