@@ -39,7 +39,7 @@ function ClientShell({ children }: { children: ReactNode }) {
       {/* Sticky glass header */}
       <header className="sticky top-0 z-30 flex items-center justify-between px-4 sm:px-8 py-3 bg-[var(--glass-bg)] backdrop-blur-xl border-b border-[var(--glass-border)]">
         <div className="flex items-center gap-4">
-          <span className="text-lg font-bold text-primary">Hearth</span>
+          <span className="text-lg font-bold text-primary">Hearth Real Estate<sup className="text-[0.6em] align-super">&copy;</sup></span>
           <ClientNav role={activeRole} unreadCount={0} />
         </div>
         <div className="flex items-center gap-3">

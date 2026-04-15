@@ -21,7 +21,7 @@ export function Footer({ brokerage }: FooterProps) {
           )}
         </>
       ) : (
-        <p>Powered by Hearth</p>
+        <p>Powered by Hearth Real Estate&copy;</p>
       )}
       </div>
     </footer>

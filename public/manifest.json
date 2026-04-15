@@ -1,11 +1,11 @@
 {
-  "name": "Hearth - Your Real Estate Portal",
+  "name": "Hearth Real Estate",
   "short_name": "Hearth",
   "description": "Manage your real estate transaction - finances, checklists, properties, documents, and messaging.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FAFAF8",
-  "theme_color": "#2B5797",
+  "background_color": "#fffbff",
+  "theme_color": "#4f6c4b",
   "icons": [
     { "src": "/icon-192.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
     { "src": "/icon-512.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
