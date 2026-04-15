@@ -6,6 +6,7 @@ import { useBrokerage } from "@/hooks/useBrokerage";
 import { useTransactions } from "@/hooks/useTransaction";
 import { useTransaction } from "@/hooks/useTransaction";
 import { PropertyCard } from "@/components/buyer/PropertyCard";
+import { NeighborhoodData } from "@/components/buyer/NeighborhoodData";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import type { Property, PropertyStatus } from "@/types";
@@ -23,6 +24,7 @@ export default function PropertiesPage() {
   const { properties, addProperty } = useTransaction(buyingTx?.id || "");
 
   const [showAdd, setShowAdd] = useState(false);
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [urlInput, setUrlInput] = useState("");
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<PropertyStatus | "all">(
@@ -151,7 +153,11 @@ export default function PropertiesPage() {
       {filtered.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((property) => (
-            <PropertyCard key={property.id} property={property} />
+            <PropertyCard
+              key={property.id}
+              property={property}
+              onClick={() => setSelectedProperty(property)}
+            />
           ))}
         </div>
       ) : (
@@ -163,6 +169,34 @@ export default function PropertiesPage() {
           </p>
         </div>
       )}
+
+      {/* Property detail modal with neighborhood data */}
+      <Modal
+        open={!!selectedProperty}
+        onClose={() => setSelectedProperty(null)}
+        title={selectedProperty?.address || "Property Details"}
+        maxWidth="max-w-2xl"
+      >
+        {selectedProperty && (
+          <div className="space-y-4">
+            <div className="flex items-center gap-4 text-sm text-text-secondary">
+              <span>{selectedProperty.beds} bed</span>
+              <span>{selectedProperty.baths} bath</span>
+              <span>{selectedProperty.sqft.toLocaleString()} sqft</span>
+              <span className="font-bold text-text-primary">
+                ${selectedProperty.price.toLocaleString()}
+              </span>
+            </div>
+            <hr className="border-border" />
+            <NeighborhoodData
+              address={selectedProperty.address}
+              city={selectedProperty.city}
+              state={selectedProperty.state}
+              zip={selectedProperty.zip}
+            />
+          </div>
+        )}
+      </Modal>
 
       {/* Add property modal */}
       <AddPropertyModal
