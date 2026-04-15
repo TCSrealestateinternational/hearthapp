@@ -6,7 +6,7 @@ import { AgentNav } from "@/components/nav/AgentNav";
 import { useAuth } from "@/hooks/useAuth";
 import { useBrokerage } from "@/hooks/useBrokerage";
 import { InstallPrompt } from "@/components/shared/InstallPrompt";
-import { ConciergeFAB } from "@/components/ConciergeFAB";
+
 
 export function AgentShellWrapper({ children }: { children: ReactNode }) {
   return (
@@ -50,8 +50,6 @@ function AgentShell({ children }: { children: ReactNode }) {
         {children}
       </main>
 
-      {/* Concierge FAB */}
-      <ConciergeFAB />
     </div>
   );
 }
