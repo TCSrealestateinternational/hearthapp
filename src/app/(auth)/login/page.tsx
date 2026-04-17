@@ -28,10 +28,10 @@ export default function LoginPage() {
       const loggedInUser = await login(email, password);
       if (loggedInUser) {
         if (loggedInUser.roles.includes("agent")) {
-          router.push("/agent/dashboard");
-        } else {
-          router.push("/dashboard");
+          setError("Agents use RE Tracker to manage clients. This portal is for clients only.");
+          return;
         }
+        router.push("/dashboard");
       }
       // If null, pendingSwitch will be set — BrokerageSwitch renders
     } catch (err: unknown) {
@@ -56,10 +56,10 @@ export default function LoginPage() {
     const updatedUser = await confirmSwitch();
     if (updatedUser) {
       if (updatedUser.roles.includes("agent")) {
-        router.push("/agent/dashboard");
-      } else {
-        router.push("/dashboard");
+        setError("Agents use RE Tracker to manage clients. This portal is for clients only.");
+        return updatedUser;
       }
+      router.push("/dashboard");
     }
     return updatedUser;
   }
@@ -68,10 +68,10 @@ export default function LoginPage() {
     await declineSwitch();
     if (user) {
       if (user.roles.includes("agent")) {
-        router.push("/agent/dashboard");
-      } else {
-        router.push("/dashboard");
+        setError("Agents use RE Tracker to manage clients. This portal is for clients only.");
+        return;
       }
+      router.push("/dashboard");
     }
   }
 
@@ -180,18 +180,8 @@ export default function LoginPage() {
           </Button>
         </form>
 
-        <p className="text-center text-sm text-on-surface-variant mt-8">
-          Are you an agent?{" "}
-          <a
-            href="/signup/agent"
-            className="font-semibold text-primary hover:underline"
-          >
-            Create your account
-          </a>
-        </p>
-
-        <p className="text-center text-xs text-on-surface-variant mt-3">
-          Clients: your agent will set up your account.
+        <p className="text-center text-xs text-on-surface-variant mt-8">
+          Your agent will set up your account.
           <br />
           Contact them if you need access.
         </p>

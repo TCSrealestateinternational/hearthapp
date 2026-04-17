@@ -6,10 +6,9 @@ import { useAuth } from "@/hooks/useAuth";
 
 interface AuthGuardProps {
   children: ReactNode;
-  requireAgent?: boolean;
 }
 
-export function AuthGuard({ children, requireAgent = false }: AuthGuardProps) {
+export function AuthGuard({ children }: AuthGuardProps) {
   const { user, pendingSwitch, loading } = useAuth();
   const router = useRouter();
 
@@ -18,17 +17,16 @@ export function AuthGuard({ children, requireAgent = false }: AuthGuardProps) {
       router.replace("/login");
     }
     if (!loading && !user && pendingSwitch) {
-      // Brokerage switch pending — redirect to login which shows the prompt
       router.replace("/login");
     }
     if (!loading && user && pendingSwitch) {
-      // User loaded but has pending switch — redirect to login for prompt
       router.replace("/login");
     }
-    if (!loading && user && requireAgent && !user.roles.includes("agent")) {
-      router.replace("/dashboard");
+    // Agents should not use Hearth — redirect to login with message
+    if (!loading && user && user.roles.includes("agent")) {
+      router.replace("/login");
     }
-  }, [user, pendingSwitch, loading, requireAgent, router]);
+  }, [user, pendingSwitch, loading, router]);
 
   if (loading) {
     return (
@@ -48,7 +46,7 @@ export function AuthGuard({ children, requireAgent = false }: AuthGuardProps) {
 
   if (!user) return null;
   if (pendingSwitch) return null;
-  if (requireAgent && !user.roles.includes("agent")) return null;
+  if (user.roles.includes("agent")) return null;
 
   return <>{children}</>;
 }
