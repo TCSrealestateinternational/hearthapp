@@ -312,7 +312,28 @@ function NextSteps({
           View Journey
         </Link>
       </div>
-      <div className="flex gap-4 overflow-x-auto pb-6 -mx-6 px-6 no-scrollbar">
+      {/* Mobile: vertical list */}
+      <div className="flex flex-col gap-3 md:hidden">
+        {allCards.map((card) => (
+          <Link
+            key={card.href}
+            href={card.href}
+            className={`${card.bg} p-5 rounded-2xl flex items-center gap-4 hover:opacity-90 transition-opacity`}
+          >
+            <div className={`w-12 h-12 rounded-2xl ${card.iconBg} flex items-center justify-center shrink-0`}>
+              <MaterialIcon name={card.icon} size={24} className="text-primary" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h4 className="font-serif text-lg text-on-surface">{card.title}</h4>
+              <p className="text-on-surface-variant text-sm leading-relaxed line-clamp-2">{card.description}</p>
+            </div>
+            <MaterialIcon name="chevron_right" size={20} className="text-primary shrink-0" />
+          </Link>
+        ))}
+      </div>
+
+      {/* Desktop: horizontal scroll */}
+      <div className="hidden md:flex gap-4 overflow-x-auto pb-6 -mx-6 px-6 no-scrollbar">
         {allCards.map((card, i) => (
           <Link
             key={card.href}
