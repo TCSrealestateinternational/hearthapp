@@ -133,7 +133,7 @@ export function ClientNav({ role, unreadCount, transactionId }: ClientNavProps) 
                 }`}
               >
                 <MaterialIcon name={item.icon} size={20} filled={active} />
-                <span className="truncate max-w-[56px]">{item.label}</span>
+                <span className="truncate max-w-[56px] font-semibold tracking-wide uppercase">{item.label}</span>
                 {item.href === "/messages" && unreadCount > 0 && (
                   <span className="absolute -top-0.5 right-0 bg-error text-on-error text-[10px] rounded-full w-4 h-4 flex items-center justify-center" aria-hidden="true">
                     {unreadCount}

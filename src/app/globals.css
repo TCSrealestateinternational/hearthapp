@@ -188,3 +188,7 @@ body {
   background: var(--color-outline-variant);
   border-radius: 3px;
 }
+
+/* Hide scrollbar on horizontal scroll */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
