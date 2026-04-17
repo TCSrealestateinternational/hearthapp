@@ -60,7 +60,7 @@ export function MilestoneTimeline({ transactionId }: MilestoneTimelineProps) {
   if (milestones.length === 0) {
     return (
       <div
-        className="rounded-xl border border-outline-variant bg-surface p-8 text-center"
+        className="rounded-xl bg-surface-container-low p-8 text-center"
         role="status"
         aria-label="No milestones yet"
       >
@@ -71,7 +71,7 @@ export function MilestoneTimeline({ transactionId }: MilestoneTimelineProps) {
 
   return (
     <div
-      className="rounded-xl border border-outline-variant bg-surface p-6"
+      className="rounded-xl bg-surface-container-low p-6"
       role="region"
       aria-label="Transaction milestone timeline"
     >

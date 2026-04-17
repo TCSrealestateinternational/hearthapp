@@ -33,13 +33,13 @@ export default function DashboardPage() {
   // Unified view: show all transactions at once
   if (isUnified) {
     return (
-      <div className="max-w-6xl mx-auto space-y-6">
+      <div className="max-w-6xl mx-auto space-y-10">
         <PauseBanner transactionId={primaryTxId} />
-        <div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-on-surface font-serif">
+        <div className="pl-1 pr-6">
+          <h1 className="text-4xl sm:text-5xl font-extrabold leading-none text-on-surface font-serif">
             Welcome back, {user?.displayName?.split(" ")[0] || "there"}
           </h1>
-          <p className="text-on-surface-variant mt-1">All your transactions in one place.</p>
+          <p className="text-on-surface-variant mt-2">All your transactions in one place.</p>
         </div>
         <UnifiedDashboard
           transactions={transactions}
@@ -50,16 +50,16 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6">
+    <div className="max-w-6xl mx-auto space-y-10">
       {/* Pause banner */}
       <PauseBanner transactionId={primaryTxId} />
 
       {/* Welcome */}
-      <div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-on-surface font-serif">
+      <div className="pl-1 pr-6">
+        <h1 className="text-4xl sm:text-5xl font-extrabold leading-none text-on-surface font-serif">
           Welcome back, {user?.displayName?.split(" ")[0] || "there"}
         </h1>
-        <p className="text-on-surface-variant mt-1">
+        <p className="text-on-surface-variant mt-2">
           Here is your {activeRole === "buyer" ? "buying" : "selling"} overview.
         </p>
       </div>
@@ -154,14 +154,14 @@ function QuickMenu({
   const groups = allGroups.filter((g) => g.items.length > 0);
 
   return (
-    <div className="bg-surface border border-outline-variant rounded-2xl shadow-sm overflow-hidden">
+    <div className="bg-surface-container-low rounded-2xl shadow-sm overflow-hidden">
       <div className="px-5 sm:px-6 pt-5 pb-3">
         <h2 className="text-lg font-semibold text-on-surface font-serif">Quick Menu</h2>
         <p className="text-sm text-on-surface-variant mt-0.5">Jump to any section</p>
       </div>
 
       {groups.map((group) => (
-        <div key={group.label} className="border-t border-outline-variant">
+        <div key={group.label} className="mt-2">
           <p className="px-5 sm:px-6 pt-4 pb-1 text-xs font-bold uppercase tracking-wider text-on-surface-variant">
             {group.label}
           </p>

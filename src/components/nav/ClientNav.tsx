@@ -116,7 +116,7 @@ export function ClientNav({ role, unreadCount, transactionId }: ClientNavProps) 
       </nav>
 
       {/* Mobile bottom tabs — 4 items, pill-shaped */}
-      <nav aria-label="Mobile navigation" className="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--glass-bg)] backdrop-blur-[var(--glass-blur)] border-t border-[var(--glass-border)] rounded-t-[3rem] z-40 safe-area-bottom">
+      <nav aria-label="Mobile navigation" className="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--glass-bg)] backdrop-blur-[var(--glass-blur)] shadow-[0_-8px_32px_rgba(57,56,49,0.06)] rounded-t-[3rem] z-40 safe-area-bottom">
         <div className="flex items-center justify-around px-2 py-2">
           {mobileItems.map((item) => {
             const active = pathname === item.href;
